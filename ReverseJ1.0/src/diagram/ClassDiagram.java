@@ -2,17 +2,18 @@ package diagram;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
+//line for testing
 /**
  * @author kleinner 
  *  Classe não está sendo usada.
  */
 public class ClassDiagram {
-
+//line for testing
 	public static HashMap<String, ArrayList<String>> classRelationship;
 
 	public ClassDiagram(){
 		classRelationship = new HashMap<String, ArrayList<String>>();
+//		aaa
 	}
 	
 
