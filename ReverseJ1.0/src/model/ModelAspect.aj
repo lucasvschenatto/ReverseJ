@@ -6,7 +6,7 @@ import teste.*;
 public aspect ModelAspect {
 	private static StringBuffer str = new StringBuffer();
 	private static boolean running;
-	private static Log log;
+	private static Log traced;
 
 
 	public static boolean isRunning() {
@@ -14,20 +14,22 @@ public aspect ModelAspect {
 	}
 	
 	pointcut traceConstructor():
-		call(void C1.*(..));
+		call( *.new(..));
 	
-//	before(): traceConstructor(){
-//		System.out.println("before");
-//	}
-//	after(): traceConstructor(){
-//		System.out.println("after");
-//	}
-	before(C1 c, Object o):
-		call (void C1.*()) &&
-		this(o) &&
-		target(c){
-			System.out.println(o.getClass() +" called "+c.toString().getClass());
-		}
+	before( Object c):
+		traceConstructor() &&
+		this(c){
+		traced.classType = c.toString();
+		TracerTests.setResult(traced);
+	}
+//	after(C1 c, Object o):
+////		(call (void C1.*()) ||
+//		call( *.new())&&
+////		execution(*.new())&&
+//		this(o) &&
+//		target(c){
+//			System.out.println(o.getClass() +" called "+c.getClass());
+//		}
 
 //	pointcut traceMethods()               
 //	    : (execution(* *.*(..))
@@ -76,7 +78,7 @@ public aspect ModelAspect {
 
 	public static void start() {
 		running = true;
-		log = new Log();
+		traced = new Log();
 		str.delete(0, str.length());
 	}
 
