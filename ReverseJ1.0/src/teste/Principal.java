@@ -1,6 +1,6 @@
 package teste;
 
-import model.ModelAspect;
+import model.TracerAspect;
 import model.ModelFactory;
 import xml.AdjacentClassXML;
 

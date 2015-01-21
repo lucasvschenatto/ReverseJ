@@ -1,12 +1,16 @@
 package model;
 
-import org.aspectj.lang.Signature;
+//import org.aspectj.lang.Signature;
 import teste.*;
 
-public aspect ModelAspect {
+public aspect TracerAspect {
 	private static StringBuffer str = new StringBuffer();
 	private static boolean running;
-	private static Log traced;
+	private static Log result;
+	
+	public static Log getLastLog(){
+		return result;
+	}
 
 
 	public static boolean isRunning() {
@@ -14,13 +18,15 @@ public aspect ModelAspect {
 	}
 	
 	pointcut traceConstructor():
-		call( *.new(..));
+		call(*.new(..)) &&
+		!within(TracerAspect);
 	
-	before( Object c):
-		traceConstructor() &&
-		this(c){
-		traced.classType = c.toString();
-		TracerTests.setResult(traced);
+	before():
+		traceConstructor(){
+		result.classType = thisJoinPoint.getSignature().getDeclaringType();
+//		System.out.println(thisJoinPoint.getSourceLocation());
+//		System.out.println(thisJoinPointStaticPart.getSignature().getDeclaringTypeName());
+		TracerTests.setResult(result);
 	}
 //	after(C1 c, Object o):
 ////		(call (void C1.*()) ||
@@ -78,7 +84,7 @@ public aspect ModelAspect {
 
 	public static void start() {
 		running = true;
-		traced = new Log();
+		result = new Log();
 		str.delete(0, str.length());
 	}
 

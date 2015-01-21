@@ -1,4 +1,5 @@
 package teste;
+
 import static org.junit.Assert.*;
 import model.*;
 
@@ -10,43 +11,47 @@ public class TracerTests{
 	
 	@Test
 	public void turnOn() {
-		ModelAspect.start();
-		assertTrue(ModelAspect.isRunning());
+		TracerAspect.start();
+		assertTrue(TracerAspect.isRunning());
 	}
 	@Test
 	public void turnOf(){
-		ModelAspect.stop();
-		assertFalse(ModelAspect.isRunning());
+		TracerAspect.stop();
+		assertFalse(TracerAspect.isRunning());
 	}
 	@Test
 	public void pickOutConstructor(){
 		C1 c = new C1();
-		c.doNothing();
-		c.doNothing();
-		expected.classType = c.toString();
-		compareLogs();
+		expected.classType = c.getClass();
+		compareLogs(expected, actual);
 	}
-	@Ignore@Test
-	public void TraceMethod(){
-		expected = new Log();
-//		expected.className = "Hero";
-		actual = new Log();
-//		actual.className = "Hero";
-//		Hero h = new Hero();
-//		h.save();
-		compareLogs();
+	@Test
+	public void PickOutConstructorsParameter(){
+		String param = "Parameter for testing";
+		expected.parameters.add(param);
+		C1 c = new C1(param);
+		compareLogs(expected, actual);
+		
 	}
-	private void compareLogs() {
+	
+	
+	
+	@Test
+	public void PickOutMethodCall(){
+	}
+	
+	private void compareLogs(Log expected, Log actual) {
 		assertEquals(expected.classType,actual.classType);
 	}
 	@Before
 	public void before(){
-		ModelAspect.start();
+		TracerAspect.start();
 		expected = new Log();
 	}
 	@After
 	public void after(){
-		ModelAspect.stop();
+		TracerAspect.stop();
+		expected = null;
 	}
 	
 	public static void setResult(Log result){
