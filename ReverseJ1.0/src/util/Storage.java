@@ -1,4 +1,4 @@
-package model;
+package util;
 
 public class Storage {
 	private Log[] storedLogs;

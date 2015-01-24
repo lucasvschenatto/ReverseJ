@@ -1,7 +1,6 @@
-package model;
+package util;
 
 //import org.aspectj.lang.Signature;
-import teste.TestTracer;
 
 public aspect Tracer {
 	private static StringBuffer str = new StringBuffer();
@@ -33,10 +32,10 @@ public aspect Tracer {
 	
 	before():
 		pickUpPublicConstructor(){
-		result.classType = thisJoinPoint.getSignature().getDeclaringType();
+//		result.classType = thisJoinPoint.getSignature().getDeclaringType();
 //		System.out.println(thisJoinPoint.getSourceLocation());
 //		System.out.println(thisJoinPointStaticPart.getSignature().getDeclaringTypeName());
-		TestTracer.setResult(result);
+		TracerTest.setResult(result);
 	}
 //	after(C1 c, Object o):
 ////		(call (void C1.*()) ||

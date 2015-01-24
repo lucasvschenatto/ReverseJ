@@ -1,7 +1,7 @@
 package teste;
 
-import model.Tracer;
 import model.ModelFactory;
+import util.Tracer;
 import xml.AdjacentClassXML;
 
 

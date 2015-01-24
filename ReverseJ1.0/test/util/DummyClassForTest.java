@@ -1,4 +1,4 @@
-package teste;
+package util;
 
 public class DummyClassForTest {
 	
