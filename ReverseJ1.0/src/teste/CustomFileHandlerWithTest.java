@@ -9,7 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-public class Teste {
+public class CustomFileHandlerWithTest {
 	
 	  /**
 	  * Fetch the entire contents of a text file, and return it in a String.

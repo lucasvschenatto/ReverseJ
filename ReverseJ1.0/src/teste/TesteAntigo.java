@@ -1,6 +1,6 @@
 package teste;
 
-import model.TracerAspect;
+import model.Tracer;
 import model.ModelFactory;
 import xml.AdjacentClassXML;
 
@@ -8,7 +8,7 @@ import xml.AdjacentClassXML;
 /**
  * Classe para a execução de testes
  * */
-public class Principal {
+public class TesteAntigo {
 
 	public static void main(String[] args) {		
 //		ModelAspect.start();		

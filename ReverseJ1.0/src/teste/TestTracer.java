@@ -5,23 +5,23 @@ import model.*;
 
 import org.junit.*;
 
-public class TracerTests{
+public class TestTracer{
 	private static Log expected;
 	private static Log actual;
 	
 	@Test
 	public void turnOn() {
-		TracerAspect.start();
-		assertTrue(TracerAspect.isRunning());
+		Tracer.start();
+		assertTrue(Tracer.isRunning());
 	}
 	@Test
 	public void turnOf(){
-		TracerAspect.stop();
-		assertFalse(TracerAspect.isRunning());
+		Tracer.stop();
+		assertFalse(Tracer.isRunning());
 	}
 	@Test
 	public void pickOutConstructor(){
-		C1 c = new C1();
+		DummyClassForTest c = new DummyClassForTest();
 		expected.classType = c.getClass();
 		compareLogs(expected, actual);
 	}
@@ -29,7 +29,7 @@ public class TracerTests{
 	public void PickOutConstructorsParameter(){
 		String param = "Parameter for testing";
 		expected.parameters.add(param);
-		C1 c = new C1(param);
+		DummyClassForTest c = new DummyClassForTest(param);
 		compareLogs(expected, actual);
 		
 	}
@@ -45,12 +45,12 @@ public class TracerTests{
 	}
 	@Before
 	public void before(){
-		TracerAspect.start();
+		Tracer.start();
 		expected = new Log();
 	}
 	@After
 	public void after(){
-		TracerAspect.stop();
+		Tracer.stop();
 		expected = null;
 	}
 	

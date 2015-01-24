@@ -1,9 +1,9 @@
 package model;
 
 //import org.aspectj.lang.Signature;
-import teste.*;
+import teste.TestTracer;
 
-public aspect TracerAspect {
+public aspect Tracer {
 	private static StringBuffer str = new StringBuffer();
 	private static boolean running;
 	private static Log result;
@@ -17,16 +17,26 @@ public aspect TracerAspect {
 		return running;
 	}
 	
-	pointcut traceConstructor():
+	pointcut pickUpPublicConstructor():
 		call(*.new(..)) &&
-		!within(TracerAspect);
+		!within(Tracer);
+	pointcut pickUpPrivateConstructor():
+		!within(Tracer);
+	pointcut pickUpPrivateVoidMethod():
+		!within(Tracer);
+	pointcut pickUpPublicVoidMethod():
+		!within(Tracer);
+	pointcut pickUpPrivateReturnMethod():
+		!within(Tracer);
+	pointcut pickUpPublicReturnMethod():
+		!within(Tracer);
 	
 	before():
-		traceConstructor(){
+		pickUpPublicConstructor(){
 		result.classType = thisJoinPoint.getSignature().getDeclaringType();
 //		System.out.println(thisJoinPoint.getSourceLocation());
 //		System.out.println(thisJoinPointStaticPart.getSignature().getDeclaringTypeName());
-		TracerTests.setResult(result);
+		TestTracer.setResult(result);
 	}
 //	after(C1 c, Object o):
 ////		(call (void C1.*()) ||

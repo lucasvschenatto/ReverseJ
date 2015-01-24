@@ -2,20 +2,19 @@ package diagram;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 //line for testing
 /**
- * @author kleinner 
- *  Classe não está sendo usada.
+ * @author kleinner Classe não está sendo usada.
  */
 public class ClassDiagram {
-//line for testing
+	// line for testing
 	public static HashMap<String, ArrayList<String>> classRelationship;
 
-	public ClassDiagram(){
+	public ClassDiagram() {
 		classRelationship = new HashMap<String, ArrayList<String>>();
-//		aaa
+		// aaa
 	}
-	
 
 	public void insertRelationshipClass(String key, ArrayList<String> value) {
 		ClassDiagram.classRelationship.put(key, value);
@@ -62,14 +61,14 @@ public class ClassDiagram {
 			ArrayList<String> arrayClass) {
 
 		int size = arrayClass.size();
-		System.out.println("size: "+size);
-		//if ((size % 2) == 0) {
-		if (((size % 2)==0) && (size > 1)) {
+		System.out.println("size: " + size);
+		// if ((size % 2) == 0) {
+		if (((size % 2) == 0) && (size > 1)) {
 			for (int i = 0; i < size; i += 2) {
 				if (!arrayClass.get(i).equalsIgnoreCase(arrayClass.get(i + 1))) {
 					if (!isAdjacent(arrayClass.get(i), arrayClass.get(i + 1))
-							&& !isAdjacent(arrayClass.get(i + 1), arrayClass
-									.get(i))) {
+							&& !isAdjacent(arrayClass.get(i + 1),
+									arrayClass.get(i))) {
 						insertModelElementAdjacencyList(arrayClass.get(i),
 								arrayClass.get(i + 1));
 					}
@@ -77,34 +76,35 @@ public class ClassDiagram {
 			}
 			return classRelationship;
 		}
-		
-		if (((size % 2)==1)) {
+
+		if (((size % 2) == 1)) {
 			System.out.println("if (((size % 2)==1)) {");
-			for (int i = 0; i < size-1; i += 2) {
+			for (int i = 0; i < size - 1; i += 2) {
 				if (!arrayClass.get(i).equalsIgnoreCase(arrayClass.get(i + 1))) {
 					if (!isAdjacent(arrayClass.get(i), arrayClass.get(i + 1))
-							&& !isAdjacent(arrayClass.get(i + 1), arrayClass
-									.get(i))) {
+							&& !isAdjacent(arrayClass.get(i + 1),
+									arrayClass.get(i))) {
 						insertModelElementAdjacencyList(arrayClass.get(i),
 								arrayClass.get(i + 1));
 					}
 				}
 			}
-			
-			if (!arrayClass.get(size-2).equalsIgnoreCase(arrayClass.get(size-1))) {
-				if (!isAdjacent(arrayClass.get(size-1), arrayClass.get(size-2))
-						&& !isAdjacent(arrayClass.get(size-1), arrayClass
-								.get(size-2))) {
-					insertModelElementAdjacencyList(arrayClass.get(size-2),
-							arrayClass.get(size-2));
+
+			if (!arrayClass.get(size - 2).equalsIgnoreCase(
+					arrayClass.get(size - 1))) {
+				if (!isAdjacent(arrayClass.get(size - 1),
+						arrayClass.get(size - 2))
+						&& !isAdjacent(arrayClass.get(size - 1),
+								arrayClass.get(size - 2))) {
+					insertModelElementAdjacencyList(arrayClass.get(size - 2),
+							arrayClass.get(size - 2));
 				}
 			}
-			System.out.println("===>"+classRelationship.size());
+			System.out.println("===>" + classRelationship.size());
 			System.out.println("if (((size % 2)==1)) { -- FIM");
 			return classRelationship;
 		}
 
-		
 		return classRelationship;
 
 	}
@@ -120,27 +120,25 @@ public class ClassDiagram {
 
 	public static void main(String[] args) {
 
-		/*ArrayList<String> arrayClass = new ArrayList<String>();
-		arrayClass.add("c1");
-		arrayClass.add("c2");
-		arrayClass.add("c4");
-		arrayClass.add("c3");
-
-		ClassDiagram defineModelElements = new ClassDiagram();
-		HashMap<String, ArrayList<String>> classRelationship = new HashMap<String, ArrayList<String>>();
-		classRelationship = defineModelElements
-				.createClassRelationship(arrayClass);
-
-		for (String key : classRelationship.keySet()) {
-
-			System.out.println("#" + key + ":");
-			for (Iterator iterator = classRelationship.get(key).iterator(); iterator
-					.hasNext();) {
-				String element = (String) iterator.next();
-				System.out.println("." + element);
-			}
-
-		}*/
+		/*
+		 * ArrayList<String> arrayClass = new ArrayList<String>();
+		 * arrayClass.add("c1"); arrayClass.add("c2"); arrayClass.add("c4");
+		 * arrayClass.add("c3");
+		 * 
+		 * ClassDiagram defineModelElements = new ClassDiagram();
+		 * HashMap<String, ArrayList<String>> classRelationship = new
+		 * HashMap<String, ArrayList<String>>(); classRelationship =
+		 * defineModelElements .createClassRelationship(arrayClass);
+		 * 
+		 * for (String key : classRelationship.keySet()) {
+		 * 
+		 * System.out.println("#" + key + ":"); for (Iterator iterator =
+		 * classRelationship.get(key).iterator(); iterator .hasNext();) { String
+		 * element = (String) iterator.next(); System.out.println("." +
+		 * element); }
+		 * 
+		 * }
+		 */
 
 	}
 }
