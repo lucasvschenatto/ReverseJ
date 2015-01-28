@@ -1,6 +1,9 @@
 package util;
 
 //import org.aspectj.lang.Signature;
+import java.lang.reflect.*;
+
+import org.aspectj.lang.Signature;
 
 public aspect Tracer {
 	private static StringBuffer str = new StringBuffer();
@@ -17,7 +20,8 @@ public aspect Tracer {
 	}
 	
 	pointcut pickUpPublicConstructor():
-		call(*.new(..)) &&
+		(execution(*.new(..)) ||
+		call(* *.*(..))) &&
 		!within(Tracer);
 	pointcut pickUpPrivateConstructor():
 		!within(Tracer);
@@ -32,10 +36,44 @@ public aspect Tracer {
 	
 	before():
 		pickUpPublicConstructor(){
+		Class<?> caller = thisJoinPoint.getSignature().getDeclaringType();
+		Method[] allMethods = caller.getDeclaredMethods();
+		System.out.println(caller.getName());
+//		for (Method method : allMethods) {
+//			System.out.println("**");
+//			System.out.println(method.getName());
+//			Class<?>[] params = method.getParameterTypes();
+//			for (Class<?> class1 : params) {
+//				System.out.println(class1.getName());
+//			}
+//		}
+		Signature s = thisJoinPointStaticPart.getSignature();
+		String methodName = s.getName();
+		if (methodName.equals(""))
+			methodName = "new";
+		System.out.println(methodName);
+		System.out.println("-----------------------");
+		
+		
+		
+		
+		
+//		try {
+//			Method m = caller.getMethod(caller.getName(), );
+//		} catch (NoSuchMethodException e) {
+//			// TODO Auto-generated catch block
+//			System.out.println(caller.getName());
+//			e.printStackTrace();
+//		} catch (SecurityException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+////				thisJoinPoint.getSignature().getName();
+//		thisJoinPoint.getArgs();
 //		result.classType = thisJoinPoint.getSignature().getDeclaringType();
 //		System.out.println(thisJoinPoint.getSourceLocation());
 //		System.out.println(thisJoinPointStaticPart.getSignature().getDeclaringTypeName());
-		TracerTest.setResult(result);
+		
 	}
 //	after(C1 c, Object o):
 ////		(call (void C1.*()) ||

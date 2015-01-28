@@ -18,8 +18,7 @@ public class Log {
 	}
 	public Timestamp getTimestamp() {
 		return timeStamp;
-	}
-		
+	}		
 //	public Object caller;
 //	public Class<?> classType;
 //	public String className;
