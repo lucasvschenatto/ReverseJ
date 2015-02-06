@@ -1,29 +1,57 @@
 package util;
 
-public class Storage {
-	private Log[] storedLogs;
-	private float executionStartTime;
-	private float executionEndTime;
-	
+import java.util.*;
+
+public class Storage{
+	private List<Log> storedLogs;
+	private boolean opened;
 	public Storage(){
-		executionStartTime = 0;
+		storedLogs = new LinkedList<Log>();
+		opened = true;
 	}
-	public void close(){
-		executionEndTime = 0;
+	public void addLog(Log newLog) {
+		if(opened)
+			storedLogs.add(newLog);
 	}
-	public void insertLog(Log log){
-		
+	public boolean contains(Log searchedLog) {
+		return storedLogs.contains(searchedLog);
 	}
-	public Log[] getAllLogs(){
-		return storedLogs;
+	public void close() {
+		opened = false;
 	}
-	public Log getLog(float idNumber){
-		return new Log();
+	public Log getLast() {
+		Log result = null;
+		if(!storedLogs.isEmpty())
+			result = storedLogs.get(storedLogs.size()-1);
+		return result;
 	}
-	public float getStartTime(){
-		return executionStartTime;
+	public Log getFirst() {
+		Log result = null;
+		if(!storedLogs.isEmpty())
+			result = storedLogs.get(0);
+		return result;
 	}
-	public float getEndTime(){
-		return executionEndTime;
-	}
+	
+	
+//	public Storage(){
+//		executionStartTime = 0;
+//	}
+//	public void close(){
+//		executionEndTime = 0;
+//	}
+//	public void insertLog(Log log){
+//		
+//	}
+//	public Log[] getAllLogs(){
+//		return storedLogs;
+//	}
+//	public Log getLog(float idNumber){
+//		return new Log();
+//	}
+//	public float getStartTime(){
+//		return executionStartTime;
+//	}
+//	public float getEndTime(){
+//		return executionEndTime;
+//	}
 }

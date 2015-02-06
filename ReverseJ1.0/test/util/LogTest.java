@@ -8,6 +8,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,34 +23,50 @@ public class LogTest {
 
 	@Before
 	public void setUp(){
+		localLog = createNewLog();
 	}
 
 	@After
 	public void tearDown(){
+		localLog = null;
 	}
 
 	@Test
 	public void constructor() {
-		localLog = new Log();
+		localLog = createNewLog();
 		assertNotNull(localLog);
 	}
 	
 	@Test
 	public void incrementIds(){
-		Log first  = new Log();
-		Log second = new Log();
-		assertEquals(first.getId(), second.getId()-1);		
+		int first = localLog.getId();
+		localLog = createNewLog();
+		int second = localLog.getId();
+		assertEquals(first, second - 1);
 	}
 	@Test
 	public void registertimeStamp(){
-		Log localLog = new Log();
+		Log localLog = createNewLog();
 		Timestamp ti = Timestamp.from(Instant.now());
 		assertTrue(ti.equals(localLog.getTimestamp()));
 	}
 	@Test
+	public void close(){
+		localLog = createNewLog();
+		try {
+			TimeUnit.MILLISECONDS.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		localLog.close();
+		assertEquals(1000, localLog.getDuration(), 20);
+		
+	}
+	
 //	adicionar o tempo em que o método levou para retornar
 //	também é bom criar testes com os nomes da classe, método, parâmetros, etc
-	public void close(){
-		Log localLog = new Log();
+
+	private Log createNewLog() {
+		return new Log();
 	}
 }

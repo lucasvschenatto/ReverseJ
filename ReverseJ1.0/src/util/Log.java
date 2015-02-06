@@ -1,24 +1,35 @@
 package util;
 
 import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Log {
 	private static AtomicInteger lastId = new AtomicInteger(0);
 	private int localId;
-	public Timestamp timeStamp;
+	public Timestamp startTimeStamp;
+	public Timestamp endTimeStamp;
 	
 	public Log(){
-		timeStamp = Timestamp.from(Instant.now());
+		startTimeStamp = Timestamp.from(Instant.now());
 		localId = lastId.incrementAndGet();
 	}
 	public int getId() {
 		return localId;
 	}
 	public Timestamp getTimestamp() {
-		return timeStamp;
-	}		
+		return startTimeStamp;
+	}
+	public void close(){
+		endTimeStamp = Timestamp.from(Instant.now());
+	}
+	/**
+	 * @return long milliseconds
+	 */
+	public long getDuration(){
+		return Duration.between(startTimeStamp.toInstant(), Instant.now()).toMillis();
+	}
 //	public Object caller;
 //	public Class<?> classType;
 //	public String className;

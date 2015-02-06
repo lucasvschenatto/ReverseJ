@@ -59,10 +59,10 @@ public class TracerTest {
 		actual = result;
 	}
 
-	private class Hero {
-		private boolean save() {
-			return true;
-		}
-	}
+//	private class Hero {
+//		private boolean save() {
+//			return true;
+//		}
+//	}
 
 }
