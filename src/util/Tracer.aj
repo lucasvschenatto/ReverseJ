@@ -34,7 +34,7 @@ public aspect Tracer {
 	pointcut pickUpPublicReturnMethod():
 		!within(Tracer);
 	
-	before():
+	/*before():
 		pickUpPublicConstructor(){
 		Class<?> caller = thisJoinPoint.getSignature().getDeclaringType();
 		Method[] allMethods = caller.getDeclaredMethods();
@@ -53,6 +53,7 @@ public aspect Tracer {
 			methodName = "new";
 		System.out.println(methodName);
 		System.out.println("-----------------------");
+		}*/
 		
 		
 		
@@ -74,7 +75,7 @@ public aspect Tracer {
 //		System.out.println(thisJoinPoint.getSourceLocation());
 //		System.out.println(thisJoinPointStaticPart.getSignature().getDeclaringTypeName());
 		
-	}
+	
 //	after(C1 c, Object o):
 ////		(call (void C1.*()) ||
 //		call( *.new())&&
