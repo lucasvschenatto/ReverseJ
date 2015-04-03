@@ -11,46 +11,134 @@ import org.junit.runner.RunWith;
 
 @RunWith(Enclosed.class)
 public class RecorderTest{
-	public static class Constructor extends Log{
+	public static class ConstructorPublic extends Log{
 		private String expected;
-		private String[] expectedAll;
 		@Before
 		public void setup(){
 			Recorder.determineLog(this);
 		}
-		@Test @Ignore
+		@Test
 		public void caller() throws Exception{
 			new Actor();
-			expected ="caller : reverseJ.RecorderTest.caller";
+			expected ="caller : reverseJ.RecorderTest.ConstructorPublic";
 			String[] actual = this.describeAll();
 			assertEquals(expected, actual[0]);
 		}
 		@Test
-		@Ignore
-		public void catchConstructor() throws Exception{
+		public void target() throws Exception{
 			new Actor();
-			expectedAll = new String[]{
-					"constructor : reverseJ.RecorderTest.Actor",
-//					"caller : reverseJ.RecorderTest.Method",
-//					"target : reverseJ.RecorderTest.Actor",
-//					"method : constructor",
-					};
+			expected ="target : reverseJ.RecorderTest.Actor";
 			String[] actual = this.describeAll();
-			assertArrayEquals(expectedAll, actual);
+			assertEquals(expected, actual[1]);
+		}
+		@Test
+		public void method() throws Exception{
+			new Actor();
+			expected ="method : <init>";
+			String[] actual = this.describeAll();
+			assertEquals(expected, actual[2]);
+		}
+		@Test
+		public void signature_NoParameter() throws Exception{
+			new Actor();
+			expected ="signature : ()";
+			String[] actual = this.describeAll();
+			assertEquals(expected, actual[3]);
+		}
+		@Test
+		public void signature_OneParameter() throws Exception{
+			new Actor(true);
+			expected ="signature : (boolean b)";
+			String[] actual = this.describeAll();
+			assertEquals(expected, actual[3]);
+		}
+		@Test
+		public void signature_TwoParameter() throws Exception{
+			new Actor(1, "a");
+			expected ="signature : (int i, java.lang.String s)";
+			String[] actual = this.describeAll();
+			assertEquals(expected, actual[3]);
+		}
+		@Test
+		public void returnInstanceType() throws Exception{
+			new Actor();
+			expected ="return : reverseJ.RecorderTest.Actor";
+			String[] actual = this.describeAll();
+			assertEquals(expected, actual[4]);
 		}
 	}
-	public static class LogCreationStructure extends Log{
-		Actor actor;
-		String expected;
+	public static class ConstructorPrivate extends Log{
+		private String expected;
 		@Before
 		public void setup(){
-			actor = new Actor();
 			Recorder.determineLog(this);
 		}
 		@Test
-		public void countLines(){
+		public void caller() throws Exception{
+			new Actor(1.5);
+			expected ="caller : reverseJ.RecorderTest.ConstructorPrivate";
+			String[] actual = this.describeAll();
+			assertEquals(expected, actual[0]);
+		}
+		@Test
+		public void target() throws Exception{
+			new Actor(1.5);
+			expected ="target : reverseJ.RecorderTest.Actor";
+			String[] actual = this.describeAll();
+			assertEquals(expected, actual[1]);
+		}
+		@Test
+		public void method() throws Exception{
+			new Actor(1.5);
+			expected ="method : <init>";
+			String[] actual = this.describeAll();
+			assertEquals(expected, actual[2]);
+		}
+		@Test
+		public void signature_OneParameter() throws Exception{
+			new Actor(1.5);
+			expected ="signature : (double arg0)";
+			String[] actual = this.describeAll();
+			assertEquals(expected, actual[3]);
+		}
+		@Test
+		public void returnInstanceType() throws Exception{
+			new Actor(1.5);
+			expected ="return : reverseJ.RecorderTest.Actor";
+			String[] actual = this.describeAll();
+			assertEquals(expected, actual[4]);
+		}
+	}
+	public static class StoringStructure extends Log{
+		Actor actor;
+		int expectedLines;
+		@Before
+		public void setup(){
+			expectedLines = 5;
+			actor = new Actor();			
+			Recorder.determineLog(this);			
+		}
+		@Test
+		public void countLinesInstancePublicMethod(){
 			actor.playInstancePublic();
-			int expectedLines = 5;
+			int actualLines = this.describeAll().length;
+			assertEquals(expectedLines, actualLines);
+		}
+		@Test
+		public void countLinesInstancePrivateMethod(){
+			actor.playInstancePrivate();
+			int actualLines = this.describeAll().length;
+			assertEquals(expectedLines, actualLines);
+		}
+		@Test
+		public void countLinesStaticPublicMethod(){
+			Actor.playStaticPublic();
+			int actualLines = this.describeAll().length;
+			assertEquals(expectedLines, actualLines);
+		}
+		@Test
+		public void countLinesStaticPrivateMethod(){
+			Actor.playStaticPrivate();
 			int actualLines = this.describeAll().length;
 			assertEquals(expectedLines, actualLines);
 		}
@@ -106,7 +194,7 @@ public class RecorderTest{
 			assertEquals(expected, actual[3]);
 		}
 		@Test
-		public void signature_returnType() throws Exception{
+		public void returnType() throws Exception{
 			actor.playInstancePublic(1, "a");
 			expected ="return : java.lang.Boolean";
 			String[] actual = this.describeAll();
@@ -164,7 +252,7 @@ public class RecorderTest{
 			assertEquals(expected, actual[3]);
 		}
 		@Test
-		public void signature_returnType() throws Exception{
+		public void returnType() throws Exception{
 			actor.playInstancePrivate(1, "a");
 			expected ="return : java.lang.Boolean";
 			String[] actual = this.describeAll();
@@ -223,7 +311,7 @@ public class RecorderTest{
 			assertEquals(expected, actual[3]);
 		}
 		@Test
-		public void signature_returnType() throws Exception{
+		public void returnType() throws Exception{
 			Actor.playStaticPublic(1, "a");
 			expected ="return : java.lang.Boolean";
 			String[] actual = this.describeAll();
@@ -252,36 +340,36 @@ public class RecorderTest{
 			String[] actual = this.describeAll();
 			assertEquals(expected, actual[1]);
 		}
-		@Test @Ignore
+		@Test
 		public void method() throws Exception{
 			Actor.playStaticPrivate();
-			expected ="method : access$0";
+			expected ="method : access$1";
 			String[] actual = this.describeAll();
 			assertEquals(expected, actual[2]);
 		}
-		@Test @Ignore
+		@Test
 		public void signature_NoParameter() throws Exception{
 			Actor.playStaticPrivate();
-			expected ="signature : (reverseJ.RecorderTest.Actor arg0)";
-			String[] actual = this.describeAll();
-			assertEquals(expected, actual[3]);
-		}
-		@Test @Ignore
-		public void signature_OneParameter() throws Exception{
-			Actor.playStaticPrivate(true);
-			expected ="signature : (reverseJ.RecorderTest.Actor arg0, boolean arg1)";
-			String[] actual = this.describeAll();
-			assertEquals(expected, actual[3]);
-		}
-		@Test  @Ignore
-		public void signature_TwoParameters() throws Exception{
-			Actor.playStaticPrivate(1, "a");
-			expected ="signature : (reverseJ.RecorderTest.Actor arg0, int arg1, java.lang.String arg2)";
+			expected ="signature : ()";
 			String[] actual = this.describeAll();
 			assertEquals(expected, actual[3]);
 		}
 		@Test
-		public void signature_returnType() throws Exception{
+		public void signature_OneParameter() throws Exception{
+			Actor.playStaticPrivate(true);
+			expected ="signature : (boolean arg0)";
+			String[] actual = this.describeAll();
+			assertEquals(expected, actual[3]);
+		}
+		@Test
+		public void signature_TwoParameters() throws Exception{
+			Actor.playStaticPrivate(1, "a");
+			expected ="signature : (int arg0, java.lang.String arg1)";
+			String[] actual = this.describeAll();
+			assertEquals(expected, actual[3]);
+		}
+		@Test
+		public void returnType() throws Exception{
 			Actor.playStaticPrivate(1, "a");
 			expected ="return : java.lang.Boolean";
 			String[] actual = this.describeAll();
@@ -290,21 +378,26 @@ public class RecorderTest{
 		}
 	}
 	static class Actor{
+		public Actor(){}
+		public Actor(boolean b){}
+		public Actor(int i, String s){}
+		private Actor(double d){}
+		
 		private static void playStaticPrivate(){}
-		private static boolean playStaticPrivate(int i, String s){return true;}
 		private static boolean playStaticPrivate(boolean b){return b;}
+		private static boolean playStaticPrivate(int i, String s){return true;}
 		
 		public static void playStaticPublic(){}
-		public static boolean playStaticPublic(int i, String s){return true;}
 		public static boolean playStaticPublic(boolean b){return b;}
+		public static boolean playStaticPublic(int i, String s){return true;}
 		
 		private void playInstancePrivate(){}
-		private boolean playInstancePrivate(int i, String s){return true;}
 		private boolean playInstancePrivate(boolean b){return b;}
+		private boolean playInstancePrivate(int i, String s){return true;}
 		
 		public void playInstancePublic(){}
-		public boolean playInstancePublic(int i, String s){return true;}
 		public boolean playInstancePublic(boolean b){return b;}
+		public boolean playInstancePublic(int i, String s){return true;}
 	}
 	static class Assert extends org.junit.Assert{
 		static public void assertInArray(String expected, String[] actual){
