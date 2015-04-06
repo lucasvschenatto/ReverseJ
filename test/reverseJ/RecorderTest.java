@@ -2,9 +2,7 @@ package reverseJ;
 
 
 import static reverseJ.RecorderTest.Assert.*;
-
-import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.*;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
@@ -97,7 +95,7 @@ public class RecorderTest{
 		@Test
 		public void signature_OneParameter() throws Exception{
 			new Actor(1.5);
-			expected ="signature : (double arg0)";
+			expected ="signature : (double d)";
 			String[] actual = this.describeAll();
 			assertEquals(expected, actual[3]);
 		}
@@ -117,6 +115,13 @@ public class RecorderTest{
 			expectedLines = 5;
 			actor = new Actor();			
 			Recorder.determineLog(this);			
+		}
+		@Test
+		public void setStructureOrder(){			
+			InfoOrder[] expected = InfoOrder.values();
+			Recorder.determineOrder(expected);
+			InfoOrder[] actual = Recorder.getOrder();
+			assertArrayEquals(expected, actual);
 		}
 		@Test
 		public void countLinesInstancePublicMethod(){
@@ -226,28 +231,28 @@ public class RecorderTest{
 		@Test
 		public void method() throws Exception{
 			actor.playInstancePrivate();
-			expected ="method : access$0";
+			expected ="method : playInstancePrivate";
 			String[] actual = this.describeAll();
 			assertEquals(expected, actual[2]);
 		}
 		@Test
 		public void signature_NoParameter() throws Exception{
 			actor.playInstancePrivate();
-			expected ="signature : (reverseJ.RecorderTest.Actor arg0)";
+			expected ="signature : ()";
 			String[] actual = this.describeAll();
 			assertEquals(expected, actual[3]);
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
 			actor.playInstancePrivate(true);
-			expected ="signature : (reverseJ.RecorderTest.Actor arg0, boolean arg1)";
+			expected ="signature : (boolean b)";
 			String[] actual = this.describeAll();
 			assertEquals(expected, actual[3]);
 		}
 		@Test
 		public void signature_TwoParameters() throws Exception{
 			actor.playInstancePrivate(1, "a");
-			expected ="signature : (reverseJ.RecorderTest.Actor arg0, int arg1, java.lang.String arg2)";
+			expected ="signature : (int i, java.lang.String s)";
 			String[] actual = this.describeAll();
 			assertEquals(expected, actual[3]);
 		}
@@ -343,7 +348,7 @@ public class RecorderTest{
 		@Test
 		public void method() throws Exception{
 			Actor.playStaticPrivate();
-			expected ="method : access$1";
+			expected ="method : playStaticPrivate";
 			String[] actual = this.describeAll();
 			assertEquals(expected, actual[2]);
 		}
@@ -357,14 +362,14 @@ public class RecorderTest{
 		@Test
 		public void signature_OneParameter() throws Exception{
 			Actor.playStaticPrivate(true);
-			expected ="signature : (boolean arg0)";
+			expected ="signature : (boolean b)";
 			String[] actual = this.describeAll();
 			assertEquals(expected, actual[3]);
 		}
 		@Test
 		public void signature_TwoParameters() throws Exception{
 			Actor.playStaticPrivate(1, "a");
-			expected ="signature : (int arg0, java.lang.String arg1)";
+			expected ="signature : (int i, java.lang.String s)";
 			String[] actual = this.describeAll();
 			assertEquals(expected, actual[3]);
 		}
@@ -383,17 +388,23 @@ public class RecorderTest{
 		public Actor(int i, String s){}
 		private Actor(double d){}
 		
-		private static void playStaticPrivate(){}
-		private static boolean playStaticPrivate(boolean b){return b;}
-		private static boolean playStaticPrivate(int i, String s){return true;}
+		private static void playStaticPrivate()
+		{}
+		private static boolean playStaticPrivate(boolean b)
+		{return b;}
+		private static boolean playStaticPrivate(int i, String s)
+		{return true;}
 		
 		public static void playStaticPublic(){}
 		public static boolean playStaticPublic(boolean b){return b;}
 		public static boolean playStaticPublic(int i, String s){return true;}
 		
-		private void playInstancePrivate(){}
-		private boolean playInstancePrivate(boolean b){return b;}
-		private boolean playInstancePrivate(int i, String s){return true;}
+		private void playInstancePrivate()
+		{}
+		private boolean playInstancePrivate(boolean b)
+		{return b;}
+		private boolean playInstancePrivate(int i, String s)
+		{return true;}
 		
 		public void playInstancePublic(){}
 		public boolean playInstancePublic(boolean b){return b;}

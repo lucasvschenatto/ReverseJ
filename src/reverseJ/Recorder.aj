@@ -1,52 +1,86 @@
 package reverseJ;
 
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.CodeSignature;
-import org.aspectj.lang.reflect.ConstructorSignature;
-import org.aspectj.lang.reflect.MemberSignature;
-import org.aspectj.lang.reflect.MethodSignature;
 
 public aspect Recorder {
 	private static Log log = new Log();
+	private static InfoOrder[] order;
 	
 	pointcut immune():!within(Log)&&!call(* Log.*(..))&& !within(Recorder)
 						&&!call(* Recorder.*(..));
-	pointcut method():
-		call(* *.*(..))&& immune();
-	pointcut constructor():
+	pointcut methodAll():
+		call(* *.*(..))&&immune();
+	pointcut methodPublic():
+		call(public * *.*(..))&&immune();
+	pointcut methodPrivate():
+		execution(private * *.*(..))&&immune();
+	pointcut constructorAll():
 		call(*.new(..))&& immune();
+	pointcut constructorPublic():
+		call(public *.new(..))&& immune();
+	pointcut constructorPrivate():
+		execution(private *.new(..))&& immune();
 	
-	before(Object caller):constructor()&&this(caller){
-		Signature s = thisJoinPoint.getSignature();
+	before(Object caller):constructorAll()&&this(caller){
+		Signature s = thisJoinPointStaticPart.getSignature();
 		String callerName = caller.getClass().getCanonicalName();
 		String targetName = s.getDeclaringType().getCanonicalName();
-		String methodName = s.getName();
-		String signature = generateSignature(s);
 		log.addInformation("caller", callerName);
 		log.addInformation("target", targetName);
+	}
+	before():constructorPrivate(){
+		Signature s = thisJoinPointStaticPart.getSignature();
+		String methodName = s.getName();
+		String signature = generateSignature(s);
 		log.addInformation("method", methodName);
 		log.addInformation("signature", signature);
 	}
-	after() returning (Object r):constructor(){
+	
+	before():constructorPublic(){
+		Signature s = thisJoinPointStaticPart.getSignature();
+		String methodName = s.getName();
+		String signature = generateSignature(s);
+		log.addInformation("method", methodName);
+		log.addInformation("signature", signature);
+	}
+	after() returning (Object r):constructorAll(){
 		if(r != null)
 			log.addInformation("return", r.getClass().getCanonicalName());
 		else
 			log.addInformation("return", "void");
 	}
 	
-	before(Object caller):method()&& this(caller){
-		Signature s = thisJoinPoint.getSignature();
+	before(Object caller):methodAll()&&this(caller){
+		Signature s = thisJoinPointStaticPart.getSignature();
 		String callerName = caller.getClass().getCanonicalName();
 		String targetName = s.getDeclaringType().getCanonicalName();
-		String methodName = s.getName();
-		String signature = generateSignature(s);
 		log.addInformation("caller", callerName);
 		log.addInformation("target", targetName);
+	}
+	
+	before():methodPrivate(){
+		Signature s = thisJoinPointStaticPart.getSignature();
+		String methodName = s.getName();
+		String signature = generateSignature(s);
+		log.addInformation("method", methodName);
+		log.addInformation("signature", signature);
+	}
+	after() returning (Object r):methodPrivate()&&!call(private * *.*(..)){
+		if(r != null)
+			log.addInformation("return", r.getClass().getCanonicalName());
+		else
+			log.addInformation("return", "void");
+	}
+	
+	before():methodPublic(){
+		Signature s = thisJoinPointStaticPart.getSignature();
+		String methodName = s.getName();
+		String signature = generateSignature(s);
 		log.addInformation("method", methodName);
 		log.addInformation("signature", signature);
 		}
-	after() returning (Object r):method()&&!call(private * *.*(..)){
+	after() returning (Object r):methodPublic()&&!call(private * *.*(..)){
 		if(r != null)
 			log.addInformation("return", r.getClass().getCanonicalName());
 		else
@@ -67,12 +101,14 @@ public aspect Recorder {
 		signature = signature.concat(")");
 		return signature;
 	}
-//	private String generateParameters(JoinPoint j) {
-//		Object[] paramValues = j.getArgs();
-//		return null;
-//	}
 	
 	public static void determineLog(Log newLog){
 		log = newLog;
+	}
+	public static void determineOrder(InfoOrder[] newOrder){
+		order = newOrder;
+	}
+	public static InfoOrder[] getOrder(){
+		return order;
 	}
 }

@@ -48,6 +48,8 @@ public class Log {
 		return allInformations;
 		
 	}
-	class NotFoundInformationException extends Exception{}
-	class EmptyLogException extends Exception{}
+	class NotFoundInformationException extends Exception{
+		private static final long serialVersionUID = 1L;}
+	class EmptyLogException extends Exception{
+		private static final long serialVersionUID = 1L;}
 }
