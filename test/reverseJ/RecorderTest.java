@@ -118,9 +118,9 @@ public class RecorderTest{
 		}
 		@Test
 		public void setStructureOrder(){			
-			InfoOrder[] expected = InfoOrder.values();
+			RecordingOrder[] expected = InfoOrder.values();
 			Recorder.determineOrder(expected);
-			InfoOrder[] actual = Recorder.getOrder();
+			RecordingOrder[] actual = Recorder.getOrder();
 			assertArrayEquals(expected, actual);
 		}
 		@Test

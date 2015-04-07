@@ -5,7 +5,7 @@ import org.aspectj.lang.reflect.CodeSignature;
 
 public aspect Recorder {
 	private static Log log = new Log();
-	private static InfoOrder[] order;
+	private static RecordingOrder[] order;
 	
 	pointcut immune():!within(Log)&&!call(* Log.*(..))&& !within(Recorder)
 						&&!call(* Recorder.*(..));
@@ -105,10 +105,10 @@ public aspect Recorder {
 	public static void determineLog(Log newLog){
 		log = newLog;
 	}
-	public static void determineOrder(InfoOrder[] newOrder){
+	public static void determineOrder(RecordingOrder[] newOrder){
 		order = newOrder;
 	}
-	public static InfoOrder[] getOrder(){
+	public static RecordingOrder[] getOrder(){
 		return order;
 	}
 }
