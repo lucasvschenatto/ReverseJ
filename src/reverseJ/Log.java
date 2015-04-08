@@ -9,7 +9,7 @@ public class Log implements RecorderStorage {
 		list = new LinkedList<Information>();
 	}
 	@Override
-	public void addInformation(String name, String value) {
+	public void addInformation(RecorderInfo name, String value) {
 		Information info = new Information();
 		info.setName(name);
 		info.setValue(value);	
@@ -17,17 +17,17 @@ public class Log implements RecorderStorage {
 	}
 
 	@Override
-	public String describe (String informationName) throws NotFoundInformationException{
+	public String describe (RecorderInfo informationName) throws NotFoundInformationException{
 		for (Information information : list)
 			if (information.getName() == informationName)
 				return information.getValue();
 		throw new NotFoundInformationException();
 	}
 	class Information {
-		public String getName() {
+		public RecorderInfo getName() {
 			return name;
 		}
-		public void setName(String name) {
+		public void setName(RecorderInfo name) {
 			this.name = name;
 		}
 		public String getValue() {
@@ -36,7 +36,7 @@ public class Log implements RecorderStorage {
 		public void setValue(String value) {
 			this.value = value;
 		}
-		private String name;
+		private RecorderInfo name;
 		private String value;
 	}
 	@Override
@@ -55,4 +55,17 @@ public class Log implements RecorderStorage {
 		private static final long serialVersionUID = 1L;}
 	class EmptyLogException extends Exception{
 		private static final long serialVersionUID = 1L;}
+	@Override
+	public boolean hasInformation(RecorderInfo name) {
+		try {
+			describe(name);
+			return true;
+		} catch (NotFoundInformationException e) {
+			return false;
+		}
+	}
+	@Override
+	public int size() {
+		return list.size();
+	}
 }

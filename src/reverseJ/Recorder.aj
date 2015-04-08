@@ -3,122 +3,85 @@ package reverseJ;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.CodeSignature;
 
-import reverseJ.Log.NotFoundInformationException;
-
 public aspect Recorder {
 	private static RecorderStorage storage;
-	private static RecordingOrder[] order;
+	private static RecorderInfo[] order;
 	private static boolean running;
+	
 	pointcut immune():if(running)	
 		&&(!within(RecorderStorage+)||within(RecorderStorageTest+))
+		&&!execution(* RecorderStorageTest+.*(..))
 		&&(!call(* RecorderStorage+.*(..))||call(* RecorderStorageTest+.*(..)))
+		&&(!within(RecorderInfo+)&&!call(* RecorderInfo+.*(..)))
 		&& !within(Recorder+)
 		&&!call(* Recorder+.*(..));
-	pointcut interfacePublic():
-		execution(public * *.*(..))
-		&&immune();
-	pointcut methodAll():
+	
+	pointcut methodCall():
 		call(* *.*(..))&&immune();
-	pointcut methodPublic():
-		(call(public * *.*(..)))
+	pointcut methodExecution():
+		(execution(public * *.*(..))||execution(private * *.*(..))||execution(protected * *.*(..)))
+//		(!execution(private * *.*(..))&&execution(* *.*(..)))
 		&&immune();
-	pointcut methodPrivate():
-		execution(private * *.*(..))&&immune();
 	
-	pointcut constructorAll():
+	pointcut constructorCall():
 		call(*.new(..))&& immune();
-	pointcut constructorPublic():
-		call(public *.new(..))&& immune();
-	pointcut constructorPrivate():
-		execution(private *.new(..))&& immune();
+	pointcut constructorExecution():
+		execution(*.new(..))
+		&& immune();
 	
-	before(Object caller):constructorAll()&&this(caller){
+	before(Object caller):constructorCall()&&this(caller){
 		Signature s = thisJoinPointStaticPart.getSignature();
 		String callerName = caller.getClass().getCanonicalName();
-		String targetName = s.getDeclaringType().getCanonicalName();
-		storage.addInformation("caller", callerName);
-		storage.addInformation("target", targetName);
+		String targetName = s.getDeclaringType().getCanonicalName();		
+		storage.addInformation(InfoOrder.CALLER, callerName);
+		storage.addInformation(InfoOrder.TARGET, targetName);		
 	}
-	before():constructorPrivate(){
+	before():constructorExecution(){
 		Signature s = thisJoinPointStaticPart.getSignature();
 		String methodName = s.getName();
 		String signature = generateSignature(s);
-		storage.addInformation("method", methodName);
-		storage.addInformation("signature", signature);
-	}	
-	before():constructorPublic(){
-		Signature s = thisJoinPointStaticPart.getSignature();
-		String methodName = s.getName();
-		String signature = generateSignature(s);
-		storage.addInformation("method", methodName);
-		storage.addInformation("signature", signature);
+		String modifiers = generateModifiers(s);
+		storage.addInformation(InfoOrder.MODIFIERS, modifiers);
+		storage.addInformation(InfoOrder.METHOD, methodName);
+		storage.addInformation(InfoOrder.SIGNATURE, signature);
 	}
-	after() returning (Object r):constructorAll(){
+	after() returning (Object r):constructorCall(){
 		if(r != null)
-			storage.addInformation("return", r.getClass().getCanonicalName());
+			storage.addInformation(InfoOrder.RETURN, r.getClass().getCanonicalName());
 		else
-			storage.addInformation("return", "void");
+			storage.addInformation(InfoOrder.RETURN, "void");
 	}
 
-	before(Object caller):methodAll()&&this(caller){
+	before(Object caller):methodCall()&&this(caller){
 		Signature s = thisJoinPointStaticPart.getSignature();
 		String callerName = caller.getClass().getCanonicalName();
-		String declaredTargetName = s.getDeclaringType().getCanonicalName();
-		storage.addInformation("caller", callerName);
+		String declaredTargetName = s.getDeclaringType().getCanonicalName();		
+		storage.addInformation(InfoOrder.CALLER, callerName);
 		if(s.getDeclaringType().isInterface()){
 			String targetName = thisJoinPoint.getTarget().getClass().getCanonicalName();
-			storage.addInformation("interface", declaredTargetName);
-			storage.addInformation("target", targetName);
+			storage.addInformation(InfoOrder.INTERFACE, declaredTargetName);
+			storage.addInformation(InfoOrder.TARGET, targetName);
 		}
-		else{
-			storage.addInformation("target", declaredTargetName);
-		}
+		else
+			storage.addInformation(InfoOrder.TARGET, declaredTargetName);	
 	}
-	
-	before():methodPrivate(){
+
+	before():methodExecution(){
 		Signature s = thisJoinPointStaticPart.getSignature();
+		String modifiers = generateModifiers(s);
 		String methodName = s.getName();
 		String signature = generateSignature(s);
-		storage.addInformation("method", methodName);
-		storage.addInformation("signature", signature);
+		storage.addInformation(InfoOrder.MODIFIERS, modifiers);
+		storage.addInformation(InfoOrder.METHOD, methodName);
+		storage.addInformation(InfoOrder.SIGNATURE, signature);
 	}
-	after() returning (Object r):methodPrivate()&&!call(private * *.*(..)){
+	after() returning (Object r):methodExecution(){
 		if(r != null)
-			storage.addInformation("return", r.getClass().getCanonicalName());
+			storage.addInformation(InfoOrder.RETURN, r.getClass().getCanonicalName());
 		else
-			storage.addInformation("return", "void");
+			storage.addInformation(InfoOrder.RETURN, "void");
 	}
-	
-	before():methodPublic(){
-		try {
-			storage.describe("interface");
-		} catch (NotFoundInformationException e){
-			Signature s = thisJoinPoint.getSignature();
-			String methodName = s.getName();
-			String signature = generateSignature(s);
-			storage.addInformation("method", methodName);
-			storage.addInformation("signature", signature);
-		}		
-	}
-	after() returning (Object r):methodPublic()&&!call(private * *.*(..)){
-		if(r != null)
-			storage.addInformation("return", r.getClass().getCanonicalName());
-		else
-			storage.addInformation("return", "void");
-	}
-	
-	before(Object target):interfacePublic()&&target(target){
-		try {
-			storage.describe("interface");
-			Signature s = thisJoinPointStaticPart.getSignature();
-			String methodName = s.getName();
-			String signature = generateSignature(s);
-			storage.addInformation("method", methodName);
-			storage.addInformation("signature", signature);
-			System.out.println("signature---" + signature);
-		} catch (NotFoundInformationException e) {
-		}
-	}
+
 	private String generateSignature(Signature sig) {
 		String signature = "";
 		String[] name = ((CodeSignature)sig).getParameterNames();
@@ -132,14 +95,33 @@ public aspect Recorder {
 		signature = signature.concat(")");
 		return signature;
 	}
-	
+	private String generateModifiers(Signature sig) {
+		int mod = sig.getModifiers();
+		return generateAccessControlModifiers(mod) + generateNonAccessModifiers(mod);
+	}
+	private String generateAccessControlModifiers(int mod) {
+		String accessControlModifier = new String();
+		if(java.lang.reflect.Modifier.isPublic(mod))
+			accessControlModifier = "public";
+		if(java.lang.reflect.Modifier.isPrivate(mod))
+			accessControlModifier = "private";
+		if(java.lang.reflect.Modifier.isProtected(mod))
+			accessControlModifier = "protected";
+		return accessControlModifier;
+	}
+	private String generateNonAccessModifiers(int mod) {
+		String nonAccessModifiers = new String();
+		if(java.lang.reflect.Modifier.isPublic(mod))
+			;
+		return nonAccessModifiers;
+	}	
 	public static void determineStorage(RecorderStorage newStorage){
 		storage = newStorage;
 	}
-	public static void determineOrder(RecordingOrder[] newOrder){
+	public static void determineOrder(RecorderInfo[] newOrder){
 		order = newOrder;
 	}
-	public static RecordingOrder[] getOrder(){
+	public static RecorderInfo[] getOrder(){
 		return order;
 	}
 	public static void start(RecorderStorage newStorage){
