@@ -532,7 +532,7 @@ public class RecorderTest{
 			String[] actual = super.describeAll();
 			assertEquals(expected, actual[4]);
 		}
-		@Test@Ignore
+		@Test
 		public void signature_TwoParameter() throws Exception{
 			iActor.playInstancePublic(1, "a");
 			expected ="signature : (int i, java.lang.String s)";

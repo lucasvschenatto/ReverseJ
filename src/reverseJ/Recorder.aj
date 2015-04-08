@@ -1,8 +1,9 @@
 package reverseJ;
 
-
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.CodeSignature;
+
+import reverseJ.Log.NotFoundInformationException;
 
 public aspect Recorder {
 	private static RecorderStorage storage;
@@ -12,15 +13,18 @@ public aspect Recorder {
 		&&(!within(RecorderStorage+)||within(RecorderStorageTest+))
 		&&(!call(* RecorderStorage+.*(..))||call(* RecorderStorageTest+.*(..)))
 		&& !within(Recorder+)
-		&&!call(* Recorder+.*(..));	
+		&&!call(* Recorder+.*(..));
+	pointcut interfacePublic():
+		execution(public * *.*(..))
+		&&immune();
 	pointcut methodAll():
 		call(* *.*(..))&&immune();
 	pointcut methodPublic():
-		call(public * *.*(..))&&immune();
+		(call(public * *.*(..)))
+		&&immune();
 	pointcut methodPrivate():
 		execution(private * *.*(..))&&immune();
-	pointcut interfacePublic():
-		execution(public * *.*(..))&&immune();
+	
 	pointcut constructorAll():
 		call(*.new(..))&& immune();
 	pointcut constructorPublic():
@@ -86,12 +90,16 @@ public aspect Recorder {
 	}
 	
 	before():methodPublic(){
-		Signature s = thisJoinPointStaticPart.getSignature();
-		String methodName = s.getName();
-		String signature = generateSignature(s);
-		storage.addInformation("method", methodName);
-		storage.addInformation("signature", signature);
-		}
+		try {
+			storage.describe("interface");
+		} catch (NotFoundInformationException e){
+			Signature s = thisJoinPoint.getSignature();
+			String methodName = s.getName();
+			String signature = generateSignature(s);
+			storage.addInformation("method", methodName);
+			storage.addInformation("signature", signature);
+		}		
+	}
 	after() returning (Object r):methodPublic()&&!call(private * *.*(..)){
 		if(r != null)
 			storage.addInformation("return", r.getClass().getCanonicalName());
@@ -99,10 +107,17 @@ public aspect Recorder {
 			storage.addInformation("return", "void");
 	}
 	
-	before():interfacePublic(){
-		Signature s = thisJoinPointStaticPart.getSignature();
-		String signature = generateSignature(s);
-		System.out.println("signature---" + signature);
+	before(Object target):interfacePublic()&&target(target){
+		try {
+			storage.describe("interface");
+			Signature s = thisJoinPointStaticPart.getSignature();
+			String methodName = s.getName();
+			String signature = generateSignature(s);
+			storage.addInformation("method", methodName);
+			storage.addInformation("signature", signature);
+			System.out.println("signature---" + signature);
+		} catch (NotFoundInformationException e) {
+		}
 	}
 	private String generateSignature(Signature sig) {
 		String signature = "";
