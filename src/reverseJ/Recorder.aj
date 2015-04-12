@@ -8,10 +8,11 @@ public aspect Recorder {
 	private static RecorderInfo[] order;
 	private static boolean running;
 	
-	pointcut immune():if(running)	
-		&&(!within(RecorderStorage+)||within(RecorderStorageTest+))
+	pointcut immune():if(running)
+		&&(!within(RecorderStorage+))
 		&&!execution(* RecorderStorageTest+.*(..))
-		&&(!call(* RecorderStorage+.*(..))||call(* RecorderStorageTest+.*(..)))
+		&&(!call(* RecorderStorage+.*(..)))
+		&&(!call(RecorderStorage+.new(..)))
 		&&(!within(RecorderInfo+)&&!call(* RecorderInfo+.*(..)))
 		&& !within(Recorder+)
 		&&!call(* Recorder+.*(..));
@@ -19,15 +20,12 @@ public aspect Recorder {
 	pointcut methodCall():
 		call(* *.*(..))&&immune();
 	pointcut methodExecution():
-		(execution(public * *.*(..))||execution(private * *.*(..))||execution(protected * *.*(..)))
-//		(!execution(private * *.*(..))&&execution(* *.*(..)))
-		&&immune();
+		execution(* *.*(..))&&immune();
 	
 	pointcut constructorCall():
 		call(*.new(..))&& immune();
 	pointcut constructorExecution():
-		execution(*.new(..))
-		&& immune();
+		execution(*.new(..))&&immune();
 	
 	before(Object caller):constructorCall()&&this(caller){
 		Signature s = thisJoinPointStaticPart.getSignature();
