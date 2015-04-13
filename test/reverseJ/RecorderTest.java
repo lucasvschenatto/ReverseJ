@@ -640,7 +640,7 @@ public class RecorderTest extends org.junit.Assert{
 			assertTrue(InfoOrder.values().length-actual.length<=1);
 		}
 	}
-	public static class Modifiers implements RecorderStorageTest{
+	public static class AccessControlModifiers implements RecorderStorageTest{
 		private Log log;
 		private Actor mActor = new Actor();
 		private String expected;
@@ -718,6 +718,45 @@ public class RecorderTest extends org.junit.Assert{
 			assertInArray(expected, actual);
 		}
 	}
+	public static class NonAccessModifiers implements RecorderStorageTest{
+		private Log log;
+		private Actor mActor = new Actor();
+		private String expected;
+		@Before
+		public void setUp(){
+			log = new Log();
+			Recorder.start(log);
+		}
+		@After
+		public void cleanUp(){
+			Recorder.stop();
+		}
+		
+		@Test
+		public void modifierMethodPublicFinal() throws Exception{
+			mActor.playInstancePublicFinal();
+			expected ="MODIFIERS : public final";
+			String[] actual = log.describeAll();
+			assertEquals(InfoOrder.values().length-1,actual.length);
+			assertInArray(expected, actual);
+		}
+		@Test
+		public void modifierMethodPublicSynchronized() throws Exception{
+			mActor.playInstancePublicSynchronized();
+			expected ="MODIFIERS : public synchronized";
+			String[] actual = log.describeAll();
+			assertEquals(InfoOrder.values().length-1,actual.length);
+			assertInArray(expected, actual);
+		}
+		@Test
+		public void modifierMethodPublicNative() throws Exception{
+			mActor.playInstancePublicStrictFP();;
+			expected ="MODIFIERS : public strictfp";
+			String[] actual = log.describeAll();
+			assertEquals(InfoOrder.values().length-1,actual.length);
+			assertInArray(expected, actual);
+		}
+	}
 	static interface InterfaceActor{
 		public abstract void playInstancePublic();
 
@@ -739,14 +778,6 @@ public class RecorderTest extends org.junit.Assert{
 		{return b;}
 		private static boolean playStaticPrivate(int i, String s)
 		{return true;}
-		
-		public static void playStaticPublic()
-		{}
-		public static boolean playStaticPublic(boolean b)
-		{return b;}
-		public static boolean playStaticPublic(int i, String s)
-		{return true;}
-		
 		private void playInstancePrivate()
 		{}
 		private boolean playInstancePrivate(boolean b)
@@ -754,17 +785,34 @@ public class RecorderTest extends org.junit.Assert{
 		private boolean playInstancePrivate(int i, String s)
 		{return true;}
 		
+		public static void playStaticPublic()
+		{}
+		public static boolean playStaticPublic(boolean b)
+		{return b;}
+		public static boolean playStaticPublic(int i, String s)
+		{return true;}
+		@Override
+		public void playInstancePublic()
+		{}
+		@Override
+		public boolean playInstancePublic(boolean b)
+		{return b;}
+		@Override
+		public boolean playInstancePublic(int i, String s)
+		{return true;}		
+		public final void playInstancePublicFinal()
+		{}
+		public synchronized void playInstancePublicSynchronized()
+		{}
+		public strictfp void playInstancePublicStrictFP()
+		{}
+		
 		protected void playInstanceProtected()
 		{}
 		void playInstanceDefault()
 		{}
 		
-		@Override
-		public void playInstancePublic(){}
-		@Override
-		public boolean playInstancePublic(boolean b){return b;}
-		@Override
-		public boolean playInstancePublic(int i, String s){return true;}
+		
 	}
 	private static void assertInArray(String expected, String[] actual){
 		boolean inArray = false;

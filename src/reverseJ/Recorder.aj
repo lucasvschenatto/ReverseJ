@@ -1,5 +1,8 @@
 package reverseJ;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.CodeSignature;
 
@@ -27,14 +30,14 @@ public aspect Recorder {
 	pointcut constructorExecution():
 		execution(*.new(..))&&immune();
 	
-	before(Object caller):constructorCall()&&this(caller){
-		Signature s = thisJoinPointStaticPart.getSignature();
-		String callerName = caller.getClass().getCanonicalName();
-		String targetName = s.getDeclaringType().getCanonicalName();		
-		storage.addInformation(InfoOrder.CALLER, callerName);
-		storage.addInformation(InfoOrder.TARGET, targetName);		
-	}
-	before():constructorExecution(){
+//	before(Object caller):constructorCall()&&this(caller){
+//		Signature s = thisJoinPointStaticPart.getSignature();
+//		String callerName = caller.getClass().getCanonicalName();
+//		String targetName = s.getDeclaringType().getCanonicalName();		
+//		storage.addInformation(InfoOrder.CALLER, callerName);
+//		storage.addInformation(InfoOrder.TARGET, targetName);		
+//	}
+	before():constructorExecution()||methodExecution(){
 		Signature s = thisJoinPointStaticPart.getSignature();
 		String methodName = s.getName();
 		String signature = generateSignature(s);
@@ -43,14 +46,14 @@ public aspect Recorder {
 		storage.addInformation(InfoOrder.METHOD, methodName);
 		storage.addInformation(InfoOrder.SIGNATURE, signature);
 	}
-	after() returning (Object r):constructorCall(){
+	after() returning (Object r):constructorCall()||methodExecution(){
 		if(r != null)
 			storage.addInformation(InfoOrder.RETURN, r.getClass().getCanonicalName());
 		else
 			storage.addInformation(InfoOrder.RETURN, "void");
 	}
 
-	before(Object caller):methodCall()&&this(caller){
+	before(Object caller):(constructorCall()||methodCall())&&this(caller){
 		Signature s = thisJoinPointStaticPart.getSignature();
 		String callerName = caller.getClass().getCanonicalName();
 		String declaredTargetName = s.getDeclaringType().getCanonicalName();		
@@ -64,21 +67,6 @@ public aspect Recorder {
 			storage.addInformation(InfoOrder.TARGET, declaredTargetName);	
 	}
 
-	before():methodExecution(){
-		Signature s = thisJoinPointStaticPart.getSignature();
-		String modifiers = generateModifiers(s);
-		String methodName = s.getName();
-		String signature = generateSignature(s);
-		storage.addInformation(InfoOrder.MODIFIERS, modifiers);
-		storage.addInformation(InfoOrder.METHOD, methodName);
-		storage.addInformation(InfoOrder.SIGNATURE, signature);
-	}
-	after() returning (Object r):methodExecution(){
-		if(r != null)
-			storage.addInformation(InfoOrder.RETURN, r.getClass().getCanonicalName());
-		else
-			storage.addInformation(InfoOrder.RETURN, "void");
-	}
 
 	private String generateSignature(Signature sig) {
 		String signature = "";
@@ -95,22 +83,28 @@ public aspect Recorder {
 	}
 	private String generateModifiers(Signature sig) {
 		int mod = sig.getModifiers();
-		return generateAccessControlModifiers(mod) + generateNonAccessModifiers(mod);
+		List<String> modifiers = accessControlModifiers(mod);
+		modifiers.addAll(nonAccessModifiers(mod));
+		return String.join(" ",modifiers);
 	}
-	private String generateAccessControlModifiers(int mod) {
-		String accessControlModifier = new String();
+	private List<String> accessControlModifiers(int mod) {
+		List<String> accessControlModifier = new LinkedList<>();
 		if(java.lang.reflect.Modifier.isPublic(mod))
-			accessControlModifier = "public";
+			accessControlModifier.add("public");
 		if(java.lang.reflect.Modifier.isPrivate(mod))
-			accessControlModifier = "private";
+			accessControlModifier.add("private");
 		if(java.lang.reflect.Modifier.isProtected(mod))
-			accessControlModifier = "protected";
+			accessControlModifier.add("protected");
 		return accessControlModifier;
 	}
-	private String generateNonAccessModifiers(int mod) {
-		String nonAccessModifiers = new String();
-		if(java.lang.reflect.Modifier.isPublic(mod))
-			;
+	private List<String> nonAccessModifiers(int mod) {
+		List<String> nonAccessModifiers = new LinkedList<>();
+		if(java.lang.reflect.Modifier.isFinal(mod))
+			nonAccessModifiers.add("final");
+		if(java.lang.reflect.Modifier.isSynchronized(mod))
+			nonAccessModifiers.add("synchronized");
+		if(java.lang.reflect.Modifier.isStrict(mod))
+			nonAccessModifiers.add("strictfp");
 		return nonAccessModifiers;
 	}	
 	public static void determineStorage(RecorderStorage newStorage){
