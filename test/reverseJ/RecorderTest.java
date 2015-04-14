@@ -86,9 +86,9 @@ public class RecorderTest extends org.junit.Assert{
 			InterfaceActor iActor = new Actor();
 			iActor.playInstancePublic(1, "a");
 			String[] actual = log.describeAll();
-			for(String line: actual){
-				System.out.println(line);
-			}
+//			for(String line: actual){
+//				System.out.println(line);
+//			}
 		}
 		@Test
 		public void setStructureOrder(){			
@@ -101,7 +101,7 @@ public class RecorderTest extends org.junit.Assert{
 		public void countLinesInstancePublicMethod(){
 			actor.playInstancePublic();
 			int actualLines = log.describeAll().length;
-			assertEquals(totalLines-1, actualLines);
+			assertEquals(6, actualLines);
 		}
 		@Test
 		public void countLinesInstancePrivateMethod(){
@@ -113,7 +113,7 @@ public class RecorderTest extends org.junit.Assert{
 		public void countLinesStaticPublicMethod(){
 			Actor.playStaticPublic();
 			int actualLines = log.describeAll().length;
-			assertEquals(totalLines-1, actualLines);
+			assertEquals(6, actualLines);
 		}
 		@Test
 		public void countLinesStaticPrivateMethod(){
@@ -125,25 +125,25 @@ public class RecorderTest extends org.junit.Assert{
 		public void countLinesPublicConstructor(){
 			new Actor();
 			int actualLines = log.describeAll().length;
-			assertEquals(totalLines-1, actualLines);
+			assertEquals(6, actualLines);
 		}
 		@Test
 		public void countLinesProtectedConstructor(){
 			new Actor("");
 			int actualLines = log.describeAll().length;
-			assertEquals(totalLines-1, actualLines);
+			assertEquals(6, actualLines);
 		}
 		@Test
 		public void countLinesPrivateConstructor(){
 			new Actor(1.5);
 			int actualLines = log.describeAll().length;
-			assertEquals(totalLines+2, actualLines);
+			assertEquals(9, actualLines);
 		}
 		@Test
 		public void countLinesDefaultConstructor(){
 			new Actor('a');
 			int actualLines = log.describeAll().length;
-			assertEquals(totalLines-1, actualLines);
+			assertEquals(6, actualLines);
 		}
 		@Test
 		public void countLinesInterface(){
@@ -152,7 +152,23 @@ public class RecorderTest extends org.junit.Assert{
 			Recorder.start(localLog);
 			iActor.playInstancePublic();
 			int actualLines = localLog.describeAll().length;
-			assertEquals(totalLines, actualLines);
+			assertEquals(7, actualLines);
+		}
+		@Test
+		public void countLinesExceptionThrowAndHandle() throws Exception{
+			Log localLog = new Log();
+			Actor mActor = new Actor('a');
+			Recorder.start(localLog);
+			try {
+				mActor.playInstancePublicThrowException();
+			} catch (Exception e)
+			{}
+			for(String line: localLog.describeAll()){
+				System.out.println(line);
+			}
+			int actualLines = localLog.describeAll().length;
+			assertEquals(7, actualLines);
+			
 		}
 	}
 	public static class ConstructorPublic implements RecorderStorageTest{
@@ -172,7 +188,7 @@ public class RecorderTest extends org.junit.Assert{
 			new Actor();
 			expected ="CALLER : reverseJ.RecorderTest.ConstructorPublic";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -180,7 +196,7 @@ public class RecorderTest extends org.junit.Assert{
 			new Actor();
 			expected ="TARGET : reverseJ.RecorderTest.Actor";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -188,7 +204,7 @@ public class RecorderTest extends org.junit.Assert{
 			new Actor();
 			expected ="METHOD : <init>";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -196,7 +212,7 @@ public class RecorderTest extends org.junit.Assert{
 			new Actor();
 			expected ="SIGNATURE : ()";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -204,7 +220,7 @@ public class RecorderTest extends org.junit.Assert{
 			new Actor(true);
 			expected ="SIGNATURE : (boolean bPublic)";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -212,7 +228,7 @@ public class RecorderTest extends org.junit.Assert{
 			new Actor(1, "a");
 			expected ="SIGNATURE : (int i, java.lang.String s)";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -220,7 +236,7 @@ public class RecorderTest extends org.junit.Assert{
 			new Actor();
 			expected ="RETURN : reverseJ.RecorderTest.Actor";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 	}
@@ -296,7 +312,7 @@ public class RecorderTest extends org.junit.Assert{
 			actor.playInstancePublic();
 			expected ="CALLER : reverseJ.RecorderTest.InstanceMethodPublic";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -304,7 +320,7 @@ public class RecorderTest extends org.junit.Assert{
 			actor.playInstancePublic();
 			expected ="TARGET : reverseJ.RecorderTest.Actor";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -312,7 +328,7 @@ public class RecorderTest extends org.junit.Assert{
 			actor.playInstancePublic();
 			expected ="METHOD : playInstancePublic";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -320,7 +336,7 @@ public class RecorderTest extends org.junit.Assert{
 			actor.playInstancePublic();
 			expected ="SIGNATURE : ()";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -328,7 +344,7 @@ public class RecorderTest extends org.junit.Assert{
 			actor.playInstancePublic(true);
 			expected ="SIGNATURE : (boolean b)";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -336,7 +352,7 @@ public class RecorderTest extends org.junit.Assert{
 			actor.playInstancePublic(1, "a");
 			expected ="SIGNATURE : (int i, java.lang.String s)";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -344,7 +360,7 @@ public class RecorderTest extends org.junit.Assert{
 			actor.playInstancePublic(1, "a");
 			expected ="RETURN : java.lang.Boolean";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 	}
@@ -438,7 +454,7 @@ public class RecorderTest extends org.junit.Assert{
 			Actor.playStaticPublic();
 			expected ="CALLER : reverseJ.RecorderTest.StaticMethodPublic";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -446,7 +462,7 @@ public class RecorderTest extends org.junit.Assert{
 			Actor.playStaticPublic();
 			expected ="TARGET : reverseJ.RecorderTest.Actor";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -454,7 +470,7 @@ public class RecorderTest extends org.junit.Assert{
 			Actor.playStaticPublic();
 			expected ="METHOD : playStaticPublic";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -462,7 +478,7 @@ public class RecorderTest extends org.junit.Assert{
 			Actor.playStaticPublic();
 			expected ="SIGNATURE : ()";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -470,7 +486,7 @@ public class RecorderTest extends org.junit.Assert{
 			Actor.playStaticPublic(true);
 			expected ="SIGNATURE : (boolean b)";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -478,7 +494,7 @@ public class RecorderTest extends org.junit.Assert{
 			Actor.playStaticPublic(1, "a");
 			expected ="SIGNATURE : (int i, java.lang.String s)";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -486,7 +502,7 @@ public class RecorderTest extends org.junit.Assert{
 			Actor.playStaticPublic(1, "a");
 			expected ="RETURN : java.lang.Boolean";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 	}
@@ -581,7 +597,7 @@ public class RecorderTest extends org.junit.Assert{
 			expected ="CALLER : reverseJ.RecorderTest.InterfaceMethodPublic";
 			String[] actual = log.describeAll();
 			assertInArray(expected, actual);
-			assertTrue(InfoOrder.values().length-actual.length<=1);
+//			assertTrue(InfoOrder.values().length-actual.length<=1);
 		}
 		@Test
 		public void declaredInterface() throws Exception{
@@ -589,7 +605,7 @@ public class RecorderTest extends org.junit.Assert{
 			expected ="INTERFACE : reverseJ.RecorderTest.InterfaceActor";
 			String[] actual = log.describeAll();
 			assertInArray(expected, actual);
-			assertTrue(InfoOrder.values().length-actual.length<=1);
+//			assertTrue(InfoOrder.values().length-actual.length<=1);
 		}
 		@Test
 		public void target() throws Exception{
@@ -597,7 +613,7 @@ public class RecorderTest extends org.junit.Assert{
 			expected ="TARGET : reverseJ.RecorderTest.Actor";
 			String[] actual = log.describeAll();
 			assertInArray(expected, actual);
-			assertTrue(InfoOrder.values().length-actual.length<=1);
+//			assertTrue(InfoOrder.values().length-actual.length<=1);
 		}
 		@Test
 		public void method() throws Exception{
@@ -605,7 +621,7 @@ public class RecorderTest extends org.junit.Assert{
 			expected ="METHOD : playInstancePublic";
 			String[] actual = log.describeAll();
 			assertInArray(expected, actual);
-			assertTrue(InfoOrder.values().length-actual.length<=1);
+//			assertTrue(InfoOrder.values().length-actual.length<=1);
 		}
 		@Test
 		public void signature_NoParameter() throws Exception{
@@ -613,7 +629,7 @@ public class RecorderTest extends org.junit.Assert{
 			expected ="SIGNATURE : ()";
 			String[] actual = log.describeAll();
 			assertInArray(expected, actual);
-			assertTrue(InfoOrder.values().length-actual.length<=1);
+//			assertTrue(InfoOrder.values().length-actual.length<=1);
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
@@ -621,7 +637,7 @@ public class RecorderTest extends org.junit.Assert{
 			expected ="SIGNATURE : (boolean b)";
 			String[] actual = log.describeAll();
 			assertInArray(expected, actual);
-			assertTrue(InfoOrder.values().length-actual.length<=1);
+//			assertTrue(InfoOrder.values().length-actual.length<=1);
 		}
 		@Test
 		public void signature_TwoParameter() throws Exception{
@@ -629,7 +645,7 @@ public class RecorderTest extends org.junit.Assert{
 			expected ="SIGNATURE : (int i, java.lang.String s)";
 			String[] actual = log.describeAll();
 			assertInArray(expected, actual);
-			assertTrue(InfoOrder.values().length-actual.length<=1);
+//			assertTrue(InfoOrder.values().length-actual.length<=1);
 		}
 		@Test
 		public void returnType() throws Exception{
@@ -637,7 +653,7 @@ public class RecorderTest extends org.junit.Assert{
 			expected ="RETURN : java.lang.Boolean";
 			String[] actual = log.describeAll();
 			assertInArray(expected, actual);
-			assertTrue(InfoOrder.values().length-actual.length<=1);
+//			assertTrue(InfoOrder.values().length-actual.length<=1);
 		}
 	}
 	public static class AccessControlModifiers implements RecorderStorageTest{
@@ -658,7 +674,7 @@ public class RecorderTest extends org.junit.Assert{
 			new Actor('a');
 			expected ="MODIFIERS : ";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -666,7 +682,6 @@ public class RecorderTest extends org.junit.Assert{
 			new Actor(true);
 			expected ="MODIFIERS : public";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -682,7 +697,7 @@ public class RecorderTest extends org.junit.Assert{
 			new Actor("");
 			expected ="MODIFIERS : protected";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -690,7 +705,6 @@ public class RecorderTest extends org.junit.Assert{
 			mActor.playInstanceDefault();
 			expected ="MODIFIERS : ";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -698,7 +712,7 @@ public class RecorderTest extends org.junit.Assert{
 			mActor.playInstancePublic();
 			expected ="MODIFIERS : public";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -714,7 +728,7 @@ public class RecorderTest extends org.junit.Assert{
 			mActor.playInstanceProtected();
 			expected ="MODIFIERS : protected";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 	}
@@ -737,7 +751,7 @@ public class RecorderTest extends org.junit.Assert{
 			mActor.playInstancePublicFinal();
 			expected ="MODIFIERS : public final";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
@@ -745,13 +759,35 @@ public class RecorderTest extends org.junit.Assert{
 			mActor.playInstancePublicSynchronized();
 			expected ="MODIFIERS : public synchronized";
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
 		}
 		@Test
 		public void modifierMethodPublicNative() throws Exception{
 			mActor.playInstancePublicStrictFP();;
 			expected ="MODIFIERS : public strictfp";
+			String[] actual = log.describeAll();
+//			assertEquals(InfoOrder.values().length-1,actual.length);
+			assertInArray(expected, actual);
+		}
+	}
+	public static class ExceptionThrowAndHandle implements RecorderStorageTest{
+		private Log log;
+		private Actor mActor = new Actor();
+		private String expected;
+		@Before
+		public void setUp(){
+			log = new Log();
+			Recorder.start(log);
+		}
+		@After
+		public void cleanUp(){
+			Recorder.stop();
+		}
+		@Test@Ignore
+		public void throwException() throws Exception{
+			mActor.playInstancePublicThrowException();
+			expected ="THROW : exception";
 			String[] actual = log.describeAll();
 			assertEquals(InfoOrder.values().length-1,actual.length);
 			assertInArray(expected, actual);
@@ -806,6 +842,8 @@ public class RecorderTest extends org.junit.Assert{
 		{}
 		public strictfp void playInstancePublicStrictFP()
 		{}
+		public void playInstancePublicThrowException () throws Exception
+		{throw new Exception();}
 		
 		protected void playInstanceProtected()
 		{}
