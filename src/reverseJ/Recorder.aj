@@ -8,15 +8,13 @@ import org.aspectj.lang.reflect.CodeSignature;
 
 public aspect Recorder {
 	private static RecorderStorage storage;
-	private static RecorderInfo[] order;
 	private static boolean running;
 	
 	pointcut immune():if(running)
 		&&(!within(RecorderStorage+))
-		&&!execution(* RecorderStorageTest+.*(..))
+		&&!execution(* RecorderImmunity+.*(..))
 		&&(!call(* RecorderStorage+.*(..)))
 		&&(!call(RecorderStorage+.new(..)))
-		&&(!within(RecorderInfo+)&&!call(* RecorderInfo+.*(..)))
 		&& !within(Recorder+)
 		&&!call(* Recorder+.*(..));
 	
@@ -30,41 +28,53 @@ public aspect Recorder {
 	pointcut constructorExecution():
 		execution(*.new(..))&&immune();
 	
-//	before(Object caller):constructorCall()&&this(caller){
-//		Signature s = thisJoinPointStaticPart.getSignature();
-//		String callerName = caller.getClass().getCanonicalName();
-//		String targetName = s.getDeclaringType().getCanonicalName();		
-//		storage.addInformation(InfoOrder.CALLER, callerName);
-//		storage.addInformation(InfoOrder.TARGET, targetName);		
-//	}
+	pointcut exceptionHandle():
+		handler(Exception)&&immune();
+	
+	before(Object caller):constructorCall()&&this(caller){
+		Signature s = thisJoinPointStaticPart.getSignature();
+		String callerName = caller.getClass().getCanonicalName();
+		String targetName = s.getDeclaringType().getCanonicalName();		
+		storage.addInformation("CALLER", callerName);
+		storage.addInformation("TARGET", targetName);		
+	}
 	before():constructorExecution()||methodExecution(){
 		Signature s = thisJoinPointStaticPart.getSignature();
-		String methodName = s.getName();
-		String signature = generateSignature(s);
 		String modifiers = generateModifiers(s);
-		storage.addInformation(InfoOrder.MODIFIERS, modifiers);
-		storage.addInformation(InfoOrder.METHOD, methodName);
-		storage.addInformation(InfoOrder.SIGNATURE, signature);
-	}
-	after() returning (Object r):constructorCall()||methodExecution(){
-		if(r != null)
-			storage.addInformation(InfoOrder.RETURN, r.getClass().getCanonicalName());
-		else
-			storage.addInformation(InfoOrder.RETURN, "void");
+		String methodName = s.getName();
+		String signature = generateSignature(s);		
+		storage.addInformation("MODIFIERS", modifiers);
+		storage.addInformation("METHOD", methodName);
+		storage.addInformation("SIGNATURE", signature);
 	}
 
-	before(Object caller):(constructorCall()||methodCall())&&this(caller){
+	before(Object caller):methodCall()&&this(caller){
 		Signature s = thisJoinPointStaticPart.getSignature();
 		String callerName = caller.getClass().getCanonicalName();
 		String declaredTargetName = s.getDeclaringType().getCanonicalName();		
-		storage.addInformation(InfoOrder.CALLER, callerName);
+		storage.addInformation("CALLER", callerName);
 		if(s.getDeclaringType().isInterface()){
 			String targetName = thisJoinPoint.getTarget().getClass().getCanonicalName();
-			storage.addInformation(InfoOrder.INTERFACE, declaredTargetName);
-			storage.addInformation(InfoOrder.TARGET, targetName);
+			storage.addInformation("INTERFACE", declaredTargetName);
+			storage.addInformation("TARGET", targetName);
 		}
 		else
-			storage.addInformation(InfoOrder.TARGET, declaredTargetName);	
+			storage.addInformation("TARGET", declaredTargetName);	
+	}
+	before(Object handler):exceptionHandle()&&this(handler){
+		String handlerName = handler.getClass().getCanonicalName();
+		storage.addInformation("HANDLER", handlerName);
+	}
+	
+	after() returning (Object r):constructorCall()||methodExecution(){
+		if(r != null)
+			storage.addInformation("RETURN", r.getClass().getCanonicalName());
+		else
+			storage.addInformation("RETURN", "void");
+	}
+	after() throwing (Exception e):methodExecution(){
+		String exceptionName = e.getClass().getCanonicalName();
+		storage.addInformation("THROW", exceptionName);
 	}
 
 
@@ -109,12 +119,6 @@ public aspect Recorder {
 	}	
 	public static void determineStorage(RecorderStorage newStorage){
 		storage = newStorage;
-	}
-	public static void determineOrder(RecorderInfo[] newOrder){
-		order = newOrder;
-	}
-	public static RecorderInfo[] getOrder(){
-		return order;
 	}
 	public static void start(RecorderStorage newStorage){
 		determineStorage(newStorage);

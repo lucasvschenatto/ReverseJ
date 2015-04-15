@@ -14,40 +14,40 @@ public class LogTest {
 		@Test
 		public void addOneInformation() throws Exception{
 			RecorderStorage g = new Log();
-			g.addInformation(Gender.MALE, "Adam");
-			String actual = g.describe(Gender.MALE);
+			g.addInformation("MALE", "Adam");
+			String actual = g.describe("MALE");
 			assertEquals("Adam", actual);
 		}
 		@Test
 		public void addTwoInformations() throws Exception{
 			RecorderStorage g = new Log();
-			g.addInformation(Gender.MALE, "Adam");
-			g.addInformation(Gender.FEMALE, "Eve");
-			String male = g.describe(Gender.MALE);
-			String female = g.describe(Gender.FEMALE);
+			g.addInformation("MALE", "Adam");
+			g.addInformation("FEMALE", "Eve");
+			String male = g.describe("MALE");
+			String female = g.describe("FEMALE");
 			assertEquals("Adam", male);
 			assertEquals("Eve", female);
 		}
 		@Test(expected=Log.NotFoundInformationException.class)
 		public void informationNotFound_ThrowsInformationNotFoundException() throws Exception{
 			RecorderStorage g = new Log();
-			g.addInformation(Gender.MALE, "Johnathan");
-			g.describe(Gender.FEMALE);
+			g.addInformation("MALE", "Johnathan");
+			g.describe("FEMALE");
 		}
 	}
 	public static class DescribeAll{
 		@Test
 		public void describeOneInformation() throws Exception{
 			RecorderStorage g = new Log();
-			g.addInformation(Gender.MALE, "Adam");
+			g.addInformation("MALE", "Adam");
 			String [] actual = g.describeAll();
 			assertArrayEquals(new String [] {"MALE : Adam"}, actual);
 		}
 		@Test
 		public void describeTwoInformations() throws Exception{
 			RecorderStorage g = new Log();
-			g.addInformation(Gender.MALE, "Adam");
-			g.addInformation(Gender.FEMALE, "Eve");
+			g.addInformation("MALE", "Adam");
+			g.addInformation("FEMALE", "Eve");
 			String [] actual = g.describeAll();
 			assertArrayEquals(new String [] {"MALE : Adam","FEMALE : Eve"}, actual);
 		}
@@ -67,7 +67,7 @@ public class LogTest {
 		@Test
 		public void sizeOne(){
 			RecorderStorage g = new Log();
-			g.addInformation(Gender.FEMALE, "A");
+			g.addInformation("FEMALE", "A");
 			assertEquals(1,g.size());
 		}
 		@Test
@@ -75,11 +75,8 @@ public class LogTest {
 			RecorderStorage g = new Log();
 			int times = 10;
 			for(int i = 1;i<=times;i++)
-				g.addInformation(Gender.FEMALE, "A" + i);
+				g.addInformation("FEMALE", "A" + i);
 			assertEquals(times,g.size());
 		}
-	}
-	static enum Gender implements RecorderInfo{
-		MALE,FEMALE;
 	}
 }

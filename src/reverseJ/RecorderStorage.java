@@ -4,12 +4,12 @@ import reverseJ.Log.NotFoundInformationException;
 
 public interface RecorderStorage {
 
-	public abstract void addInformation(RecorderInfo name, String value);
+	public abstract void addInformation(String name, String value);
 
-	public abstract String describe(RecorderInfo informationName)
+	public abstract String describe(String informationName)
 			throws NotFoundInformationException;
 	
-	public abstract boolean hasInformation(RecorderInfo name);
+	public abstract boolean hasInformation(String name);
 
 	public abstract String[] describeAll();
 

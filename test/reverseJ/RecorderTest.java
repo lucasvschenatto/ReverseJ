@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(Enclosed.class)
 public class RecorderTest extends org.junit.Assert{
-	public static class SetupRecorder implements RecorderStorageTest{
+	public static class SetupRecorder implements RecorderImmunity{
 		@After
 		public void cleanUp(){
 			Recorder.stop();
@@ -66,36 +66,18 @@ public class RecorderTest extends org.junit.Assert{
 			assertEquals(Log.emptyLogInfo,actual[0]);
 		}
 	}
-	public static class StoringStructure implements RecorderStorageTest{
+	public static class StoringStructure implements RecorderImmunity{
 		private Log log;
 		Actor actor;
-		int totalLines;
 		@Before
 		public void setup(){
 			log = new Log();
-			totalLines = InfoOrder.values().length;
 			actor = new Actor();			
 			Recorder.start(log);	
 		}
 		@After
 		public void cleanUp(){
 			Recorder.stop();
-		}
-		@Test
-		public void print() throws Exception{
-			InterfaceActor iActor = new Actor();
-			iActor.playInstancePublic(1, "a");
-			String[] actual = log.describeAll();
-//			for(String line: actual){
-//				System.out.println(line);
-//			}
-		}
-		@Test
-		public void setStructureOrder(){			
-			RecorderInfo[] expected = InfoOrder.values();
-			Recorder.determineOrder(expected);
-			RecorderInfo[] actual = Recorder.getOrder();
-			assertArrayEquals(expected, actual);
 		}
 		@Test
 		public void countLinesInstancePublicMethod(){
@@ -163,15 +145,12 @@ public class RecorderTest extends org.junit.Assert{
 				mActor.playInstancePublicThrowException();
 			} catch (Exception e)
 			{}
-			for(String line: localLog.describeAll()){
-				System.out.println(line);
-			}
-			int actualLines = localLog.describeAll().length;
-			assertEquals(7, actualLines);
+			String[] actual = localLog.describeAll();
+			assertEquals(7, actual.length);
 			
 		}
 	}
-	public static class ConstructorPublic implements RecorderStorageTest{
+	public static class ConstructorPublic implements RecorderImmunity{
 		private Log log;
 		private String expected;
 		@Before
@@ -240,7 +219,7 @@ public class RecorderTest extends org.junit.Assert{
 			assertInArray(expected, actual);
 		}
 	}
-	public static class ConstructorPrivate implements RecorderStorageTest{
+	public static class ConstructorPrivate implements RecorderImmunity{
 		private Log log;
 		private String expected;
 		@Before
@@ -258,7 +237,7 @@ public class RecorderTest extends org.junit.Assert{
 			expected ="CALLER : reverseJ.RecorderTest.ConstructorPrivate";
 			String[] actual = log.describeAll();
 			assertInArray(expected, actual);
-			assertTrue(InfoOrder.values().length-actual.length<1);
+//			assertTrue(InfoOrder.values().length-actual.length<1);
 		}
 		@Test
 		public void target() throws Exception{
@@ -266,7 +245,7 @@ public class RecorderTest extends org.junit.Assert{
 			expected ="TARGET : reverseJ.RecorderTest.Actor";
 			String[] actual = log.describeAll();
 			assertInArray(expected, actual);
-			assertTrue(InfoOrder.values().length-actual.length<1);
+//			assertTrue(InfoOrder.values().length-actual.length<1);
 		}
 		@Test
 		public void method() throws Exception{
@@ -274,7 +253,7 @@ public class RecorderTest extends org.junit.Assert{
 			expected ="METHOD : <init>";
 			String[] actual = log.describeAll();
 			assertInArray(expected, actual);
-			assertTrue(InfoOrder.values().length-actual.length<1);
+//			assertTrue(InfoOrder.values().length-actual.length<1);
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
@@ -282,7 +261,7 @@ public class RecorderTest extends org.junit.Assert{
 			expected ="SIGNATURE : (double dPrivate)";
 			String[] actual = log.describeAll();
 			assertInArray(expected, actual);
-			assertTrue(InfoOrder.values().length-actual.length<1);
+//			assertTrue(InfoOrder.values().length-actual.length<1);
 		}
 		@Test
 		public void returnInstanceType() throws Exception{
@@ -290,10 +269,10 @@ public class RecorderTest extends org.junit.Assert{
 			expected ="RETURN : reverseJ.RecorderTest.Actor";
 			String[] actual = log.describeAll();
 			assertInArray(expected, actual);
-			assertTrue(InfoOrder.values().length-actual.length<1);
+//			assertTrue(InfoOrder.values().length-actual.length<1);
 		}
 	}
-	public static class InstanceMethodPublic implements RecorderStorageTest{
+	public static class InstanceMethodPublic implements RecorderImmunity{
 		private Log log;
 		Actor actor;
 		String expected;
@@ -364,7 +343,7 @@ public class RecorderTest extends org.junit.Assert{
 			assertInArray(expected, actual);
 		}
 	}
-	public static class InstanceMethodPrivate implements RecorderStorageTest{
+	public static class InstanceMethodPrivate implements RecorderImmunity{
 		private Log log;
 		Actor actor;
 		String expected;
@@ -435,7 +414,7 @@ public class RecorderTest extends org.junit.Assert{
 			assertInArray(expected, actual);
 		}
 	}
-	public static class StaticMethodPublic implements RecorderStorageTest{
+	public static class StaticMethodPublic implements RecorderImmunity{
 		private Log log;
 		Actor actor;
 		String expected;
@@ -506,7 +485,7 @@ public class RecorderTest extends org.junit.Assert{
 			assertInArray(expected, actual);
 		}
 	}
-	public static class StaticMethodPrivate implements RecorderStorageTest{
+	public static class StaticMethodPrivate implements RecorderImmunity{
 		private Log log;
 		Actor actor;
 		String expected;
@@ -577,7 +556,7 @@ public class RecorderTest extends org.junit.Assert{
 			assertInArray(expected, actual);
 		}
 	}
-	public static class InterfaceMethodPublic implements RecorderStorageTest{
+	public static class InterfaceMethodPublic implements RecorderImmunity{
 		private Log log;
 		InterfaceActor iActor;
 		String expected;
@@ -656,7 +635,7 @@ public class RecorderTest extends org.junit.Assert{
 //			assertTrue(InfoOrder.values().length-actual.length<=1);
 		}
 	}
-	public static class AccessControlModifiers implements RecorderStorageTest{
+	public static class AccessControlModifiers implements RecorderImmunity{
 		private Log log;
 		private Actor mActor = new Actor();
 		private String expected;
@@ -732,7 +711,7 @@ public class RecorderTest extends org.junit.Assert{
 			assertInArray(expected, actual);
 		}
 	}
-	public static class NonAccessModifiers implements RecorderStorageTest{
+	public static class NonAccessModifiers implements RecorderImmunity{
 		private Log log;
 		private Actor mActor = new Actor();
 		private String expected;
@@ -771,7 +750,7 @@ public class RecorderTest extends org.junit.Assert{
 			assertInArray(expected, actual);
 		}
 	}
-	public static class ExceptionThrowAndHandle implements RecorderStorageTest{
+	public static class ExceptionThrowAndHandle implements RecorderImmunity{
 		private Log log;
 		private Actor mActor = new Actor();
 		private String expected;
@@ -784,12 +763,28 @@ public class RecorderTest extends org.junit.Assert{
 		public void cleanUp(){
 			Recorder.stop();
 		}
-		@Test@Ignore
+		@Test
 		public void throwException() throws Exception{
-			mActor.playInstancePublicThrowException();
-			expected ="THROW : exception";
+			expected ="THROW : java.lang.ArithmeticException";
+			try {
+				mActor.playInstancePublicThrowException();
+			}
+			catch (Exception e) 
+			{}
 			String[] actual = log.describeAll();
-			assertEquals(InfoOrder.values().length-1,actual.length);
+//			assertEquals(7,actual.length);
+			assertInArray(expected, actual);
+		}
+		@Test
+		public void HandlerException() throws Exception{
+			expected ="HANDLER : reverseJ.RecorderTest.ExceptionThrowAndHandle";
+			try {
+				mActor.playInstancePublicThrowException();
+			}
+			catch (Exception e) 
+			{}
+			String[] actual = log.describeAll();
+//			assertEquals(7,actual.length);
 			assertInArray(expected, actual);
 		}
 	}
@@ -801,12 +796,18 @@ public class RecorderTest extends org.junit.Assert{
 		public abstract boolean playInstancePublic(int i, String s);
 	}
 	static class Actor implements InterfaceActor{
-		Actor(char cDefault){}
-		public Actor(){}
-		public Actor(boolean bPublic){}
-		public Actor(int i, String s){}
-		private Actor(double dPrivate){}
-		protected Actor(String sProtected){}
+		Actor(char cDefault)
+		{}
+		public Actor()
+		{}
+		public Actor(boolean bPublic)
+		{}
+		public Actor(int i, String s)
+		{}
+		private Actor(double dPrivate)
+		{}
+		protected Actor(String sProtected)
+		{}
 		
 		private static void playStaticPrivate()
 		{}
@@ -842,8 +843,8 @@ public class RecorderTest extends org.junit.Assert{
 		{}
 		public strictfp void playInstancePublicStrictFP()
 		{}
-		public void playInstancePublicThrowException () throws Exception
-		{throw new Exception();}
+		public double playInstancePublicThrowException () throws Exception
+		{ return 5/0;}
 		
 		protected void playInstanceProtected()
 		{}
