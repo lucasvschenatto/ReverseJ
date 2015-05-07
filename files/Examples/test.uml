@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Package xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_iVE0AfNJEeSyJtfgrB80Sw">
+  <packagedElement xmi:type="uml:Interaction" xmi:id="_nB6WkPNJEeSyJtfgrB80Sw" name="Interaction">
+    <lifeline xmi:id="_oB-FYPNJEeSyJtfgrB80Sw" name="a" coveredBy="_sTmSoPNJEeSyJtfgrB80Sw _sTkdcPNJEeSyJtfgrB80Sw _sTm5sfNJEeSyJtfgrB80Sw"/>
+    <lifeline xmi:id="_o9ocYPNJEeSyJtfgrB80Sw" name="b" coveredBy="_sTmSofNJEeSyJtfgrB80Sw _sTkdcfNJEeSyJtfgrB80Sw _sTm5sPNJEeSyJtfgrB80Sw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_sTkdcPNJEeSyJtfgrB80Sw" name="invocation-1-start" covered="_oB-FYPNJEeSyJtfgrB80Sw" message="_sTp9APNJEeSyJtfgrB80Sw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_sTkdcfNJEeSyJtfgrB80Sw" name="execution-1-start" covered="_o9ocYPNJEeSyJtfgrB80Sw" message="_sTp9APNJEeSyJtfgrB80Sw"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_sTmSoPNJEeSyJtfgrB80Sw" name="invocation-1-body" covered="_oB-FYPNJEeSyJtfgrB80Sw" finish="_sTm5sfNJEeSyJtfgrB80Sw" start="_sTkdcPNJEeSyJtfgrB80Sw"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_sTmSofNJEeSyJtfgrB80Sw" name="execution-1-body" covered="_o9ocYPNJEeSyJtfgrB80Sw" finish="_sTm5sPNJEeSyJtfgrB80Sw" start="_sTkdcfNJEeSyJtfgrB80Sw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_sTm5sPNJEeSyJtfgrB80Sw" name="execution-1-finish" covered="_o9ocYPNJEeSyJtfgrB80Sw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_sTm5sfNJEeSyJtfgrB80Sw" name="invocation-1-finish" covered="_oB-FYPNJEeSyJtfgrB80Sw"/>
+    <message xmi:id="_sTp9APNJEeSyJtfgrB80Sw" name="Message" receiveEvent="_sTkdcfNJEeSyJtfgrB80Sw" sendEvent="_sTkdcPNJEeSyJtfgrB80Sw"/>
+  </packagedElement>
+</uml:Package>
