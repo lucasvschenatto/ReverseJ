@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description" xmi:id="_93UgsPNMEeSEzKHpw9oW3w" selectedViews="_-KU8QPNMEeSEzKHpw9oW3w _-Kbp8PNMEeSEzKHpw9oW3w _-Kf7YPNMEeSEzKHpw9oW3w _-KgicPNMEeSEzKHpw9oW3w" version="8.1.1">
+<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description" xmi:id="_JRq50PUeEeSwz8gOsOr5Pw" selectedViews="_JhBkcPUeEeSwz8gOsOr5Pw _JhUfYPUeEeSwz8gOsOr5Pw _JhUfYfUeEeSwz8gOsOr5Pw _JheQYPUeEeSwz8gOsOr5Pw" version="8.1.1">
   <models xmi:type="uml:Package" href="test.uml#_iVE0AfNJEeSyJtfgrB80Sw"/>
-  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_-KU8QPNMEeSEzKHpw9oW3w" initialized="true">
+  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_JhBkcPUeEeSwz8gOsOr5Pw" initialized="true">
     <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.obeonetwork.dsl.uml2.design/description/uml2.odesign#//@ownedViewpoints[name='Capture']"/>
   </ownedViews>
-  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_-Kbp8PNMEeSEzKHpw9oW3w" initialized="true">
+  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_JhUfYPUeEeSwz8gOsOr5Pw" initialized="true">
     <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.obeonetwork.dsl.uml2.design/description/uml2.odesign#//@ownedViewpoints[name='Design']"/>
   </ownedViews>
-  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_-Kf7YPNMEeSEzKHpw9oW3w" initialized="true">
+  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_JhUfYfUeEeSwz8gOsOr5Pw" initialized="true">
     <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.obeonetwork.dsl.uml2.design/description/uml2.odesign#//@ownedViewpoints[name='Review']"/>
   </ownedViews>
-  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_-KgicPNMEeSEzKHpw9oW3w" initialized="true">
+  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_JheQYPUeEeSwz8gOsOr5Pw" initialized="true">
     <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.obeonetwork.dsl.uml2.design/description/uml2.odesign#//@ownedViewpoints[name='Extend']"/>
   </ownedViews>
 </viewpoint:DAnalysis>
