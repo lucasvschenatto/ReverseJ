@@ -8,5 +8,10 @@
 	<classpathentry kind="con" path="org.eclipse.ajdt.core.ASPECTJRT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EMF"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/UML2Essentials"/>
+	<classpathentry kind="lib" path="C:/eclipse-modeling-luna-4.4/plugins/org.eclipse.uml2.common_2.0.1.v20150202-0947.jar"/>
+	<classpathentry kind="lib" path="C:/eclipse-modeling-luna-4.4/plugins/org.eclipse.uml2.types_2.0.0.v20150202-0947.jar"/>
+	<classpathentry kind="lib" path="C:/eclipse-modeling-luna-4.4/plugins/org.eclipse.uml2.uml.profile.standard_1.0.0.v20150202-0947.jar"/>
+	<classpathentry kind="lib" path="C:/eclipse-modeling-luna-4.4/plugins/org.eclipse.uml2.uml.resources_5.0.2.v20150202-0947.jar"/>
+	<classpathentry kind="lib" path="C:/eclipse-modeling-luna-4.4/plugins/org.eclipse.uml2.uml_5.0.2.v20150202-0947.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

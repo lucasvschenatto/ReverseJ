@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Package xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_-L6aIPaNEeSzFJYbnNOCcA" name="packageSequenceGoal">
-  <packagedElement xmi:type="uml:Interaction" xmi:id="_-MDkEPaNEeSzFJYbnNOCcA" name="interactionTest1">
-    <lifeline xmi:id="_-MDkEfaNEeSzFJYbnNOCcA" name="caller" coveredBy="_-MDkE_aNEeSzFJYbnNOCcA _-MDkFPaNEeSzFJYbnNOCcA"/>
-    <lifeline xmi:id="_-MDkEvaNEeSzFJYbnNOCcA" name="target" coveredBy="_-MDkFvaNEeSzFJYbnNOCcA _-MDkF_aNEeSzFJYbnNOCcA _-MDkGfaNEeSzFJYbnNOCcA"/>
-    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_-MDkE_aNEeSzFJYbnNOCcA" name="invocationStart1" covered="_-MDkEfaNEeSzFJYbnNOCcA" message="_-MDkGvaNEeSzFJYbnNOCcA"/>
-    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_-MDkFPaNEeSzFJYbnNOCcA" name="invocationFinish1" covered="_-MDkEfaNEeSzFJYbnNOCcA"/>
-    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_-MDkFfaNEeSzFJYbnNOCcA" name="invocationBody1" finish="_-MDkFPaNEeSzFJYbnNOCcA" start="_-MDkE_aNEeSzFJYbnNOCcA" behavior="_-MDkEPaNEeSzFJYbnNOCcA"/>
-    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_-MDkFvaNEeSzFJYbnNOCcA" name="executionStart1" covered="_-MDkEvaNEeSzFJYbnNOCcA" message="_-MDkGvaNEeSzFJYbnNOCcA"/>
-    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_-MDkF_aNEeSzFJYbnNOCcA" name="executionFinish1" covered="_-MDkEvaNEeSzFJYbnNOCcA"/>
-    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_-MDkGPaNEeSzFJYbnNOCcA" name="executionBody1" finish="_-MDkF_aNEeSzFJYbnNOCcA" start="_-MDkFvaNEeSzFJYbnNOCcA" behavior="_-MDkEPaNEeSzFJYbnNOCcA"/>
-    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_-MDkGfaNEeSzFJYbnNOCcA" name="executionBody2" covered="_-MDkEvaNEeSzFJYbnNOCcA" execution="_-MDkGPaNEeSzFJYbnNOCcA"/>
-    <message xmi:id="_-MDkGvaNEeSzFJYbnNOCcA" name="talk" receiveEvent="_-MDkFvaNEeSzFJYbnNOCcA" sendEvent="_-MDkE_aNEeSzFJYbnNOCcA"/>
+<uml:Package xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_6Il4EPghEeS8gaz0o_WZfw" name="packageSequenceGoal">
+  <packagedElement xmi:type="uml:Interaction" xmi:id="_6IntQPghEeS8gaz0o_WZfw" name="interactionTest1">
+    <lifeline xmi:id="_6IoUUPghEeS8gaz0o_WZfw" name="caller" coveredBy="_6IoUUvghEeS8gaz0o_WZfw _6IoUVvghEeS8gaz0o_WZfw"/>
+    <lifeline xmi:id="_6IoUUfghEeS8gaz0o_WZfw" name="target" coveredBy="_6IoUU_ghEeS8gaz0o_WZfw _6IoUV_ghEeS8gaz0o_WZfw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_6IoUUvghEeS8gaz0o_WZfw" name="invocationStart1" covered="_6IoUUPghEeS8gaz0o_WZfw" message="_6IoUWPghEeS8gaz0o_WZfw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_6IoUU_ghEeS8gaz0o_WZfw" name="executionStart1" covered="_6IoUUfghEeS8gaz0o_WZfw" message="_6IoUWPghEeS8gaz0o_WZfw"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_6IoUVPghEeS8gaz0o_WZfw" name="invocationBody1" finish="_6IoUVvghEeS8gaz0o_WZfw" start="_6IoUUvghEeS8gaz0o_WZfw"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_6IoUVfghEeS8gaz0o_WZfw" name="executionBody1" finish="_6IoUV_ghEeS8gaz0o_WZfw" start="_6IoUU_ghEeS8gaz0o_WZfw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_6IoUVvghEeS8gaz0o_WZfw" name="invocationFinish1" covered="_6IoUUPghEeS8gaz0o_WZfw"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_6IoUV_ghEeS8gaz0o_WZfw" name="executionFinish1" covered="_6IoUUfghEeS8gaz0o_WZfw"/>
+    <message xmi:id="_6IoUWPghEeS8gaz0o_WZfw" name="talk" receiveEvent="_6IoUU_ghEeS8gaz0o_WZfw" sendEvent="_6IoUUvghEeS8gaz0o_WZfw"/>
   </packagedElement>
 </uml:Package>

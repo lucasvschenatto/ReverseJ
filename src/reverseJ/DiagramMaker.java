@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.uml2.common.util.UML2Util;
+import org.eclipse.uml2.uml.ActionExecutionSpecification;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.BehaviorExecutionSpecification;
@@ -50,41 +51,105 @@ public class DiagramMaker {
 		
 		Message m = myInteraction.createMessage("talk");
 		
+//		OccurrenceSpecification oSS = UMLFactory.eINSTANCE.createOccurrenceSpecification();
+//		oSS.setEnclosingInteraction(myInteraction);
+//		oSS.setCovered(caller);
+//		oSS.setName("ocurrenceSpecificationStart");
+//		OccurrenceSpecification oSF = UMLFactory.eINSTANCE.createOccurrenceSpecification();
+//		oSF.setEnclosingInteraction(myInteraction);
+//		oSF.setCovered(caller);
+//		oSF.setName("ocurrenceSpecificationFinish");
+//		
+//		ActionExecutionSpecification aES = UMLFactory.eINSTANCE.createActionExecutionSpecification();
+//		aES.setEnclosingInteraction(myInteraction);
+//		aES.setStart(oSS);
+//		aES.setFinish(oSF);
+//		aES.setName("ActionExecutionSpecification1");
+		
 		MessageOccurrenceSpecification invStart1 = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
 		invStart1.setEnclosingInteraction(myInteraction);
 		invStart1.setName("invocationStart1");
 		invStart1.setMessage(m);
 		invStart1.setCovered(caller);
-		MessageOccurrenceSpecification invFinish1 = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
-		invFinish1.setEnclosingInteraction(myInteraction);
-		invFinish1.setName("invocationFinish1");
-		invFinish1.setCovered(caller);
-		BehaviorExecutionSpecification invBody1 = UMLFactory.eINSTANCE.createBehaviorExecutionSpecification();
-		invBody1.setEnclosingInteraction(myInteraction);
-		invBody1.setName("invocationBody1");
-		invBody1.setStart(invStart1);
-		invBody1.setFinish(invFinish1);
-		
-		
 		MessageOccurrenceSpecification execStart1 = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
 		execStart1.setEnclosingInteraction(myInteraction);
 		execStart1.setName("executionStart1");
 		execStart1.setMessage(m);
 		execStart1.setCovered(target);
-		MessageOccurrenceSpecification execFinish1 = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
-		execFinish1.setEnclosingInteraction(myInteraction);
-		execFinish1.setName("executionFinish1");
-		execFinish1.setCovered(target);
+		
+		BehaviorExecutionSpecification invBody1 = UMLFactory.eINSTANCE.createBehaviorExecutionSpecification();
+		invBody1.setEnclosingInteraction(myInteraction);
+		invBody1.setName("invocationBody1");
+		invBody1.setStart(invStart1);
+		
 		BehaviorExecutionSpecification execBody1 = UMLFactory.eINSTANCE.createBehaviorExecutionSpecification();
 		execBody1.setEnclosingInteraction(myInteraction);
 		execBody1.setName("executionBody1");
 		execBody1.setStart(execStart1);
+		
+		
+		MessageOccurrenceSpecification invFinish1 = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
+		invFinish1.setEnclosingInteraction(myInteraction);
+		invFinish1.setName("invocationFinish1");
+		invFinish1.setCovered(caller);
+		MessageOccurrenceSpecification execFinish1 = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
+		execFinish1.setEnclosingInteraction(myInteraction);
+		execFinish1.setName("executionFinish1");
+		execFinish1.setCovered(target);
+		
+		invBody1.setFinish(invFinish1);
 		execBody1.setFinish(execFinish1);
-		ExecutionOccurrenceSpecification a = UMLFactory.eINSTANCE.createExecutionOccurrenceSpecification();
-		a.setEnclosingInteraction(myInteraction);
-		a.setName("executionBody2");
-		a.setExecution(execBody1);
-		a.setCovered(target);
+		
+//		ExecutionOccurrenceSpecification a = UMLFactory.eINSTANCE.createExecutionOccurrenceSpecification();
+//		a.setEnclosingInteraction(myInteraction);
+//		a.setName("executionBody2");
+//		a.setExecution(execBody1);
+//		a.setCovered(target);
+		
+		
+		
+		
+		
+		
+		
+//		MessageOccurrenceSpecification invStart1 = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
+//		invStart1.setEnclosingInteraction(myInteraction);
+//		invStart1.setName("invocationStart1");
+//		invStart1.setMessage(m);
+//		invStart1.setCovered(caller);
+//		MessageOccurrenceSpecification invFinish1 = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
+//		invFinish1.setEnclosingInteraction(myInteraction);
+//		invFinish1.setName("invocationFinish1");
+//		invFinish1.setCovered(caller);
+//		BehaviorExecutionSpecification invBody1 = UMLFactory.eINSTANCE.createBehaviorExecutionSpecification();
+//		invBody1.setEnclosingInteraction(myInteraction);
+//		invBody1.setName("invocationBody1");
+//		invBody1.setStart(invStart1);
+//		invBody1.setFinish(invFinish1);
+//		
+//		
+//		
+//		
+//		
+//		MessageOccurrenceSpecification execStart1 = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
+//		execStart1.setEnclosingInteraction(myInteraction);
+//		execStart1.setName("executionStart1");
+//		execStart1.setMessage(m);
+//		execStart1.setCovered(target);
+//		MessageOccurrenceSpecification execFinish1 = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
+//		execFinish1.setEnclosingInteraction(myInteraction);
+//		execFinish1.setName("executionFinish1");
+//		execFinish1.setCovered(target);
+//		BehaviorExecutionSpecification execBody1 = UMLFactory.eINSTANCE.createBehaviorExecutionSpecification();
+//		execBody1.setEnclosingInteraction(myInteraction);
+//		execBody1.setName("executionBody1");
+//		execBody1.setStart(execStart1);
+//		execBody1.setFinish(execFinish1);
+//		ExecutionOccurrenceSpecification a = UMLFactory.eINSTANCE.createExecutionOccurrenceSpecification();
+//		a.setEnclosingInteraction(myInteraction);
+//		a.setName("executionBody2");
+//		a.setExecution(execBody1);
+//		a.setCovered(target);
 		
 		
 		
