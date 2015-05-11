@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Package xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_-L6aIPaNEeSzFJYbnNOCcA" name="packageSequenceGoal">
+  <packagedElement xmi:type="uml:Interaction" xmi:id="_-MDkEPaNEeSzFJYbnNOCcA" name="interactionTest1">
+    <lifeline xmi:id="_-MDkEfaNEeSzFJYbnNOCcA" name="caller" coveredBy="_-MDkE_aNEeSzFJYbnNOCcA _-MDkFPaNEeSzFJYbnNOCcA"/>
+    <lifeline xmi:id="_-MDkEvaNEeSzFJYbnNOCcA" name="target" coveredBy="_-MDkFvaNEeSzFJYbnNOCcA _-MDkF_aNEeSzFJYbnNOCcA _-MDkGfaNEeSzFJYbnNOCcA"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_-MDkE_aNEeSzFJYbnNOCcA" name="invocationStart1" covered="_-MDkEfaNEeSzFJYbnNOCcA" message="_-MDkGvaNEeSzFJYbnNOCcA"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_-MDkFPaNEeSzFJYbnNOCcA" name="invocationFinish1" covered="_-MDkEfaNEeSzFJYbnNOCcA"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_-MDkFfaNEeSzFJYbnNOCcA" name="invocationBody1" finish="_-MDkFPaNEeSzFJYbnNOCcA" start="_-MDkE_aNEeSzFJYbnNOCcA" behavior="_-MDkEPaNEeSzFJYbnNOCcA"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_-MDkFvaNEeSzFJYbnNOCcA" name="executionStart1" covered="_-MDkEvaNEeSzFJYbnNOCcA" message="_-MDkGvaNEeSzFJYbnNOCcA"/>
+    <fragment xmi:type="uml:MessageOccurrenceSpecification" xmi:id="_-MDkF_aNEeSzFJYbnNOCcA" name="executionFinish1" covered="_-MDkEvaNEeSzFJYbnNOCcA"/>
+    <fragment xmi:type="uml:BehaviorExecutionSpecification" xmi:id="_-MDkGPaNEeSzFJYbnNOCcA" name="executionBody1" finish="_-MDkF_aNEeSzFJYbnNOCcA" start="_-MDkFvaNEeSzFJYbnNOCcA" behavior="_-MDkEPaNEeSzFJYbnNOCcA"/>
+    <fragment xmi:type="uml:ExecutionOccurrenceSpecification" xmi:id="_-MDkGfaNEeSzFJYbnNOCcA" name="executionBody2" covered="_-MDkEvaNEeSzFJYbnNOCcA" execution="_-MDkGPaNEeSzFJYbnNOCcA"/>
+    <message xmi:id="_-MDkGvaNEeSzFJYbnNOCcA" name="talk" receiveEvent="_-MDkFvaNEeSzFJYbnNOCcA" sendEvent="_-MDkE_aNEeSzFJYbnNOCcA"/>
+  </packagedElement>
+</uml:Package>
