@@ -2,11 +2,14 @@ package reverseJ;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
 import reverseJ.Log;
+import reverseJ.Log.Information;
 
 @RunWith(Enclosed.class)
 public class LogTest {
@@ -33,7 +36,7 @@ public class LogTest {
 			RecorderStorage g = new Log();
 			g.addInformation("MALE", "Johnathan");
 			g.describe("FEMALE");
-		}
+		}		
 	}
 	public static class DescribeAll{
 		@Test
@@ -77,6 +80,25 @@ public class LogTest {
 			for(int i = 1;i<=times;i++)
 				g.addInformation("FEMALE", "A" + i);
 			assertEquals(times,g.size());
+		}
+	}
+	public static class Util{
+		@Test
+		public void createInformation() throws Exception{
+			Log g = new Log();
+			Information actual = g.createInformation();
+			assertNotNull(actual);
+		}
+		@Test
+		public void addInformationObject() throws Exception{
+			Log g = new Log();
+			Information expected = g.createInformation();
+			expected.setName("city");
+			expected.setValue("Porto Alegre");
+			g.addInformation(expected);
+			List<Information> l = g.getAll();
+			assertTrue(l.contains(expected));
+			
 		}
 	}
 }
