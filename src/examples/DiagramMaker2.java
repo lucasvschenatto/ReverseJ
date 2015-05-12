@@ -1,4 +1,4 @@
-package reverseJ;
+package examples;
 
 import java.io.IOException;
 
