@@ -1,36 +1,13 @@
-package reverseJ;
+package examples;
 
-import java.io.File;
 import java.io.IOException;
-
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.uml2.common.util.UML2Util;
-import org.eclipse.uml2.uml.ActionExecutionSpecification;
-import org.eclipse.uml2.uml.AggregationKind;
-import org.eclipse.uml2.uml.Association;
-import org.eclipse.uml2.uml.BehaviorExecutionSpecification;
-import org.eclipse.uml2.uml.Classifier;
-import org.eclipse.uml2.uml.CombinedFragment;
-import org.eclipse.uml2.uml.Enumeration;
-import org.eclipse.uml2.uml.EnumerationLiteral;
-import org.eclipse.uml2.uml.ControlFlow;
-import org.eclipse.uml2.uml.ExecutionEnvironment;
-import org.eclipse.uml2.uml.ExecutionOccurrenceSpecification;
-import org.eclipse.uml2.uml.ExecutionSpecification;
-import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Lifeline;
-import org.eclipse.uml2.uml.LiteralUnlimitedNatural;
 import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.MessageOccurrenceSpecification;
-import org.eclipse.uml2.uml.Model;
-import org.eclipse.uml2.uml.OccurrenceSpecification;
-import org.eclipse.uml2.uml.PrimitiveType;
-import org.eclipse.uml2.uml.Property;
-import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
@@ -41,7 +18,6 @@ public class DiagramMaker {
 
 //	public static boolean DEBUG = true;
 
-	private static File outputDir;
 	private static ResourceSet resourceSet = new ResourceSetImpl();
 	public static void main(String[] args) throws Exception{
 		Package myPackage = createPackage("packageSequenceGoal");
@@ -50,6 +26,7 @@ public class DiagramMaker {
 		Lifeline target = createLifeLine(myInteraction, "target");
 		
 		Message m = myInteraction.createMessage("talk");
+		Message r = myInteraction.createMessage("talkBack");
 		
 //		OccurrenceSpecification oSS = UMLFactory.eINSTANCE.createOccurrenceSpecification();
 //		oSS.setEnclosingInteraction(myInteraction);
@@ -70,36 +47,47 @@ public class DiagramMaker {
 		invStart1.setEnclosingInteraction(myInteraction);
 		invStart1.setName("invocationStart1");
 		invStart1.setMessage(m);
-		invStart1.setCovered(caller);
+		
 		MessageOccurrenceSpecification execStart1 = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
 		execStart1.setEnclosingInteraction(myInteraction);
 		execStart1.setName("executionStart1");
-		execStart1.setMessage(m);
-		execStart1.setCovered(target);
+		execStart1.setMessage(m);		
 		
-		BehaviorExecutionSpecification invBody1 = UMLFactory.eINSTANCE.createBehaviorExecutionSpecification();
-		invBody1.setEnclosingInteraction(myInteraction);
-		invBody1.setName("invocationBody1");
-		invBody1.setStart(invStart1);
+//		BehaviorExecutionSpecification invBody1 = UMLFactory.eINSTANCE.createBehaviorExecutionSpecification();
+//		invBody1.setEnclosingInteraction(myInteraction);
+//		invBody1.setName("invocationBody1");
+//		invBody1.setStart(invStart1);
+//		
+//		BehaviorExecutionSpecification execBody1 = UMLFactory.eINSTANCE.createBehaviorExecutionSpecification();
+//		execBody1.setEnclosingInteraction(myInteraction);
+//		execBody1.setName("executionBody1");
+//		execBody1.setStart(execStart1);
 		
-		BehaviorExecutionSpecification execBody1 = UMLFactory.eINSTANCE.createBehaviorExecutionSpecification();
-		execBody1.setEnclosingInteraction(myInteraction);
-		execBody1.setName("executionBody1");
-		execBody1.setStart(execStart1);
-		
+		MessageOccurrenceSpecification execFinish1 = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
+		execFinish1.setEnclosingInteraction(myInteraction);
+		execFinish1.setName("executionFinish1");
+		execFinish1.setMessage(r);
 		
 		MessageOccurrenceSpecification invFinish1 = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
 		invFinish1.setEnclosingInteraction(myInteraction);
 		invFinish1.setName("invocationFinish1");
+		invFinish1.setMessage(r);
+		
+//		invBody1.setFinish(invFinish1);
+//		execBody1.setFinish(execFinish1);		
+		
+		m.setSendEvent(invStart1);
+		m.setReceiveEvent(execStart1);
+		m.setInteraction(myInteraction);
+		r.setSendEvent(execFinish1);
+		r.setReceiveEvent(invFinish1);
+		r.setInteraction(myInteraction);
+		
+		
+		invStart1.setCovered(caller);
+		execStart1.setCovered(target);
 		invFinish1.setCovered(caller);
-		MessageOccurrenceSpecification execFinish1 = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
-		execFinish1.setEnclosingInteraction(myInteraction);
-		execFinish1.setName("executionFinish1");
 		execFinish1.setCovered(target);
-		
-		invBody1.setFinish(invFinish1);
-		execBody1.setFinish(execFinish1);
-		
 //		ExecutionOccurrenceSpecification a = UMLFactory.eINSTANCE.createExecutionOccurrenceSpecification();
 //		a.setEnclosingInteraction(myInteraction);
 //		a.setName("executionBody2");
@@ -153,9 +141,7 @@ public class DiagramMaker {
 		
 		
 		
-		m.setSendEvent(invStart1);
-		m.setReceiveEvent(execStart1);
-		m.setInteraction(myInteraction);
+		
 		
 		
 		

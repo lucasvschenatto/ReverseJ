@@ -1,5 +1,6 @@
 package reverseJ;
 
+import reverseJ.Log.Information;
 import reverseJ.Log.NotFoundInformationException;
 
 public interface RecorderStorage {
@@ -14,5 +15,7 @@ public interface RecorderStorage {
 	public abstract String[] describeAll();
 
 	public abstract int size();
+
+	public abstract void addInformation(Information info);
 
 }
