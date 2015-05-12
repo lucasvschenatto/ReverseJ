@@ -4,14 +4,8 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/JDOM2"/>
 	<classpathentry kind="con" path="org.eclipse.ajdt.core.ASPECTJRT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EMF"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/UML2Essentials"/>
-	<classpathentry kind="lib" path="C:/eclipse-modeling-luna-4.4/plugins/org.eclipse.uml2.common_2.0.1.v20150202-0947.jar"/>
-	<classpathentry kind="lib" path="C:/eclipse-modeling-luna-4.4/plugins/org.eclipse.uml2.types_2.0.0.v20150202-0947.jar"/>
-	<classpathentry kind="lib" path="C:/eclipse-modeling-luna-4.4/plugins/org.eclipse.uml2.uml.profile.standard_1.0.0.v20150202-0947.jar"/>
-	<classpathentry kind="lib" path="C:/eclipse-modeling-luna-4.4/plugins/org.eclipse.uml2.uml.resources_5.0.2.v20150202-0947.jar"/>
-	<classpathentry kind="lib" path="C:/eclipse-modeling-luna-4.4/plugins/org.eclipse.uml2.uml_5.0.2.v20150202-0947.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
