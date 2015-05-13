@@ -2,7 +2,9 @@ package examples;
 
 import java.io.IOException;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -25,7 +27,7 @@ public class DiagramMaker3 {
 	public static void main(String[] args) throws Exception{
 		Package myPackage = createPackage("packageSequenceGoal");
 		interaction = createInteraction(myPackage, "interactionTest1");
-		OpaqueBehavior behavior = createOpaqueBehavior(myPackage,"operation1Behavior");
+//		OpaqueBehavior behavior = createOpaqueBehavior(myPackage,"operation1Behavior");
 		Lifeline sender = createLifeLine(interaction, "sender");
 		Lifeline receiver = createLifeLine(interaction, "receiver");
 		
@@ -41,8 +43,7 @@ public class DiagramMaker3 {
 		replyMessage.setSendEvent(replySend2);
 		
 		BehaviorExecutionSpecification operation1 = createBehaviorExecutionSpecification(receive1, replySend2, "behaviorExecutionBody");
-		operation1.setBehavior(behavior);
-		
+//		operation1.setBehavior(behavior);
 		MessageOccurrenceSpecification replyReceive2 = createMessageOccurrenceSpecification(sender, replyMessage,"replyReceive2");
 		replyMessage.setReceiveEvent(replyReceive2);
 		
@@ -55,7 +56,7 @@ public class DiagramMaker3 {
 			String name) {
 		OpaqueBehavior behavior = UMLFactory.eINSTANCE.createOpaqueBehavior();
 		behavior.setPackage(package_);
-		behavior.setName("operation1Behavior");
+		behavior.setName("genericBehavior");
 		return behavior;
 	}
 	private static BehaviorExecutionSpecification createBehaviorExecutionSpecification(
@@ -65,6 +66,7 @@ public class DiagramMaker3 {
 		b.setEnclosingInteraction(interaction);
 		b.setStart(start);
 		b.setFinish(finish);
+		b.setVisibility(org.eclipse.uml2.uml.VisibilityKind.PUBLIC_LITERAL);
 		b.setName("invocationBody1");
 		return b;
 	}
