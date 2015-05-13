@@ -17,9 +17,7 @@ import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Interaction;
 
-public class DiagramMaker {
-
-//	public static boolean DEBUG = true;
+public class DiagramMaker3 {
 
 	private static ResourceSet resourceSet = new ResourceSetImpl();
 	public static void main(String[] args) throws Exception{
@@ -152,16 +150,10 @@ public class DiagramMaker {
 //		myInteraction.createFragment("invocation-1-start", eS.eClass());
 //		UMLPackage uPackage = UMLFactory.eINSTANCE.createMessage();
 //		MessageEnd mE = org.eclipse.uml2.uml.UMLPackage.getMessageEnd();
-		
-//		Model myModel = createModel("sequenceTest");
-		URI outputURI = URI.createFileURI("../ReverseJ/files/diagramStudy")
+		URI outputURI = URI.createFileURI("../ReverseJ/files/diagramStudy3")
 		.appendFileExtension(UMLResource.FILE_EXTENSION);
 		save(myPackage, outputURI);
 	} 
-
-	//
-	// Model-building utilities
-	//
 	private static Lifeline createLifeLine(Interaction interaction, String name){
 		Lifeline l = interaction.createLifeline(name);
 		return l;
@@ -178,22 +170,11 @@ public class DiagramMaker {
 		return p;
 	}
 	private static void save(org.eclipse.uml2.uml.Package package_, URI uri) {
-		// Create a resource-set to contain the resource(s) that we are saving
-		// Initialize registrations of resource factories, library models,
-		// profiles, Ecore metadata, and other dependencies required for
-		// serializing and working with UML resources. This is only necessary in
-		// applications that are not hosted in the Eclipse platform run-time, in
-		// which case these registrations are discovered automatically from
-		// Eclipse extension points.
 		UMLResourcesUtil.init(resourceSet);
-
-		// Create the output resource and add our model package to it.
 		Resource resource = resourceSet.createResource(uri);
 		resource.getContents().add(package_);
-
-		// And save
 		try {
-			resource.save(null); // no save options needed
+			resource.save(null);
 		} catch (IOException ioe) {
 			err(ioe.getMessage());
 		}
