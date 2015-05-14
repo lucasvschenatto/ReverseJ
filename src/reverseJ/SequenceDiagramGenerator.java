@@ -1,50 +1,44 @@
 package reverseJ;
-import org.eclipse.uml2.uml.Interaction;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.eclipse.uml2.uml.Lifeline;
-import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.UMLFactory;
 
 public class SequenceDiagramGenerator {
-	private InfoProvider provider;
-	private Package package_;
-	private Interaction interaction;
-	private Lifeline lifelines;
-	public void setInfoProvider(InfoProvider provider) {
-		this.provider = provider;
+	private Context context;
+	private List<Lifeline> lifelines;
+	public SequenceDiagramGenerator(){
+		lifelines = new LinkedList<Lifeline>();
 	}
-
-	public InfoProvider getInfoProvider() {
-		return provider;
-	}
-
-	public void setContextPackage(String name) {
-		package_ = UMLFactory.eINSTANCE.createPackage();
-		package_.setName(name);
-	}
-
-	public Package getContextPackage() {
-		return package_;
-		
-	}
-
-	public Interaction getContextInteraction() {
-		return interaction;
-	}
-
-	public void setContextInteraction(String name) {
-		interaction = UMLFactory.eINSTANCE.createInteraction();
-		interaction.setPackage(package_);
-		interaction.setName(name);
-	}
-
 	public Lifeline getLifeline(String name) {
-		return lifelines;
+		for (Lifeline lifeline : lifelines) {
+			if (lifeline.getName() == name)
+				return lifeline;
+		}
+		return null;
 	}
 
-	public void createLifeline(String name) {
-		lifelines = UMLFactory.eINSTANCE.createLifeline();
-		lifelines.setInteraction(interaction);
-		lifelines.setName(name);
+	public boolean createLifeline(String name) {
+		if (context != null){
+			Lifeline newLifeline = UMLFactory.eINSTANCE.createLifeline();
+			newLifeline.setInteraction(context.getInteraction());
+			newLifeline.setName(name);
+			lifelines.add(newLifeline);
+			return true;
+		}else
+			return false;
+	}
+
+	public Context getContext() {
+		return context;
+	}
+
+	public void setContext(Context context) {
+		this.context = context;
+	}
+	public List<Lifeline> getLifelines() {
+		return lifelines;
 	}
 
 }
