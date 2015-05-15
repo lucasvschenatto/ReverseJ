@@ -13,10 +13,10 @@ public class ContextTest {
 	}
 	@Test
 	public void getProvider() {
-		InfoProvider expected = new Log();
+		InformationProvider expected = new InformationStorage();
 		context = new Context(expected, null, null);
 		
-		InfoProvider actual = context.getInfoProvider();
+		InformationProvider actual = context.getInfoProvider();
 		
 		assertEquals(expected, actual);
 	}

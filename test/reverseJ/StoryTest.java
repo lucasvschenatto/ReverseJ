@@ -1,9 +1,7 @@
 package reverseJ;
 
 import static org.junit.Assert.*;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 public class StoryTest {
 
@@ -11,7 +9,7 @@ public class StoryTest {
 	public void setUp() throws Exception {
 	}
 
-	@Test
+	@Test@Ignore
 	public void testConstructorCall() {
 		fail("Not yet implemented");
 	}

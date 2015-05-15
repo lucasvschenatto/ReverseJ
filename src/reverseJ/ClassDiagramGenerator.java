@@ -21,14 +21,31 @@ import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 
-public class ClassDiagramGenerator {
+public class ClassDiagramGenerator implements DiagramGenerator{
 	private Context context;
+	protected ClassDiagramGenerator(Context context) {
+		this.context = context;
+	}
+	public static ClassDiagramGenerator make(Context context) {
+		return new ClassDiagramGenerator(context);
+	}
+	@Override
 	public Context getContext() {
 		return context;
 	}
+	@Override
 	public void setContext(Context context) {
 		this.context = context;
 	}
+	
+	
+	public void createConcreteClass(String name){
+		
+	}
+	
+	
+	
+	
 	public static void main(String[] args)
 			throws Exception {
 		Model epo2Model = createModel("epo2");

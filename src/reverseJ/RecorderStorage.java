@@ -1,21 +1,15 @@
 package reverseJ;
 
-import reverseJ.Log.Information;
-import reverseJ.Log.NotFoundInformationException;
+import java.util.List;
 
 public interface RecorderStorage {
+	public abstract boolean isEmpty();
 
-	public abstract void addInformation(String name, String value);
-
-	public abstract String describe(String informationName)
-			throws NotFoundInformationException;
-	
-	public abstract boolean hasInformation(String name);
-
-	public abstract String[] describeAll();
+	public abstract List<String> describeAll();
 
 	public abstract int size();
 
 	public abstract void addInformation(Information info);
 
+	public abstract Information getInfo(String string);
 }

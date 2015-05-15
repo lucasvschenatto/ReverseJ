@@ -6,18 +6,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ClassDiagramGeneratorTest {
-	public static class ContextTest{
-		ClassDiagramGenerator generator;
+public static class makeTests{
+		
 		@Before
 		public void setUp() throws Exception {
-			generator = new ClassDiagramGenerator();
 		}
 		@Test
-		public void setGetContext() {
-			assertNull(generator.getContext());
+		public void setGetContext() {			
 			Context expected = createStubContext();
-			generator.setContext(expected);
+			DiagramGenerator generator;
+			
+			generator = ClassDiagramGenerator.make(expected);
 			Context actual = generator.getContext();
+			
 			assertEquals(expected, actual);
 		}
 		private static Context createStubContext() {

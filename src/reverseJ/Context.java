@@ -6,18 +6,18 @@ import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.UMLFactory;
 
 public class Context {
-	private InfoProvider provider;
+	private InformationProvider provider;
 	private Package package_;
 	private Interaction interaction;
-	Context(InfoProvider provider, String packageName, String InteracionName){
+	Context(InformationProvider provider, String packageName, String InteracionName){
 		setInfoProvider(provider);
 		setPackage(packageName);
 		setInteraction(InteracionName);
 	}
-	private void setInfoProvider(InfoProvider provider) {
+	private void setInfoProvider(InformationProvider provider) {
 		this.provider = provider;
 	}
-	public InfoProvider getInfoProvider() {
+	public InformationProvider getInfoProvider() {
 		return provider;
 	}
 
