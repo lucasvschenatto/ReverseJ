@@ -9,20 +9,20 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class InformationProviderTest {
-	RecorderStorage storage;
+	RecorderStorage recorderStorage;
 	InformationProvider provider;
 
 	@Before
 	public void setUp() throws Exception {
-		storage = new InformationStorage();
-		provider = (InformationStorage)storage;
+		recorderStorage = new InformationStorageProvider();
+		provider = (InformationStorageProvider)recorderStorage;
 	}
 	@Test
 	public void getNext() {		
 		Information expected1 = InformationFactory.createDummy("nome Fulano");
 		Information expected2 = InformationFactory.createDummy("idade 100");
-		storage.addInformation(expected1);
-		storage.addInformation(expected2);
+		recorderStorage.addInformation(expected1);
+		recorderStorage.addInformation(expected2);
 		
 		Information actual1 = provider.getNext();
 		Information actual2 = provider.getNext();
@@ -32,15 +32,15 @@ public class InformationProviderTest {
 	}
 	@Test
 	public void getNext_IfStorageIsEmpty_ReturnsNull() {
-		provider = new InformationStorage();
+		provider = new InformationStorageProvider();
 		Information actual = provider.getNext();		
 		assertNull(actual);
 	}
 	@Test
 	public void getNext_AfterLast_ReturnsNull() {		
 		Information info = InformationFactory.createDummy("nome Fulano");
-		storage.addInformation(info);
-		storage.addInformation(info);
+		recorderStorage.addInformation(info);
+		recorderStorage.addInformation(info);
 		
 		provider.getNext();
 		provider.getNext();
@@ -54,8 +54,8 @@ public class InformationProviderTest {
 		Information info1 = InformationFactory.createDummy("nome Fulano");
 		Information info2 = InformationFactory.createDummy("idade 100");
 		
-		storage.addInformation(info1);
-		storage.addInformation(info2);
+		recorderStorage.addInformation(info1);
+		recorderStorage.addInformation(info2);
 		
 		List <Information> actual = provider.getAll();
 		List <Information> expected = new LinkedList <Information>();

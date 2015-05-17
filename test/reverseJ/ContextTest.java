@@ -12,27 +12,18 @@ public class ContextTest {
 		context = null;
 	}
 	@Test
-	public void getProvider() {
-		InformationProvider expected = new InformationStorage();
-		context = new Context(expected, null, null);
-		
-		InformationProvider actual = context.getInfoProvider();
-		
-		assertEquals(expected, actual);
-	}
-	@Test
 	public void getPackage(){
 		String expected = "packageTest";
-		context = new Context(null,expected,null);
+		context = new Context(expected,null);
 		
-		String actual = context.getPackage().getName();
+		String actual = context.getModel().getName();
 		
 		assertEquals(expected, actual);
 	}
 	@Test
 	public void getInteraction(){
 		String expected = "interactionTest";
-		context = new Context(null,null,expected);
+		context = new Context(null,expected);
 		
 		String actual = context.getInteraction().getName();
 		

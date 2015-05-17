@@ -7,7 +7,7 @@ import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.CodeSignature;
 
 public aspect Tracer {
-	private static RecorderStorage storage;
+	private static RecorderStorage recorderStorage;
 	private static boolean running;
 	
 	pointcut immune():if(running)
@@ -37,46 +37,46 @@ public aspect Tracer {
 		Signature s = thisJoinPointStaticPart.getSignature();
 		String callerName = caller.getClass().getCanonicalName();
 		String targetName = s.getDeclaringType().getCanonicalName();		
-		storage.addInformation(InformationFactory.createCaller(callerName));
-		storage.addInformation(InformationFactory.createTarget(targetName));		
+		recorderStorage.addInformation(InformationFactory.createCaller(callerName));
+		recorderStorage.addInformation(InformationFactory.createTarget(targetName));		
 	}
 	before():constructorExecution()||methodExecution(){
 		Signature s = thisJoinPointStaticPart.getSignature();
 		String modifiers = generateModifiers(s);
 		String methodName = s.getName();
 		String signature = generateSignature(s);		
-		storage.addInformation(InformationFactory.createModifiers(modifiers));
-		storage.addInformation(InformationFactory.createMethod(methodName));
-		storage.addInformation(InformationFactory.createSignature(signature));
+		recorderStorage.addInformation(InformationFactory.createModifiers(modifiers));
+		recorderStorage.addInformation(InformationFactory.createMethod(methodName));
+		recorderStorage.addInformation(InformationFactory.createSignature(signature));
 	}
 
 	before(Object caller):methodCall()&&this(caller){
 		Signature s = thisJoinPointStaticPart.getSignature();
 		String callerName = caller.getClass().getCanonicalName();
 		String declaredTargetName = s.getDeclaringType().getCanonicalName();		
-		storage.addInformation(InformationFactory.createCaller(callerName));
+		recorderStorage.addInformation(InformationFactory.createCaller(callerName));
 		if(s.getDeclaringType().isInterface()){
 			String targetName = thisJoinPoint.getTarget().getClass().getCanonicalName();
-			storage.addInformation(InformationFactory.createInterface(declaredTargetName));
-			storage.addInformation(InformationFactory.createTarget(targetName));
+			recorderStorage.addInformation(InformationFactory.createInterface(declaredTargetName));
+			recorderStorage.addInformation(InformationFactory.createTarget(targetName));
 		}
 		else
-			storage.addInformation(InformationFactory.createTarget(declaredTargetName));	
+			recorderStorage.addInformation(InformationFactory.createTarget(declaredTargetName));	
 	}
 	before(Object handler):exceptionHandle()&&this(handler){
 		String handlerName = handler.getClass().getCanonicalName();
-		storage.addInformation(InformationFactory.createHandler(handlerName));
+		recorderStorage.addInformation(InformationFactory.createHandler(handlerName));
 	}
 	
 	after() returning (Object r):constructorCall()||methodExecution(){
 		if(r != null)
-			storage.addInformation(InformationFactory.createReturn(r.getClass().getCanonicalName()));
+			recorderStorage.addInformation(InformationFactory.createReturn(r.getClass().getCanonicalName()));
 		else
-			storage.addInformation(InformationFactory.createReturn("void"));
+			recorderStorage.addInformation(InformationFactory.createReturn("void"));
 	}
 	after() throwing (Exception e):methodExecution(){
 		String exceptionName = e.getClass().getCanonicalName();
-		storage.addInformation(InformationFactory.createThrow(exceptionName));
+		recorderStorage.addInformation(InformationFactory.createThrow(exceptionName));
 	}
 
 
@@ -120,7 +120,7 @@ public aspect Tracer {
 		return nonAccessModifiers;
 	}	
 	public static void determineStorage(RecorderStorage newStorage){
-		storage = newStorage;
+		recorderStorage = newStorage;
 	}
 	public static void start(RecorderStorage newStorage){
 		determineStorage(newStorage);
@@ -130,7 +130,7 @@ public aspect Tracer {
 		running = false;
 	}
 	public static RecorderStorage getStorage(){
-		return storage;
+		return recorderStorage;
 	}
 	public static boolean isRunning(){
 		return running;

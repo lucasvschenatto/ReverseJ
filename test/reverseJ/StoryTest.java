@@ -10,7 +10,7 @@ public class StoryTest {
 	}
 
 	@Test@Ignore
-	public void testConstructorCall() {
+	public void test() {
 		fail("Not yet implemented");
 	}
 

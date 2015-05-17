@@ -16,8 +16,8 @@ public class TracerTest extends org.junit.Assert{
 		}
 		@Test
 		public void determineStorage() throws Exception{
-			InformationStorage exp1 = new InformationStorage();
-			InformationStorage exp2 = new InformationStorage();
+			InformationStorageProvider exp1 = new InformationStorageProvider();
+			InformationStorageProvider exp2 = new InformationStorageProvider();
 			Tracer.determineStorage(exp1);
 			RecorderStorage act1 = Tracer.getStorage();
 			Tracer.determineStorage(exp2);
@@ -27,25 +27,25 @@ public class TracerTest extends org.junit.Assert{
 		}
 		@Test
 		public void start_SetsUpStorage() throws Exception{
-			InformationStorage expected = new InformationStorage();
+			InformationStorageProvider expected = new InformationStorageProvider();
 			Tracer.start(expected);
 			assertEquals(expected,Tracer.getStorage());
 		}
 		@Test
 		public void isRunning() throws Exception{
-			Tracer.start(new InformationStorage());
+			Tracer.start(new InformationStorageProvider());
 			assertTrue(Tracer.isRunning());
 		}
 		@Test
 		public void isNotRunning() throws Exception{
 			assertFalse(Tracer.isRunning());
-			Tracer.start(new InformationStorage());
+			Tracer.start(new InformationStorageProvider());
 			Tracer.stop();
 			assertFalse(Tracer.isRunning());
 		}
 		@Test
 		public void afterStart_Records(){
-			InformationStorage l = new InformationStorage();
+			InformationStorageProvider l = new InformationStorageProvider();
 			Tracer.start(l);
 			new Actor();
 			List<String> actual = l.describeAll();
@@ -53,7 +53,7 @@ public class TracerTest extends org.junit.Assert{
 		}
 		@Test
 		public void beforeStart_DoesntRecord() throws Exception{
-			InformationStorage l = new InformationStorage();
+			InformationStorageProvider l = new InformationStorageProvider();
 			Tracer.determineStorage(l);
 			new Actor();
 			List<String> actual = l.describeAll();
@@ -61,7 +61,7 @@ public class TracerTest extends org.junit.Assert{
 		}
 		@Test
 		public void afterStop_DoesntRecord() throws Exception{
-			InformationStorage l = new InformationStorage();
+			InformationStorageProvider l = new InformationStorageProvider();
 			Tracer.start(l);
 			Tracer.stop();
 			new Actor();
@@ -74,7 +74,7 @@ public class TracerTest extends org.junit.Assert{
 		Actor actor;
 		@Before
 		public void setup(){
-			storate = new InformationStorage();
+			storate = new InformationStorageProvider();
 			actor = new Actor();			
 			Tracer.start(storate);	
 		}
@@ -132,7 +132,7 @@ public class TracerTest extends org.junit.Assert{
 		}
 		@Test
 		public void countLinesInterface(){
-			InformationStorage localLog = new InformationStorage();
+			InformationStorageProvider localLog = new InformationStorageProvider();
 			InterfaceActor iActor = new Actor('a');
 			Tracer.start(localLog);
 			iActor.playInstancePublic();
@@ -141,7 +141,7 @@ public class TracerTest extends org.junit.Assert{
 		}
 		@Test
 		public void countLinesExceptionThrowAndHandle() throws Exception{
-			InformationStorage localLog = new InformationStorage();
+			InformationStorageProvider localLog = new InformationStorageProvider();
 			Actor mActor = new Actor('a');
 			Tracer.start(localLog);
 			try {
@@ -154,11 +154,11 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class ConstructorPublic implements TracerImmunity{
-		private InformationStorage log;
+		private InformationStorageProvider log;
 		private String expected;
 		@Before
 		public void setUp(){
-			log = new InformationStorage();
+			log = new InformationStorageProvider();
 			Tracer.start(log);
 		}
 		@After
@@ -216,11 +216,11 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class ConstructorPrivate implements TracerImmunity{
-		private InformationStorage storage;
+		private InformationStorageProvider storage;
 		private String expected;
 		@Before
 		public void setup(){
-			storage = new InformationStorage();
+			storage = new InformationStorageProvider();
 			expected = null;
 			Tracer.start(storage);
 		}
@@ -265,12 +265,12 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class InstanceMethodPublic implements TracerImmunity{
-		private InformationStorage log;
+		private InformationStorageProvider log;
 		Actor actor;
 		String expected;
 		@Before
 		public void setup(){
-			log = new InformationStorage();
+			log = new InformationStorageProvider();
 			actor = new Actor();
 			Tracer.start(log);
 		}
@@ -329,12 +329,12 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class InstanceMethodPrivate implements TracerImmunity{
-		private InformationStorage log;
+		private InformationStorageProvider log;
 		Actor actor;
 		String expected;
 		@Before
 		public void setup(){
-			log = new InformationStorage();
+			log = new InformationStorageProvider();
 			actor = new Actor();
 			Tracer.start(log);
 		}
@@ -393,12 +393,12 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class StaticMethodPublic implements TracerImmunity{
-		private InformationStorage log;
+		private InformationStorageProvider log;
 		Actor actor;
 		String expected;
 		@Before
 		public void setup(){
-			log = new InformationStorage();
+			log = new InformationStorageProvider();
 			actor = new Actor();
 			Tracer.start(log);
 		}
@@ -457,13 +457,13 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class StaticMethodPrivate implements TracerImmunity{
-		private InformationStorage log;
+		private InformationStorageProvider log;
 		Actor actor;
 		String expected;
 		@Before
 		public void setup(){
 			actor = new Actor();
-			log = new InformationStorage();
+			log = new InformationStorageProvider();
 			Tracer.start(log);
 		}
 		@After
@@ -521,12 +521,12 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class InterfaceMethodPublic implements TracerImmunity{
-		private InformationStorage log;
+		private InformationStorageProvider log;
 		InterfaceActor iActor;
 		String expected;
 		@Before
 		public void setup(){
-			log = new InformationStorage();
+			log = new InformationStorageProvider();
 			iActor = new Actor();
 			Tracer.start(log);
 		}
@@ -592,12 +592,12 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class AccessControlModifiers implements TracerImmunity{
-		private InformationStorage log;
+		private InformationStorageProvider log;
 		private Actor mActor = new Actor();
 		private String expected;
 		@Before
 		public void setUp(){
-			log = new InformationStorage();
+			log = new InformationStorageProvider();
 			Tracer.start(log);
 		}
 		@After
@@ -662,12 +662,12 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class NonAccessModifiers implements TracerImmunity{
-		private InformationStorage log;
+		private InformationStorageProvider log;
 		private Actor mActor = new Actor();
 		private String expected;
 		@Before
 		public void setUp(){
-			log = new InformationStorage();
+			log = new InformationStorageProvider();
 			Tracer.start(log);
 		}
 		@After
@@ -698,12 +698,12 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class ExceptionThrowAndHandle implements TracerImmunity{
-		private InformationStorage log;
+		private InformationStorageProvider log;
 		private Actor mActor = new Actor();
 		private String expected;
 		@Before
 		public void setUp(){
-			log = new InformationStorage();
+			log = new InformationStorageProvider();
 			Tracer.start(log);
 		}
 		@After

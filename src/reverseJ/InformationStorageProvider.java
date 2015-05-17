@@ -4,10 +4,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class InformationStorage implements RecorderStorage, InformationProvider {
+public class InformationStorageProvider implements RecorderStorage, InformationProvider {
 	private List <Information> list;
 	private Iterator <Information> iterator;
-	public InformationStorage(){
+	public InformationStorageProvider(){
 		list = new LinkedList<Information>();
 	}
 	@Override

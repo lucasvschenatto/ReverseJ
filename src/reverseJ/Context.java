@@ -1,38 +1,29 @@
 package reverseJ;
 
 import org.eclipse.uml2.uml.Interaction;
-import org.eclipse.uml2.uml.Lifeline;
-import org.eclipse.uml2.uml.Package;
+import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.UMLFactory;
 
 public class Context {
-	private InformationProvider provider;
-	private Package package_;
+	private Model model_;
 	private Interaction interaction;
-	Context(InformationProvider provider, String packageName, String InteracionName){
-		setInfoProvider(provider);
-		setPackage(packageName);
+	Context(String modelName, String InteracionName){
+		setModel(modelName);
 		setInteraction(InteracionName);
 	}
-	private void setInfoProvider(InformationProvider provider) {
-		this.provider = provider;
-	}
-	public InformationProvider getInfoProvider() {
-		return provider;
-	}
 
-	private void setPackage(String name) {
-		package_ = UMLFactory.eINSTANCE.createPackage();
-		package_.setName(name);
+	private void setModel(String name) {
+		model_ = UMLFactory.eINSTANCE.createModel();
+		model_.setName(name);
 	}
-	public Package getPackage() {
-		return package_;
+	public Model getModel() {
+		return model_;
 		
 	}
 
 	private void setInteraction(String name) {
 		interaction = UMLFactory.eINSTANCE.createInteraction();
-		interaction.setPackage(package_);
+		interaction.setPackage(model_);
 		interaction.setName(name);
 	}
 	public Interaction getInteraction() {

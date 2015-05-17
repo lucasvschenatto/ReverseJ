@@ -25,7 +25,7 @@ public class SequenceDiagramGeneratorTest {
 			assertEquals(expected, actual);
 		}
 		private static Context createStubContext() {
-			Context context = new Context(null,null,null);
+			Context context = new Context(null,null);
 			return context;
 		}
 	}

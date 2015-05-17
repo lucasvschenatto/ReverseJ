@@ -21,23 +21,14 @@ import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 
-public class ClassDiagramGenerator implements DiagramGenerator{
-	private Context context;
-	protected ClassDiagramGenerator(Context context) {
-		this.context = context;
+public class ClassDiagramUtilities{
+	protected ClassDiagramUtilities() {
 	}
-	public static ClassDiagramGenerator make(Context context) {
-		return new ClassDiagramGenerator(context);
+	public static ClassDiagramUtilities make() {
+//		if(DiagramGenerator.context == null)
+//			DiagramGenerator.context = new Context("modelName", "SequenceDiagram");
+		return new ClassDiagramUtilities();
 	}
-	@Override
-	public Context getContext() {
-		return context;
-	}
-	@Override
-	public void setContext(Context context) {
-		this.context = context;
-	}
-	
 	
 	public void createConcreteClass(String name){
 		
