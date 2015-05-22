@@ -58,9 +58,9 @@ public class DiagramMakerTest{
 	}
 	@Test
 	public void whenMake_ReturnsDiagramFromStrategy(){
-		Diagram expected = new Diagram();
+		DiagramObject expected = new DiagramObject(null);
 		diagramMaker = createDiagramMaker(expected);
-		Diagram actual = diagramMaker.make();
+		DiagramObject actual = diagramMaker.make();
 		assertEquals(expected, actual);
 	}
 	
@@ -87,7 +87,7 @@ public class DiagramMakerTest{
 		strategy = createStubDiagramStrategy();
 		return new DiagramMaker(provider,strategy);
 	}
-	private DiagramMaker createDiagramMaker(Diagram diagram) {
+	private DiagramMaker createDiagramMaker(DiagramObject diagram) {
 		provider = createStubProvider();
 		strategy = createStubDiagramStrategy(diagram);
 		return new DiagramMaker(provider,strategy);
@@ -95,7 +95,7 @@ public class DiagramMakerTest{
 	private DiagramStrategy createStubDiagramStrategy() {
 		DiagramStrategy expected = new DiagramStrategy() {
 			@Override
-			public Diagram generate(List<Information> informations) {
+			public DiagramObject generate(List<Information> informations) {
 				DiagramMakerTest.createMethodWasCalled();
 				DiagramMakerTest.PassedInformations(informations);
 				return null;
@@ -108,10 +108,10 @@ public class DiagramMakerTest{
 		};
 		return expected;
 	}
-	private DiagramStrategy createStubDiagramStrategy(Diagram diag) {
+	private DiagramStrategy createStubDiagramStrategy(DiagramObject diag) {
 		DiagramStrategy expected = new DiagramStrategy() {
 			@Override
-			public Diagram generate(List<Information> informations) {
+			public DiagramObject generate(List<Information> informations) {
 				DiagramMakerTest.createMethodWasCalled();
 				DiagramMakerTest.PassedInformations(informations);
 				return diag;

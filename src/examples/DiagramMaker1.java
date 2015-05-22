@@ -17,7 +17,7 @@ import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Interaction;
 
-public class DiagramMaker {
+public class DiagramMaker1 {
 
 //	public static boolean DEBUG = true;
 

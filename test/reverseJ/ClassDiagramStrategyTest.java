@@ -2,6 +2,7 @@ package reverseJ;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
 
@@ -11,10 +12,30 @@ import org.junit.Ignore;
 
 public class ClassDiagramStrategyTest extends ClassDiagramUtilities{
 	DiagramStrategy strategy;
+	List<String> createdClasses;
+	List<String> createdInterfaces;
+	
+	private void assertClassCreated(String className) {
+		assertTrue(createdClasses.contains(className));
+	}
+	private void assertNumberOfCreatedClasses(int number) {
+		assertEquals(number, createdClasses.size());	
+	}
+	
+	private void assertInterfaceCreated(String className) {
+		assertTrue(createdInterfaces.contains(className));
+	}
+	private void assertNumberOfCreatedInterfaces(int number) {
+		assertEquals(number, createdInterfaces.size());	
+	}
+	
 	@Before
 	public void setup(){
 		strategy = new ClassDiagram(this);
+		createdClasses = new LinkedList<String>();
+		createdInterfaces = new LinkedList<String>();
 	}
+	
 	@Test
 	public void constructorSetsUtilities(){
 		ClassDiagramUtilities expected = ClassDiagramUtilities.make();
@@ -24,41 +45,110 @@ public class ClassDiagramStrategyTest extends ClassDiagramUtilities{
 		assertNotNull(new ClassDiagram().getUtil());
 		assertEquals(expected, actual);
 	}
-	@Test@Ignore
-	public void whenGenerate_IfHasCallerInformation_CreateConcreteClass() {
-		String expected = "Test";
-		Information info = InformationFactory.createCaller(expected);
+	
+	@Test
+	public void ifHasCallerInformation_CreateConcreteClass() {
+		String className = "myTestClassCaller";
+		Information info = InformationFactory.createCaller(className);
 		List<Information> informations = new LinkedList<Information>();
 		informations.add(info);
 		
-		Diagram d = strategy.generate(informations);
+		strategy.generate(informations);
 		
-		fail("to do method");
+		assertClassCreated(className);
 	}
-	@Test@Ignore
-	public void whenGenerate_IfHasTargetInformation_CreateConcreteClass() {
-		String expected = "Test";
-		Information info = InformationFactory.createTarget(expected);
+	
+	@Test
+	public void ifHasTargetInformation_CreateConcreteClass() {
+		String className = "myTestClassTarget";
+		Information info = InformationFactory.createTarget(className);
 		List<Information> informations = new LinkedList<Information>();
 		informations.add(info);
 		
-		Diagram d = strategy.generate(informations);
+		strategy.generate(informations);
 		
-		fail("to do method");
+		assertClassCreated(className);
 	}
-	@Test@Ignore
-	public void whenGenerate_IfHasHandlerInformation_CreateConcreteClass() {
-		String expected = "Test";
-		Information info = InformationFactory.createHandler(expected);
+	
+	@Test
+	public void IfHasHandlerInformation_CreateConcreteClass() {
+		String className = "myTestClassTarget";
+		Information info = InformationFactory.createHandler(className);
 		List<Information> informations = new LinkedList<Information>();
 		informations.add(info);
 		
-		Diagram d = strategy.generate(informations);
+		strategy.generate(informations);
 		
-		fail("to do method");
+		assertClassCreated(className);
 	}
+	
+	@Test
+	public void IfHasInterfaceInformation_CreateInterface() {
+		String interfaceName = "myInterface";
+		Information info = InformationFactory.createInterface(interfaceName);
+		List<Information> informations = new LinkedList<Information>();
+		informations.add(info);
+		
+		strategy.generate(informations);
+		
+		assertInterfaceCreated(interfaceName);
+	}
+	
+	@Test
+	public void doesntDuplicateClasses() {
+		String className = "myTestClassTarget";
+		List<Information> informations = new LinkedList<Information>();
+		
+		Information info = InformationFactory.createTarget(className);
+		informations.add(info);
+		info = InformationFactory.createTarget(className);
+		informations.add(info);
+		
+		info = InformationFactory.createCaller(className);
+		informations.add(info);
+		info = InformationFactory.createCaller(className);
+		informations.add(info);
+		
+		
+		strategy.generate(informations);
+		
+		assertClassCreated(className);
+		assertNumberOfCreatedClasses(1);
+	}
+	@Test
+	public void doesntDelete_not_duplicated() {
+		List<Information> informations = new LinkedList<Information>();
+		
+		Information info = InformationFactory.createTarget("myTestClassTarget");
+		informations.add(info);
+		info = InformationFactory.createTarget("myTestClassTarget2");
+		informations.add(info);
+		
+		info = InformationFactory.createCaller("myTestClassCaller");
+		informations.add(info);
+		info = InformationFactory.createCaller("myTestClassCaller2");
+		informations.add(info);
+		
+		info = InformationFactory.createHandler("myTestClassHandler");
+		informations.add(info);
+		info = InformationFactory.createHandler("myTestClassHandler2");
+		informations.add(info);
+		
+		
+		strategy.generate(informations);
+		
+		assertClassCreated("myTestClassTarget" );
+		assertClassCreated("myTestClassTarget2");
+		assertClassCreated("myTestClassCaller" );
+		assertClassCreated("myTestClassCaller2");
+		assertClassCreated("myTestClassHandler" );
+		assertClassCreated("myTestClassHandler2");
+	}
+	
+
+	
 	@Test@Ignore
-	public void whenGenerate_DoesntCreateConcreteClass_ForOtherInformations() {
+	public void doesntCreateConcreteClass_ForOtherInformations() {
 		String name = "Test";
 		Information info;
 		List<Information> informations = new LinkedList<Information>();
@@ -78,9 +168,17 @@ public class ClassDiagramStrategyTest extends ClassDiagramUtilities{
 		info = InformationFactory.createThrow(name);
 		informations.add(info);
 		
-		Diagram d = strategy.generate(informations);
+		DiagramObject d = strategy.generate(informations);
 		
 		fail("to do method");
 	}
-
+	
+	@Override
+	public void createConcreteClass(String name){
+		createdClasses.add(name);
+	}
+	@Override
+	public void createInterface(String name){
+		createdInterfaces.add(name);
+	}
 }

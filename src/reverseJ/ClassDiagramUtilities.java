@@ -31,9 +31,12 @@ public class ClassDiagramUtilities{
 	}
 	
 	public void createConcreteClass(String name){
+		// TODO Auto-generated method stub
+	}
+	public void createInterface(String name) {
+		// TODO Auto-generated method stub
 		
 	}
-	
 	
 	
 	
