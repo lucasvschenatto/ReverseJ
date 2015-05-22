@@ -81,19 +81,7 @@ public class ClassDiagramStrategyTest extends ClassDiagramUtilities{
 		
 		assertClassCreated(className);
 	}
-	
-	@Test
-	public void IfHasInterfaceInformation_CreateInterface() {
-		String interfaceName = "myInterface";
-		Information info = InformationFactory.createInterface(interfaceName);
-		List<Information> informations = new LinkedList<Information>();
-		informations.add(info);
-		
-		strategy.generate(informations);
-		
-		assertInterfaceCreated(interfaceName);
-	}
-	
+			
 	@Test
 	public void doesntDuplicateClasses() {
 		String className = "myTestClassTarget";
@@ -109,14 +97,19 @@ public class ClassDiagramStrategyTest extends ClassDiagramUtilities{
 		info = InformationFactory.createCaller(className);
 		informations.add(info);
 		
+		info = InformationFactory.createHandler(className);
+		informations.add(info);
+		info = InformationFactory.createHandler(className);
+		informations.add(info);		
 		
 		strategy.generate(informations);
 		
 		assertClassCreated(className);
 		assertNumberOfCreatedClasses(1);
 	}
+	
 	@Test
-	public void doesntDelete_not_duplicated() {
+	public void doesntDelete_not_duplicated_Classes() {
 		List<Information> informations = new LinkedList<Information>();
 		
 		Information info = InformationFactory.createTarget("myTestClassTarget");
@@ -145,9 +138,49 @@ public class ClassDiagramStrategyTest extends ClassDiagramUtilities{
 		assertClassCreated("myTestClassHandler2");
 	}
 	
-
+	@Test
+	public void IfHasInterfaceInformation_CreateInterface() {
+		String interfaceName = "myInterface";
+		Information info = InformationFactory.createInterface(interfaceName);
+		List<Information> informations = new LinkedList<Information>();
+		informations.add(info);
+		
+		strategy.generate(informations);
+		
+		assertInterfaceCreated(interfaceName);
+	}
+	@Test
+	public void doesntDuplicateInterfaces() {
+		String interfaceName = "myTestClassTarget";
+		List<Information> informations = new LinkedList<Information>();
+		
+		Information info = InformationFactory.createInterface(interfaceName);
+		informations.add(info);
+		info = InformationFactory.createInterface(interfaceName);
+		informations.add(info);
+		
+		strategy.generate(informations);
+		
+		assertInterfaceCreated(interfaceName);
+		assertNumberOfCreatedInterfaces(1);
+	}
 	
-	@Test@Ignore
+	@Test
+	public void doesntDelete_not_duplicated_Interfaces() {
+		List<Information> informations = new LinkedList<Information>();
+		
+		Information info = InformationFactory.createInterface("myTestInterface");
+		informations.add(info);
+		info = InformationFactory.createInterface("myTestInterface2");
+		informations.add(info);
+		
+		strategy.generate(informations);
+		
+		assertInterfaceCreated("myTestInterface" );
+		assertInterfaceCreated("myTestInterface2");
+	}
+		
+	@Test
 	public void doesntCreateConcreteClass_ForOtherInformations() {
 		String name = "Test";
 		Information info;
@@ -168,9 +201,9 @@ public class ClassDiagramStrategyTest extends ClassDiagramUtilities{
 		info = InformationFactory.createThrow(name);
 		informations.add(info);
 		
-		DiagramObject d = strategy.generate(informations);
+		strategy.generate(informations);
 		
-		fail("to do method");
+		assertNumberOfCreatedClasses(0);
 	}
 	
 	@Override

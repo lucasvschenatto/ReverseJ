@@ -33,7 +33,7 @@ public class ClassDiagram implements DiagramStrategy {
 			if(information instanceof IInterface)
 				interfaceNames.add(information.getValue());
 		}
-//		interfaceNames = removeDuplicated(classesNames);
+		interfaceNames = removeDuplicated(interfaceNames);
 		for (String interfaceName : interfaceNames){
 			diagramUtilities.createInterface(interfaceName);
 		}
