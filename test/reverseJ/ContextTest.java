@@ -2,31 +2,29 @@ package reverseJ;
 
 import static org.junit.Assert.*;
 
+import org.eclipse.uml2.uml.Model;
 import org.junit.Before;
 import org.junit.Test;
 
 public class ContextTest {
-	Context context;
-	@Before
-	public void setUp() throws Exception {
-		context = null;
+	@Test
+	public void getInstance_returnsInstance(){
+		Context c  = Context.getInstance();
+		assertNotNull(c);
 	}
 	@Test
-	public void getPackage(){
-		String expected = "packageTest";
-		context = new Context(expected,null);
+	public void getInstance_returnsSingleton(){
+		Context first  = Context.getInstance();
+		Context second = Context.getInstance();
 		
-		String actual = context.getModel().getName();
-		
-		assertEquals(expected, actual);
+		assertEquals(first, second);
 	}
 	@Test
-	public void getInteraction(){
-		String expected = "interactionTest";
-		context = new Context(null,expected);
+	public void getModel(){
+		Context c = Context.getInstance();
+		Model m = c.getModel();
 		
-		String actual = context.getInteraction().getName();
-		
-		assertEquals(expected, actual);
+		assertNotNull(m);
+		assertTrue(m.isSetName());
 	}
 }

@@ -9,8 +9,8 @@ public class DiagramMaker {
 		this.diagram = diagram;
 	}
 
-	public DiagramObject make() {
-		return diagram.generate(infoProvider.getAll());
+	public void make() {
+		diagram.generate(infoProvider.getAll());
 	}
 
 	public InformationProvider getProvider() {

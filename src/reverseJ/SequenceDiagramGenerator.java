@@ -22,7 +22,7 @@ public class SequenceDiagramGenerator {
 	public boolean createLifeline(String name) {
 		if (context != null){
 			Lifeline newLifeline = UMLFactory.eINSTANCE.createLifeline();
-			newLifeline.setInteraction(context.getInteraction());
+//			newLifeline.setInteraction(context.getInteraction());
 			newLifeline.setName(name);
 			lifelines.add(newLifeline);
 			return true;

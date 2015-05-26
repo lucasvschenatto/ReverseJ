@@ -13,6 +13,7 @@ import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.LiteralUnlimitedNatural;
+import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
@@ -22,12 +23,21 @@ import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 
 public class ClassDiagramUtilities{
+	private Context context;
+	private Package rootPackage;
+	protected ClassDiagramUtilities(String packageName) {
+		context = Context.getInstance();
+		rootPackage = context.getModel().createNestedPackage(packageName);
+	}
 	protected ClassDiagramUtilities() {
+		context = Context.getInstance();
+		rootPackage = context.getModel().createNestedPackage("default");
 	}
 	public static ClassDiagramUtilities make() {
-//		if(DiagramGenerator.context == null)
-//			DiagramGenerator.context = new Context("modelName", "SequenceDiagram");
-		return new ClassDiagramUtilities();
+		return new ClassDiagramUtilities("classDiagram");
+	}
+	public Package getPackage() {
+		return rootPackage;
 	}
 	
 	public void createConcreteClass(String name){
@@ -35,10 +45,28 @@ public class ClassDiagramUtilities{
 	}
 	public void createInterface(String name) {
 		// TODO Auto-generated method stub
-		
 	}
-	
-	
+	public void createMethod(String className, String methodName, String signature) {
+		// TODO Auto-generated method stub
+	}
+	public void createMethodWithReturn(String className, String methodName, String signature, String returnType) {
+		// TODO Auto-generated method stub
+	}
+	public void createType(String name) {
+		// TODO Auto-generated method stub		
+	}
+	public void createImplementation(String interface_, String implementer) {
+		// TODO Auto-generated method stub
+	}
+	public void createUnidirectionalAssociation(String caller, String target) {
+		// TODO Auto-generated method stub
+	}
+	public void createBiDirectionalAssociation(String class1, String class2) {
+		// TODO Auto-generated method stub
+	}
+	public void createDependency(String caller, String target) {
+		// TODO Auto-generated method stub
+	}
 	
 	public static void main(String[] args)
 			throws Exception {
@@ -78,9 +106,9 @@ public class ClassDiagramUtilities{
 			"GlobalLocation", false);
 
 		// Create generalization relationships amongst our classes.
-		createGeneralization(usAddressClass, addressClass);
-		createGeneralization(globalAddressClass, addressClass);
-		createGeneralization(globalAddressClass, globalLocationClass);
+		createGeneralizationOld(usAddressClass, addressClass);
+		createGeneralizationOld(globalAddressClass, addressClass);
+		createGeneralizationOld(globalAddressClass, globalLocationClass);
 
 		// Create attributes in our classes.
 		createAttribute(supplierClass, "name", stringPrimitiveType, 0, 1);
@@ -187,11 +215,10 @@ public class ClassDiagramUtilities{
 		return class_;
 	}
 
-	protected static Generalization createGeneralization(
+	protected static Generalization createGeneralizationOld(
 			Classifier specificClassifier, Classifier generalClassifier) {
 
-		Generalization generalization = specificClassifier
-			.createGeneralization(generalClassifier);
+		Generalization generalization = specificClassifier.createGeneralization(generalClassifier);
 		return generalization;
 	}
 
@@ -242,4 +269,5 @@ public class ClassDiagramUtilities{
 			System.out.println("failed to save");
 		}
 	}
+	
 }

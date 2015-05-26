@@ -56,13 +56,7 @@ public class DiagramMakerTest{
 		
 		assertEquals(expected, actualPassedInformations);
 	}
-	@Test
-	public void whenMake_ReturnsDiagramFromStrategy(){
-		DiagramObject expected = new DiagramObject(null);
-		diagramMaker = createDiagramMaker(expected);
-		DiagramObject actual = diagramMaker.make();
-		assertEquals(expected, actual);
-	}
+	
 	
 	
 	
@@ -95,10 +89,9 @@ public class DiagramMakerTest{
 	private DiagramStrategy createStubDiagramStrategy() {
 		DiagramStrategy expected = new DiagramStrategy() {
 			@Override
-			public DiagramObject generate(List<Information> informations) {
+			public void generate(List<Information> informations) {
 				DiagramMakerTest.createMethodWasCalled();
 				DiagramMakerTest.PassedInformations(informations);
-				return null;
 			}
 
 			@Override
@@ -111,10 +104,9 @@ public class DiagramMakerTest{
 	private DiagramStrategy createStubDiagramStrategy(DiagramObject diag) {
 		DiagramStrategy expected = new DiagramStrategy() {
 			@Override
-			public DiagramObject generate(List<Information> informations) {
+			public void generate(List<Information> informations) {
 				DiagramMakerTest.createMethodWasCalled();
 				DiagramMakerTest.PassedInformations(informations);
-				return diag;
 			}
 
 			@Override
