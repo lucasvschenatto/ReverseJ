@@ -2,17 +2,22 @@ package reverseJ;
 
 import java.io.IOException;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Generalization;
+import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.LiteralUnlimitedNatural;
+import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.PrimitiveType;
@@ -25,7 +30,7 @@ import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 public class ClassDiagramUtilities{
 	private Context context;
 	private Package rootPackage;
-	protected ClassDiagramUtilities(String packageName) {
+	protected ClassDiagramUtilities(String packageName, Context context) {
 		context = Context.getInstance();
 		rootPackage = context.getModel().createNestedPackage(packageName);
 	}
@@ -33,27 +38,30 @@ public class ClassDiagramUtilities{
 		context = Context.getInstance();
 		rootPackage = context.getModel().createNestedPackage("default");
 	}
-	public static ClassDiagramUtilities make() {
-		return new ClassDiagramUtilities("classDiagram");
+	public static ClassDiagramUtilities make(Context context) {
+		return new ClassDiagramUtilities("classDiagram", context);
 	}
 	public Package getPackage() {
 		return rootPackage;
 	}
 	
-	public void createConcreteClass(String name){
-		// TODO Auto-generated method stub
+	public org.eclipse.uml2.uml.Class createConcreteClass(String name){
+		return rootPackage.createOwnedClass(name, false);
 	}
-	public void createInterface(String name) {
-		// TODO Auto-generated method stub
+	public Interface createInterface(String name) {
+		return rootPackage.createOwnedInterface(name);
 	}
-	public void createMethod(String className, String methodName, String signature) {
-		// TODO Auto-generated method stub
+	public Operation createMethod(String className, String methodName, String signature) {
+		org.eclipse.uml2.uml.Class c = (org.eclipse.uml2.uml.Class) rootPackage.getOwnedMember(className);
+//		EList<String> e;
+//		c.createOwnedOperation(methodName, ownedParameterNames, ownedParameterTypes);
+		return null;
 	}
 	public void createMethodWithReturn(String className, String methodName, String signature, String returnType) {
 		// TODO Auto-generated method stub
 	}
-	public void createType(String name) {
-		// TODO Auto-generated method stub		
+	public PrimitiveType createType(String name) {
+		return rootPackage.createOwnedPrimitiveType(name);
 	}
 	public void createImplementation(String interface_, String implementer) {
 		// TODO Auto-generated method stub

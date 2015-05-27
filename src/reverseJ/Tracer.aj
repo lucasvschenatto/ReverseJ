@@ -84,13 +84,11 @@ public aspect Tracer {
 		String signature = "";
 		String[] name = ((CodeSignature)sig).getParameterNames();
 		Class<?>[] type = ((CodeSignature)sig).getParameterTypes();
-		signature = signature.concat("(");
 		for (int i = 0; i < type.length; i++) {
 			if(i != 0)
 				signature = signature.concat(", ");
 			signature = signature.concat(type[i].getCanonicalName() + " " + name[i]);
 		}
-		signature = signature.concat(")");
 		return signature;
 	}
 	private String generateModifiers(Signature sig) {

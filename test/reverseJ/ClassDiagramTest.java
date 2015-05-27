@@ -5,9 +5,12 @@ import static org.junit.Assert.*;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.uml2.uml.Interface;
+import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.PrimitiveType;
 import org.junit.*;
 
-public class ClassDiagramStrategyTest{
+public class ClassDiagramTest{
 	public static List<Information> createCompleteMethodTrace(String id){
 		String caller     = "Caller"  +id;
 		String target     = "Target"  +id;
@@ -107,15 +110,11 @@ public class ClassDiagramStrategyTest{
 		private DiagramStrategy strategy;
 		@Test
 		public void constructorSetsUtilities(){
-			ClassDiagramUtilities expected = ClassDiagramUtilities.make();
+			ClassDiagramUtilities expected = ClassDiagramUtilities.make(null);
 			strategy = new ClassDiagram(expected);
 			ClassDiagramUtilities actual = strategy.getUtil();
 
 			assertEquals(expected, actual);
-		}
-		@Test
-		public void noParameterConstructorSetsUtilities(){
-			assertNotNull(new ClassDiagram().getUtil());
 		}
 	}
 	public static class CreateClass extends ClassDiagramUtilities{
@@ -129,8 +128,9 @@ public class ClassDiagramStrategyTest{
 			assertEquals(number, createdClasses.size());	
 		}
 		@Override
-		public void createConcreteClass(String name){
+		public org.eclipse.uml2.uml.Class createConcreteClass(String name){
 			createdClasses.add(name);
+			return null;
 		}
 		@Before
 		public void setup(){
@@ -217,10 +217,11 @@ public class ClassDiagramStrategyTest{
 			assertEquals(number, createdMethods.size());	
 		}
 		@Override
-		public void createMethod(String className, String methodName, String signature) {
+		public Operation createMethod(String className, String methodName, String signature) {
 			String createdMethod = (className+" "+methodName+" "+signature).trim();
 			createdMethods.add(createdMethod);
 			lastMethod = createdMethod;
+			return null;
 		}
 		@Override
 		public void createMethodWithReturn(String className, String methodName, String signature, String returnType) {
@@ -313,8 +314,9 @@ public class ClassDiagramStrategyTest{
 		}
 		
 		@Override
-		public void createInterface(String name){
+		public Interface createInterface(String name){
 			createdInterfaces.add(name);
+			return null;
 		}
 		
 		@Before
@@ -383,8 +385,9 @@ public class ClassDiagramStrategyTest{
 		}
 		
 		@Override
-		public void createType(String name){
+		public PrimitiveType createType(String name){
 			createdTypes.add(name);
+			return null;
 		}
 		
 		@Before

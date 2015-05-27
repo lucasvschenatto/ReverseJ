@@ -189,21 +189,21 @@ public class TracerTest extends org.junit.Assert{
 		@Test
 		public void signature_NoParameter() throws Exception{
 			new Actor();
-			expected ="ISignature : ()";
+			expected ="ISignature : ";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
 			new Actor(true);
-			expected ="ISignature : (boolean bPublic)";
+			expected ="ISignature : boolean bPublic";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
 		@Test
 		public void signature_TwoParameter() throws Exception{
 			new Actor(1, "a");
-			expected ="ISignature : (int i, java.lang.String s)";
+			expected ="ISignature : int i, java.lang.String s";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
@@ -252,7 +252,7 @@ public class TracerTest extends org.junit.Assert{
 		@Test
 		public void signature_OneParameter() throws Exception{
 			new Actor(1.5);
-			expected ="ISignature : (double dPrivate)";
+			expected ="ISignature : double dPrivate";
 			List<String> actual = storage.describeAll();
 			assertTrue(actual.contains(expected));
 		}
@@ -302,21 +302,21 @@ public class TracerTest extends org.junit.Assert{
 		@Test
 		public void signature_NoParameter() throws Exception{
 			actor.playInstancePublic();
-			expected ="ISignature : ()";
+			expected ="ISignature : ";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
 			actor.playInstancePublic(true);
-			expected ="ISignature : (boolean b)";
+			expected ="ISignature : boolean b";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
 		@Test
 		public void signature_TwoParameter() throws Exception{
 			actor.playInstancePublic(1, "a");
-			expected ="ISignature : (int i, java.lang.String s)";
+			expected ="ISignature : int i, java.lang.String s";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
@@ -366,21 +366,21 @@ public class TracerTest extends org.junit.Assert{
 		@Test
 		public void signature_NoParameter() throws Exception{
 			actor.playInstancePrivate();
-			expected ="ISignature : ()";
+			expected ="ISignature : ";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
 			actor.playInstancePrivate(true);
-			expected ="ISignature : (boolean b)";
+			expected ="ISignature : boolean b";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
 		@Test
 		public void signature_TwoParameters() throws Exception{
 			actor.playInstancePrivate(1, "a");
-			expected ="ISignature : (int i, java.lang.String s)";
+			expected ="ISignature : int i, java.lang.String s";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
@@ -430,21 +430,21 @@ public class TracerTest extends org.junit.Assert{
 		@Test
 		public void signature_NoParameter() throws Exception{
 			Actor.playStaticPublic();
-			expected ="ISignature : ()";
+			expected ="ISignature : ";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
 			Actor.playStaticPublic(true);
-			expected ="ISignature : (boolean b)";
+			expected ="ISignature : boolean b";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
 		@Test
 		public void signature_TwoParameter() throws Exception{
 			Actor.playStaticPublic(1, "a");
-			expected ="ISignature : (int i, java.lang.String s)";
+			expected ="ISignature : int i, java.lang.String s";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
@@ -494,21 +494,21 @@ public class TracerTest extends org.junit.Assert{
 		@Test
 		public void signature_NoParameter() throws Exception{
 			Actor.playStaticPrivate();
-			expected ="ISignature : ()";
+			expected ="ISignature : ";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
 			Actor.playStaticPrivate(true);
-			expected ="ISignature : (boolean b)";
+			expected ="ISignature : boolean b";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
 		@Test
 		public void signature_TwoParameters() throws Exception{
 			Actor.playStaticPrivate(1, "a");
-			expected ="ISignature : (int i, java.lang.String s)";
+			expected ="ISignature : int i, java.lang.String s";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
@@ -565,21 +565,21 @@ public class TracerTest extends org.junit.Assert{
 		@Test
 		public void signature_NoParameter() throws Exception{
 			iActor.playInstancePublic();
-			expected ="ISignature : ()";
+			expected ="ISignature : ";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
 			iActor.playInstancePublic(true);
-			expected ="ISignature : (boolean b)";
+			expected ="ISignature : boolean b";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}
 		@Test
 		public void signature_TwoParameter() throws Exception{
 			iActor.playInstancePublic(1, "a");
-			expected ="ISignature : (int i, java.lang.String s)";
+			expected ="ISignature : int i, java.lang.String s";
 			List<String> actual = log.describeAll();
 			assertTrue(actual.contains(expected));
 		}

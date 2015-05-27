@@ -13,10 +13,6 @@ public class ClassDiagram implements DiagramStrategy {
 		diagramUtilities = utilities;
 	}
 
-	public ClassDiagram() {
-		diagramUtilities = ClassDiagramUtilities.make();
-	}
-
 	@Override
 	public void generate(List<Information> informations) {
 		generateTypes(informations);

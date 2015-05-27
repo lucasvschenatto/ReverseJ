@@ -5,17 +5,14 @@ import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.UMLFactory;
 
 public class Context {
-	private static Context singleton;
-	private Model model_;
+	protected Model model_;
 //	private Interaction interaction;
 //	Context(String modelName, String InteracionName){
 //		setModel(modelName);
 //		setInteraction(InteracionName);
 //	}
 	public static Context getInstance(){
-		if(singleton == null)
-			singleton = new Context("root");
-		return singleton;
+		return new Context("root");
 	}
 	private Context(String name) {
 		model_ = UMLFactory.eINSTANCE.createModel();
