@@ -8,14 +8,15 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
+import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Interface;
+import org.eclipse.uml2.uml.InterfaceRealization;
 import org.eclipse.uml2.uml.LiteralUnlimitedNatural;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
@@ -45,14 +46,14 @@ public class ClassDiagramFrameworkAdapter{
 		return rootPackage;
 	}
 	
-	public org.eclipse.uml2.uml.Class createConcreteClass(String name){
+	public Class createConcreteClass(String name){
 		return rootPackage.createOwnedClass(name, false);
 	}
 	public Interface createInterface(String name) {
 		return rootPackage.createOwnedInterface(name);
 	}
 	public Operation createMethod(String className, String methodName, String signature) {
-		org.eclipse.uml2.uml.Class c = (org.eclipse.uml2.uml.Class) rootPackage.getOwnedMember(className);
+//		org.eclipse.uml2.uml.Class c = (org.eclipse.uml2.uml.Class) rootPackage.getOwnedMember(className);
 //		EList<String> e;
 //		c.createOwnedOperation(methodName, ownedParameterNames, ownedParameterTypes);
 		return null;
@@ -63,8 +64,10 @@ public class ClassDiagramFrameworkAdapter{
 	public PrimitiveType createType(String name) {
 		return rootPackage.createOwnedPrimitiveType(name);
 	}
-	public void createImplementation(String interface_, String implementer) {
-		// TODO Auto-generated method stub
+	public InterfaceRealization createImplementation(String interface_, String implementer) {
+		Class imp = (Class)rootPackage.getOwnedMember(implementer);
+		Interface inter = (Interface)rootPackage.getOwnedMember(interface_);
+		return imp.createInterfaceRealization(interface_+implementer, inter);
 	}
 	public void createUnidirectionalAssociation(String caller, String target) {
 		// TODO Auto-generated method stub

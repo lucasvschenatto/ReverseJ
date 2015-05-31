@@ -40,7 +40,7 @@ public class DiagramMakerTest{
 		
 		List<DiagramStrategy> actual = diagramMaker.getDiagramStrategies();
 		
-		assertEquals(expected, actual.get(0));
+		assertEquals(expected.get(0), actual.get(0));
 	}
 
 	

@@ -3,11 +3,6 @@ package integrationTests;
 import java.util.List;
 
 import StoryPackage.Story;
-import reverseJ.ClassDiagram;
-import reverseJ.ClassDiagramFrameworkAdapter;
-import reverseJ.DiagramMaker;
-import reverseJ.DiagramStrategy;
-import reverseJ.InformationProvider;
 import reverseJ.InformationStorageProvider;
 import reverseJ.RecorderStorage;
 import reverseJ.Tracer;

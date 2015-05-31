@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.uml2.uml.Interface;
+import org.eclipse.uml2.uml.InterfaceRealization;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.junit.*;
@@ -543,8 +544,9 @@ public class ClassDiagramTest {
 		}
 
 		@Override
-		public void createImplementation(String interface_, String implementer) {
+		public InterfaceRealization createImplementation(String interface_, String implementer) {
 			createdImplementations.add(interface_ + " " + implementer);
+			return null;
 		}
 
 		@Before

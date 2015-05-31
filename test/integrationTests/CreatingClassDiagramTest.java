@@ -9,6 +9,7 @@ import reverseJ.DiagramMaker;
 import reverseJ.DiagramStrategy;
 import reverseJ.InformationProvider;
 import reverseJ.InformationStorageProvider;
+import reverseJ.MakerAndSaver;
 import reverseJ.RecorderStorage;
 import reverseJ.Tracer;
 import StoryPackage.Story;
@@ -22,7 +23,7 @@ public class CreatingClassDiagramTest {
 		DiagramStrategy dS = new ClassDiagram(cDFA);
 		List<DiagramStrategy> lds = new LinkedList<DiagramStrategy>();
 		lds.add(dS);
-		DiagramMaker dM = new DiagramMaker(p, lds);
+		DiagramMaker dM = new MakerAndSaver(p, lds);
 		
 		Tracer.start(r);
 		

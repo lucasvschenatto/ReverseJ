@@ -11,10 +11,10 @@ import org.eclipse.uml2.uml.Package;
 public class ClassDiagram implements DiagramStrategy {
 	private final String constructorCall = "<init>";
 	private final String void_ = "void";
-	private ClassDiagramFrameworkAdapter diagramUtilities;
+	private ClassDiagramFrameworkAdapter adapter;
 	
-	public ClassDiagram(ClassDiagramFrameworkAdapter utilities) {
-		diagramUtilities = utilities;
+	public ClassDiagram(ClassDiagramFrameworkAdapter frameworkAdapter) {
+		adapter = frameworkAdapter;
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class ClassDiagram implements DiagramStrategy {
 		generateDependencies(informations);
 		generateMethods(informations);
 		
-		return diagramUtilities.getPackage();
+		return adapter.getPackage();
 	}
 
 	private void generateDependencies(List<Information> informations) {
@@ -35,7 +35,7 @@ public class ClassDiagram implements DiagramStrategy {
 		for (int i = 0; i < dependencies[0].size(); i++) {
 			String caller = dependencies[0].get(i);
 			String target = dependencies[1].get(i);
-			diagramUtilities.createDependency(caller, target);
+			adapter.createDependency(caller, target);
 		}
 	}
 
@@ -77,7 +77,7 @@ public class ClassDiagram implements DiagramStrategy {
 		for (int i = 0; i < associations[0].size(); i++) {
 			String caller = associations[0].get(i);
 			String target = associations[1].get(i);
-			diagramUtilities.createUnidirectionalAssociation(caller, target);
+			adapter.createUnidirectionalAssociation(caller, target);
 		}
 	}
 
@@ -87,7 +87,7 @@ public class ClassDiagram implements DiagramStrategy {
 		for (int i = 0; i < biDirectionals[0].size(); i++) {
 			String caller = biDirectionals[0].get(i);
 			String target = biDirectionals[1].get(i);
-			diagramUtilities.createBiDirectionalAssociation(caller, target);
+			adapter.createBiDirectionalAssociation(caller, target);
 		}
 	}
 	
@@ -176,7 +176,7 @@ public class ClassDiagram implements DiagramStrategy {
 		Information last = null;
 		for (Information information : informations) {
 			if(information instanceof IClass && last instanceof IInterface)
-				diagramUtilities.createImplementation(last.getValue(),information.getValue());
+				adapter.createImplementation(last.getValue(),information.getValue());
 			last = information;
 		}
 		
@@ -189,18 +189,21 @@ public class ClassDiagram implements DiagramStrategy {
 				String params = information.getValue();				
 				List<String> parametersList = Arrays.asList(params.split(","));
 				for (String parameter : parametersList){
-					String type = (parameter.trim().split(" "))[0];
-					if(!types.contains(type))
-						types.add(type);
+					if(!parameter.isEmpty()){
+						String type = (parameter.trim().split(" "))[0];
+						if(!types.contains(type))
+							types.add(type);
+					}
 				}
 			}else if(information instanceof IReturn){
-				if(!types.contains(information.getValue()))
-					types.add(information.getValue());
+				String type = information.getValue();
+				if(!types.contains(type) && !type.equals(void_))
+					types.add(type);
 			}
 		}
 		types = removeDuplicated(types);
 		for (String type : types) {
-			diagramUtilities.createType(type);
+			adapter.createType(type);
 		}
 	}
 
@@ -227,9 +230,9 @@ public class ClassDiagram implements DiagramStrategy {
 		while (cIterator.hasNext() && mIterator.hasNext() && sIterator.hasNext() && rIterator.hasNext()) {
 			String returnType = rIterator.next();
 			if(returnType.equals(void_))
-				diagramUtilities.createMethod(cIterator.next(),mIterator.next(),sIterator.next());
+				adapter.createMethod(cIterator.next(),mIterator.next(),sIterator.next());
 			else
-				diagramUtilities.createMethodWithReturn(cIterator.next(),mIterator.next(),sIterator.next(), returnType);
+				adapter.createMethodWithReturn(cIterator.next(),mIterator.next(),sIterator.next(), returnType);
 		}
 	}
 
@@ -255,26 +258,6 @@ public class ClassDiagram implements DiagramStrategy {
 			last = information;
 		}
 		return tree.getAllInfoInTree();
-//		Information last = null;
-//		TreeNode tree = new TreeNode();
-//		for (Information information : informations) {
-//			if(information instanceof IClass){
-//				if(last instanceof IParameters || last instanceof IReturn || last == null){
-//					tree = tree.addChild(information);
-//				}else{
-//					tree = tree.getParent();
-//					tree = tree.addChild(information);
-//				}
-//			}else if(information instanceof IReturn && last instanceof IReturn){
-//					tree = tree.getParent();
-//					tree.addInfo(information);
-//			}else{
-//				tree.addInfo(information);
-//			}
-//			last = information;
-//		}
-//		tree = tree.getRoot();
-//		return tree.getAllInfoInTree();
 	}
 
 	private void generateInterfaces(List<Information> informations) {
@@ -285,7 +268,7 @@ public class ClassDiagram implements DiagramStrategy {
 		}
 		interfaceNames = removeDuplicated(interfaceNames);
 		for (String interfaceName : interfaceNames){
-			diagramUtilities.createInterface(interfaceName);
+			adapter.createInterface(interfaceName);
 		}
 	}
 
@@ -298,7 +281,7 @@ public class ClassDiagram implements DiagramStrategy {
 		}
 		classNames = removeDuplicated(classNames);
 		for (String className : classNames){
-			diagramUtilities.createConcreteClass(className);
+			adapter.createConcreteClass(className);
 		}
 	}
 	
@@ -347,6 +330,6 @@ public class ClassDiagram implements DiagramStrategy {
 
 	@Override
 	public ClassDiagramFrameworkAdapter getUtil() {
-		return diagramUtilities;
+		return adapter;
 	}
 }

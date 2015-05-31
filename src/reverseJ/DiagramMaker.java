@@ -6,8 +6,8 @@ import java.util.List;
 import org.eclipse.uml2.uml.Package;
 
 public class DiagramMaker {
-	private InformationProvider infoProvider;
-	private List<DiagramStrategy> diagrams;
+	protected InformationProvider infoProvider;
+	protected List<DiagramStrategy> diagrams;
 	
 	public DiagramMaker(InformationProvider infoProvider, List<DiagramStrategy> diagrams) {
 		this.infoProvider = infoProvider;
@@ -18,7 +18,7 @@ public class DiagramMaker {
 		List<Package> packages = new LinkedList<Package>();
 		for (DiagramStrategy diagram : diagrams)
 			packages.add(diagram.generate(infoProvider.getAll()));
-		
+		return;
 	}
 
 	public InformationProvider getProvider() {

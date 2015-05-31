@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.*;
 import org.eclipse.uml2.uml.Interface;
+import org.eclipse.uml2.uml.InterfaceRealization;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
@@ -68,19 +69,51 @@ public class ClassDiagramFrameworkAdapterTest{
 	}
 	public static class CreateInterface extends ClassDiagramFrameworkAdapterTest{
 		@Test
-		public void CreateInterface_ReturnsInterface() {
+		public void createInterface_ReturnsInterface() {
 			String name = "Person";
 			Interface received = c.createInterface(name);
 			assertNotNull(received);
 		}
 		@Test
-		public void CreateInterface_InsertReturnedInterfaceInPackage() {
+		public void createInterface_InsertReturnedInterfaceInPackage() {
 			String name = "Person";
 			Interface received = c.createInterface(name);
 			assertEquals(received, c.getPackage().getOwnedMember(name));
 		}
 	}
 	public static class CreateMethod extends ClassDiagramFrameworkAdapterTest{
+		
+	}
+	public static class CreateImplementation extends ClassDiagramFrameworkAdapterTest{
+		@Test
+		public void createImplementation_ReturnsImplementation() {
+			String interfaceName = "Person";
+			c.createInterface(interfaceName);
+			String implementerName = "Employee";
+			c.createConcreteClass(implementerName);
+			InterfaceRealization received = c.createImplementation(interfaceName, implementerName);
+			assertNotNull(received);
+		}
+		@Test
+		public void createImplementation_BoundToImplClass() {
+			String interfaceName = "Person";
+			c.createInterface(interfaceName);
+			String implementerName = "Employee";
+			c.createConcreteClass(implementerName);
+			InterfaceRealization received = c.createImplementation(interfaceName, implementerName);
+			assertEquals(implementerName,received.getImplementingClassifier().getName());
+		}
+		@Test
+		public void createImplementation_BoundToInterface() {
+			String interfaceName = "Person";
+			c.createInterface(interfaceName);
+			String implementerName = "Employee";
+			c.createConcreteClass(implementerName);
+			InterfaceRealization received = c.createImplementation(interfaceName, implementerName);
+			assertEquals(interfaceName,received.getContract().getName());
+		}
+	}
+	public static class toDo extends ClassDiagramFrameworkAdapterTest{
 		@Test@Ignore
 		public void CreateMethod_ReturnsMethod() {
 			String className = "Visiter";
@@ -89,16 +122,11 @@ public class ClassDiagramFrameworkAdapterTest{
 			Operation received = c.createMethod(className, methodName, signature);
 			assertNotNull(received);
 		}
-	}
-	public static class toDo{
 		@Test@Ignore
 		public void testCreateMethodWithReturn() {
 			fail("Not yet implemented");
 		}
-		@Test@Ignore
-		public void testCreateImplementation() {
-			fail("Not yet implemented");
-		}
+		
 
 		@Test@Ignore
 		public void testCreateUnidirectionalAssociation() {
