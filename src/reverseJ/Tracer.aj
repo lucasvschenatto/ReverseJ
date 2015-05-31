@@ -18,8 +18,9 @@ public aspect Tracer {
 		&&(!within(Information+))
 		&&(!within(InformationFactory+))
 		&& !within(Tracer+)
-		&&!call(* Tracer+.*(..));
-	
+		&&!call(* Tracer+.*(..))
+		;
+	pointcut withinClass():within(*)&&immune();
 	pointcut methodCall():
 		call(* *.*(..))&&immune();
 	pointcut methodExecution():
@@ -33,38 +34,32 @@ public aspect Tracer {
 	pointcut exceptionHandle():
 		handler(Exception)&&immune();
 	
-	before(Object caller):constructorCall()&&this(caller){
-		Signature s = thisJoinPointStaticPart.getSignature();
-		String callerName = caller.getClass().getCanonicalName();
-		String targetName = s.getDeclaringType().getCanonicalName();		
-		recorderStorage.addInformation(InformationFactory.createCaller(callerName));
-		recorderStorage.addInformation(InformationFactory.createTarget(targetName));		
-	}
 	before():constructorExecution()||methodExecution(){
 		Signature s = thisJoinPointStaticPart.getSignature();
+		String className = s.getDeclaringType().getCanonicalName();
 		String modifiers = generateModifiers(s);
 		String methodName = s.getName();
-		String signature = generateSignature(s);		
+		String parameters = generateParameters(s);
+		recorderStorage.addInformation(InformationFactory.createClass(className));
 		recorderStorage.addInformation(InformationFactory.createModifiers(modifiers));
 		recorderStorage.addInformation(InformationFactory.createMethod(methodName));
-		recorderStorage.addInformation(InformationFactory.createSignature(signature));
+		recorderStorage.addInformation(InformationFactory.createParameters(parameters));
 	}
-
-	before(Object caller):methodCall()&&this(caller){
+	
+	before():methodCall(){
 		Signature s = thisJoinPointStaticPart.getSignature();
-		String callerName = caller.getClass().getCanonicalName();
 		String declaredTargetName = s.getDeclaringType().getCanonicalName();		
-		recorderStorage.addInformation(InformationFactory.createCaller(callerName));
 		if(s.getDeclaringType().isInterface()){
 			String targetName = thisJoinPoint.getTarget().getClass().getCanonicalName();
 			recorderStorage.addInformation(InformationFactory.createInterface(declaredTargetName));
-			recorderStorage.addInformation(InformationFactory.createTarget(targetName));
+//			recorderStorage.addInformation(InformationFactory.createTarget(targetName));
 		}
-		else
-			recorderStorage.addInformation(InformationFactory.createTarget(declaredTargetName));	
+//		else
+//			recorderStorage.addInformation(InformationFactory.createTarget(declaredTargetName));	
 	}
-	before(Object handler):exceptionHandle()&&this(handler){
-		String handlerName = handler.getClass().getCanonicalName();
+	before():exceptionHandle(){
+		Signature s = thisJoinPointStaticPart.getSignature();
+		String handlerName = s.getDeclaringType().getCanonicalName();
 		recorderStorage.addInformation(InformationFactory.createHandler(handlerName));
 	}
 	
@@ -80,16 +75,16 @@ public aspect Tracer {
 	}
 
 
-	private String generateSignature(Signature sig) {
-		String signature = "";
+	private String generateParameters(Signature sig) {
+		String parameters = "";
 		String[] name = ((CodeSignature)sig).getParameterNames();
 		Class<?>[] type = ((CodeSignature)sig).getParameterTypes();
 		for (int i = 0; i < type.length; i++) {
 			if(i != 0)
-				signature = signature.concat(", ");
-			signature = signature.concat(type[i].getCanonicalName() + " " + name[i]);
+				parameters = parameters.concat(", ");
+			parameters = parameters.concat(type[i].getCanonicalName() + " " + name[i]);
 		}
-		return signature;
+		return parameters;
 	}
 	private String generateModifiers(Signature sig) {
 		int mod = sig.getModifiers();
@@ -101,10 +96,12 @@ public aspect Tracer {
 		List<String> accessControlModifier = new LinkedList<>();
 		if(java.lang.reflect.Modifier.isPublic(mod))
 			accessControlModifier.add("public");
-		if(java.lang.reflect.Modifier.isPrivate(mod))
+		else if(java.lang.reflect.Modifier.isPrivate(mod))
 			accessControlModifier.add("private");
-		if(java.lang.reflect.Modifier.isProtected(mod))
+		else if(java.lang.reflect.Modifier.isProtected(mod))
 			accessControlModifier.add("protected");
+		else
+			accessControlModifier.add("package level");
 		return accessControlModifier;
 	}
 	private List<String> nonAccessModifiers(int mod) {

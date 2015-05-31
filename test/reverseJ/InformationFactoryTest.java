@@ -52,9 +52,9 @@ public class InformationFactoryTest {
 	@Test
 	public void createSignature() {
 		String value = "test";
-		String expectedDescribe = "ISignature : test";
-		Information i = InformationFactory.createSignature(value);
-		assertTrue(i instanceof ISignature);
+		String expectedDescribe = "IParameters : test";
+		Information i = InformationFactory.createParameters(value);
+		assertTrue(i instanceof IParameters);
 		assertEquals(value, i.getValue());
 	assertEquals(expectedDescribe, i.describe());
 	}

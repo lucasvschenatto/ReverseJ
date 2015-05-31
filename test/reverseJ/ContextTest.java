@@ -13,11 +13,11 @@ public class ContextTest {
 		assertNotNull(c);
 	}
 	@Test
-	public void getInstance_returnsSingleton(){
+	public void getInstance_returnsNewInstance(){
 		Context first  = Context.getInstance();
 		Context second = Context.getInstance();
 		
-		assertEquals(first, second);
+		assertNotEquals(first, second);
 	}
 	@Test
 	public void getModel(){

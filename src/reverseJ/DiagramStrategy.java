@@ -1,11 +1,12 @@
 package reverseJ;
 
 import java.util.List;
+import org.eclipse.uml2.uml.Package;
 
 public interface DiagramStrategy {
 
-	void generate(List<Information> informations);
+	 Package generate(List<Information> informations);
 
-	ClassDiagramUtilities getUtil();
+	ClassDiagramFrameworkAdapter getUtil();
 
 }

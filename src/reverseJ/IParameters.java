@@ -1,8 +1,8 @@
 package reverseJ;
 
-public class ISignature implements Information {
+public class IParameters implements Information {
 	private String value;
-	ISignature(String value){
+	IParameters(String value){
 		this.value = value;
 	}
 	public String getValue() {

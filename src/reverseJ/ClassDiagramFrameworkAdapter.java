@@ -27,19 +27,19 @@ import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 
-public class ClassDiagramUtilities{
+public class ClassDiagramFrameworkAdapter{
 	private Context context;
 	private Package rootPackage;
-	protected ClassDiagramUtilities(String packageName, Context context) {
+	protected ClassDiagramFrameworkAdapter(String packageName, Context context) {
 		context = Context.getInstance();
 		rootPackage = context.getModel().createNestedPackage(packageName);
 	}
-	protected ClassDiagramUtilities() {
+	public ClassDiagramFrameworkAdapter() {
 		context = Context.getInstance();
 		rootPackage = context.getModel().createNestedPackage("default");
 	}
-	public static ClassDiagramUtilities make(Context context) {
-		return new ClassDiagramUtilities("classDiagram", context);
+	public static ClassDiagramFrameworkAdapter make(Context context) {
+		return new ClassDiagramFrameworkAdapter("classDiagram", context);
 	}
 	public Package getPackage() {
 		return rootPackage;

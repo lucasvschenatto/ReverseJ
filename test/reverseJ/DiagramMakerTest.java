@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.uml2.uml.Package;
 import org.junit.*;
 
 public class DiagramMakerTest{
@@ -12,13 +13,14 @@ public class DiagramMakerTest{
 	private static List<Information> actualPassedInformations; 
 	private DiagramMaker diagramMaker;
 	private InformationProvider provider;
-	private DiagramStrategy strategy;
+	private List<DiagramStrategy> strategy;
 	@Before
 	public void setup(){
 		actualPassedInformations = null;
 		strategyCreateMethodWasCalled = false;
 		provider = createStubProvider();
-		strategy = createStubDiagramStrategy();
+		strategy = new LinkedList<DiagramStrategy>();
+		strategy.add(createStubDiagramStrategy());
 	}
 	@Test
 	public void constructorSetsProvider(){
@@ -32,12 +34,13 @@ public class DiagramMakerTest{
 	
 	@Test
 	public void constructorSetsDiagramType(){
-		DiagramStrategy expected = createStubDiagramStrategy();
+		List<DiagramStrategy> expected = new LinkedList<DiagramStrategy>(); 
+		expected.add(createStubDiagramStrategy());
 		diagramMaker = new DiagramMaker(null,expected);
 		
-		DiagramStrategy actual = diagramMaker.getDiagramStrategies();
+		List<DiagramStrategy> actual = diagramMaker.getDiagramStrategies();
 		
-		assertEquals(expected, actual);
+		assertEquals(expected, actual.get(0));
 	}
 
 	
@@ -73,29 +76,33 @@ public class DiagramMakerTest{
 	}
 	private DiagramMaker createDiagramMaker(){
 		provider = createStubProvider();
-		strategy = createStubDiagramStrategy();
+		strategy.clear();
+		strategy.add(createStubDiagramStrategy());
 		return new DiagramMaker(provider,strategy);
 	}
 	private DiagramMaker createDiagramMaker(List<Information> informations){
 		provider = createStrubProvider(informations);
-		strategy = createStubDiagramStrategy();
+		strategy.clear();
+		strategy.add(createStubDiagramStrategy());
 		return new DiagramMaker(provider,strategy);
 	}
 	private DiagramMaker createDiagramMaker(DiagramObject diagram) {
 		provider = createStubProvider();
-		strategy = createStubDiagramStrategy(diagram);
+		strategy.clear();
+		strategy.add(createStubDiagramStrategy(diagram));
 		return new DiagramMaker(provider,strategy);
 	}
 	private DiagramStrategy createStubDiagramStrategy() {
 		DiagramStrategy expected = new DiagramStrategy() {
 			@Override
-			public void generate(List<Information> informations) {
+			public Package generate(List<Information> informations) {
 				DiagramMakerTest.createMethodWasCalled();
 				DiagramMakerTest.PassedInformations(informations);
+				return null;
 			}
 
 			@Override
-			public ClassDiagramUtilities getUtil() {
+			public ClassDiagramFrameworkAdapter getUtil() {
 				return null;
 			}
 		};
@@ -104,13 +111,14 @@ public class DiagramMakerTest{
 	private DiagramStrategy createStubDiagramStrategy(DiagramObject diag) {
 		DiagramStrategy expected = new DiagramStrategy() {
 			@Override
-			public void generate(List<Information> informations) {
+			public Package generate(List<Information> informations) {
 				DiagramMakerTest.createMethodWasCalled();
 				DiagramMakerTest.PassedInformations(informations);
+				return null;
 			}
 
 			@Override
-			public ClassDiagramUtilities getUtil() {
+			public ClassDiagramFrameworkAdapter getUtil() {
 				return null;
 			}
 		};

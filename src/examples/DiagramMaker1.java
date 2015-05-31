@@ -22,7 +22,7 @@ public class DiagramMaker1 {
 //	public static boolean DEBUG = true;
 
 	private static ResourceSet resourceSet = new ResourceSetImpl();
-	public static void main(String[] args) throws Exception{
+	/*public static void main(String[] args) throws Exception{
 		Package myPackage = createPackage("packageSequenceGoal");
 		Interaction myInteraction = createInteraction(myPackage, "interactionTest1");
 		Lifeline caller = createLifeLine(myInteraction, "caller");
@@ -158,7 +158,7 @@ public class DiagramMaker1 {
 		.appendFileExtension(UMLResource.FILE_EXTENSION);
 		save(myPackage, outputURI);
 	} 
-
+*/
 	//
 	// Model-building utilities
 	//

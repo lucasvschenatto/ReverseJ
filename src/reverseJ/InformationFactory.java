@@ -1,6 +1,9 @@
 package reverseJ;
 
 public abstract class InformationFactory {
+	public static IClass createClass(String value){
+		return new IClass(value);
+	}
 	public static ICaller createCaller(String value){
 		return new ICaller(value);
 	}
@@ -16,8 +19,8 @@ public abstract class InformationFactory {
 	public static IMethod createMethod(String value) {
 		return new IMethod(value);
 	}
-	public static ISignature createSignature(String value) {
-		return new ISignature(value);
+	public static IParameters createParameters(String value) {
+		return new IParameters(value);
 	}
 	public static IReturn createReturn(String value) {
 		return new IReturn(value);

@@ -24,7 +24,7 @@ public class DiagramMaker3 {
 
 	private static ResourceSet resourceSet = new ResourceSetImpl();
 	private static Interaction interaction;
-	public static void main(String[] args) throws Exception{
+	/*public static void main(String[] args) throws Exception{
 		Package myPackage = createPackage("packageSequenceGoal");
 		interaction = createInteraction(myPackage, "interactionTest1");
 //		OpaqueBehavior behavior = createOpaqueBehavior(myPackage,"operation1Behavior");
@@ -51,7 +51,7 @@ public class DiagramMaker3 {
 		URI outputURI = URI.createFileURI("../ReverseJ/files/diagramStudy3")
 		.appendFileExtension(UMLResource.FILE_EXTENSION);
 		save(myPackage, outputURI);
-	} 
+	}*/ 
 	private static OpaqueBehavior createOpaqueBehavior(Package package_,
 			String name) {
 		OpaqueBehavior behavior = UMLFactory.eINSTANCE.createOpaqueBehavior();

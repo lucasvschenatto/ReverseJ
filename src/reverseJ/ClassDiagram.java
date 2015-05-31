@@ -4,17 +4,21 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
+
+import org.eclipse.uml2.uml.Package;
 
 public class ClassDiagram implements DiagramStrategy {
 	private final String constructorCall = "<init>";
-	private ClassDiagramUtilities diagramUtilities;
+	private final String void_ = "void";
+	private ClassDiagramFrameworkAdapter diagramUtilities;
 	
-	public ClassDiagram(ClassDiagramUtilities utilities) {
+	public ClassDiagram(ClassDiagramFrameworkAdapter utilities) {
 		diagramUtilities = utilities;
 	}
 
 	@Override
-	public void generate(List<Information> informations) {
+	public Package generate(List<Information> informations) {
 		generateTypes(informations);
 		generateClasses(informations);		
 		generateInterfaces(informations);
@@ -22,6 +26,8 @@ public class ClassDiagram implements DiagramStrategy {
 		generateAssociations(informations);
 		generateDependencies(informations);
 		generateMethods(informations);
+		
+		return diagramUtilities.getPackage();
 	}
 
 	private void generateDependencies(List<Information> informations) {
@@ -38,23 +44,23 @@ public class ClassDiagram implements DiagramStrategy {
 		List<String>[] dependencies = (List<String>[])new List[]{
 			new LinkedList<String>(), new LinkedList<String>()};
 		
-		Information lastCaller = null, lastTarget = null;
+		Stack<String> stack = new Stack<String>();
+		boolean isMethod = false;
 		
 		for (Information information : informations) {
-			if(information instanceof ICaller)
-				lastCaller = information;
-			else if(information instanceof ITarget)
-				lastTarget = information;
-			else if(information instanceof IMethod && lastCaller != null && lastTarget != null){
-				//DEPENDENCY IS NOT CONSTRUCTOR_CALL
-				if(information.getValue() != constructorCall){
-					if (!(dependencies[0].contains(lastCaller.getValue())
-							&& dependencies[1].contains(lastTarget.getValue()))){
-						dependencies[0].add(lastCaller.getValue());
-						dependencies[1].add(lastTarget.getValue());
+			if(information instanceof IClass)
+				stack.push(information.getValue());
+			else if(information instanceof IMethod)
+				isMethod = (information.getValue() != constructorCall)? true:false;
+			else if(information instanceof IReturn){
+				String poped = stack.pop();
+				if(!stack.empty()){					 
+					if(isMethod){
+						dependencies[1].add(poped);
+						dependencies[0].add(stack.peek());
 					}
 				}
-			}
+			}				
 		}		
 		return dependencies;
 	}
@@ -66,7 +72,8 @@ public class ClassDiagram implements DiagramStrategy {
 	}
 
 	private void generateUnidirectionalAssociations(List<String>[] associations) {
-		associations = removeBiDirectionals(associations);		
+		associations = removeBiDirectionals(associations);
+		associations = removeDuplicatedUniDirectionals(associations);
 		for (int i = 0; i < associations[0].size(); i++) {
 			String caller = associations[0].get(i);
 			String target = associations[1].get(i);
@@ -75,7 +82,8 @@ public class ClassDiagram implements DiagramStrategy {
 	}
 
 	private void generateBiDirectionalAssociations(List<String>[] associations) {
-		List<String>[] biDirectionals = getBidirectionals(associations);
+		List<String>[] biDirectionals = removeUniDirectionals(associations);
+		biDirectionals = removeDuplicatedBiDirectionals(biDirectionals);
 		for (int i = 0; i < biDirectionals[0].size(); i++) {
 			String caller = biDirectionals[0].get(i);
 			String target = biDirectionals[1].get(i);
@@ -83,7 +91,7 @@ public class ClassDiagram implements DiagramStrategy {
 		}
 	}
 	
-	private List<String>[] getBidirectionals(List<String>[] associations) {
+	private List<String>[] removeUniDirectionals(List<String>[] associations) {
 		@SuppressWarnings("unchecked")
 		List<String>[] bidirectionals = (List<String>[])new List[]{
 			new LinkedList<String>(), new LinkedList<String>()};
@@ -94,7 +102,7 @@ public class ClassDiagram implements DiagramStrategy {
 			for(int j = i+1; j < associations[0].size();j++){
 				String caller2 = associations[0].get(j);
 				String target2 = associations[1].get(j);
-				if(caller1 == target2 && target1 == caller2){
+				if(caller1.equals(target2) && target1.equals(caller2)){
 					bidirectionals[0].add(caller1);
 					bidirectionals[1].add(target1);
 				}
@@ -113,9 +121,9 @@ public class ClassDiagram implements DiagramStrategy {
 			for(int j = i+1; j < unidirectionals[0].size();j++){
 				String caller2 = unidirectionals[0].get(j);
 				String target2 = unidirectionals[1].get(j);
-				if(caller1 == target2 && target1 == caller2){
-					unidirectionals[0].remove(caller2);
-					unidirectionals[1].remove(target2);
+				if(caller1.equals(target2) && target1.equals(caller2)){
+					unidirectionals[0].remove(j);
+					unidirectionals[1].remove(j);
 					isBidirectional = true;
 				}
 			}
@@ -143,23 +151,23 @@ public class ClassDiagram implements DiagramStrategy {
 		List<String>[] associations = (List<String>[])new List[]{
 			new LinkedList<String>(), new LinkedList<String>()};
 		
-		Information lastCaller = null, lastTarget = null;
+		Stack<String> stack = new Stack<String>();
+		boolean isConstructor = false;
 		
 		for (Information information : informations) {
-			if(information instanceof ICaller)
-				lastCaller = information;
-			else if(information instanceof ITarget)
-				lastTarget = information;
-			else if(information instanceof IMethod && lastCaller != null && lastTarget != null){
-				//ASSOCIATION IS CONSTRUCTOR_CALL
-				if(information.getValue() == constructorCall){
-					if (!(associations[0].contains(lastCaller.getValue())
-							&& associations[1].contains(lastTarget.getValue()))){
-						associations[0].add(lastCaller.getValue());
-						associations[1].add(lastTarget.getValue());
+			if(information instanceof IClass)
+				stack.push(information.getValue());
+			else if(information instanceof IMethod)
+				isConstructor = (information.getValue() == constructorCall)? true:false;
+			else if(information instanceof IReturn){
+				String poped = stack.pop();
+				if(!stack.empty()){					 
+					if(isConstructor){
+						associations[1].add(poped);
+						associations[0].add(stack.peek());
 					}
 				}
-			}
+			}				
 		}		
 		return associations;
 	}
@@ -167,7 +175,7 @@ public class ClassDiagram implements DiagramStrategy {
 	private void generateImplementations(List<Information> informations) {
 		Information last = null;
 		for (Information information : informations) {
-			if(information instanceof ITarget && last instanceof IInterface)
+			if(information instanceof IClass && last instanceof IInterface)
 				diagramUtilities.createImplementation(last.getValue(),information.getValue());
 			last = information;
 		}
@@ -177,10 +185,10 @@ public class ClassDiagram implements DiagramStrategy {
 	private void generateTypes(List<Information> informations) {
 		List<String> types = new LinkedList<String>();
 		for (Information information : informations){
-			if(information instanceof ISignature){
-				String signature = removeParenthesis(information.getValue());				
-				List<String> parameters = Arrays.asList(signature.split(","));
-				for (String parameter : parameters){
+			if(information instanceof IParameters){
+				String params = information.getValue();				
+				List<String> parametersList = Arrays.asList(params.split(","));
+				for (String parameter : parametersList){
 					String type = (parameter.trim().split(" "))[0];
 					if(!types.contains(type))
 						types.add(type);
@@ -190,16 +198,10 @@ public class ClassDiagram implements DiagramStrategy {
 					types.add(information.getValue());
 			}
 		}
+		types = removeDuplicated(types);
 		for (String type : types) {
 			diagramUtilities.createType(type);
 		}
-	}
-
-	private String removeParenthesis(String value) {
-		String s = value.replace('(', ' ');
-		s = s.replace(')', ' ');
-		s = s.trim();
-		return s;
 	}
 
 	private void generateMethods(List<Information> informations) {
@@ -209,49 +211,70 @@ public class ClassDiagram implements DiagramStrategy {
 		List<String> signatures        = new LinkedList<String>();
 		List<String> returnTypes       = new LinkedList<String>();
 		for (Information information : informations) {
-			if(information instanceof ITarget)
+			if(information instanceof IClass)
 				containingClasses.add(information.getValue());
-			if(information instanceof IMethod)
+			else if(information instanceof IMethod)
 				methodNames.add(information.getValue());
-			if(information instanceof ISignature)
+			else if(information instanceof IParameters)
 				signatures.add(information.getValue());
-			if(information instanceof IReturn)
+			else if(information instanceof IReturn)
 				returnTypes.add(information.getValue());
 		}
 		Iterator<String> cIterator = containingClasses.iterator();
 		Iterator<String> mIterator = methodNames.iterator();
 		Iterator<String> sIterator = signatures.iterator();
 		Iterator<String> rIterator = returnTypes.iterator();
-		while (cIterator.hasNext() && mIterator.hasNext() && sIterator.hasNext()) {
-			if(rIterator.hasNext())
-				diagramUtilities.createMethodWithReturn(cIterator.next(),mIterator.next(),sIterator.next(), rIterator.next());
-			else
+		while (cIterator.hasNext() && mIterator.hasNext() && sIterator.hasNext() && rIterator.hasNext()) {
+			String returnType = rIterator.next();
+			if(returnType.equals(void_))
 				diagramUtilities.createMethod(cIterator.next(),mIterator.next(),sIterator.next());
+			else
+				diagramUtilities.createMethodWithReturn(cIterator.next(),mIterator.next(),sIterator.next(), returnType);
 		}
 	}
 
 	private List<Information> moveNestedMethodsToFirstLayer(
-			List<Information> informations) {		
-		Information last = null;
+			List<Information> informations) {
 		TreeNode tree = new TreeNode();
-		for (Information information : informations) {
-			if(information instanceof ICaller){
-				if(last instanceof ISignature || last instanceof IReturn || last == null){
-					tree = tree.addChild(information);
-				}else{
-					tree = tree.getParent();
-					tree = tree.addChild(information);
-				}
-			}else if(information instanceof IReturn && last instanceof IReturn){
-					tree = tree.getParent();
+		Information last = null;
+		for(Information information :informations){
+			if(information instanceof IClass){
+				if(last == null || last instanceof IInterface){
 					tree.addInfo(information);
-			}else{
-				tree.addInfo(information);
+				}else
+					tree.addChild(information);
 			}
+			else if(information instanceof IInterface)
+				tree.addChild(information);
+			else if(information instanceof IReturn){
+				tree.addInfo(information);
+				tree = (tree.getParent() == null)? tree:tree.getParent();
+			}
+			else
+				tree.addInfo(information);
 			last = information;
 		}
-		tree = tree.getRoot();
 		return tree.getAllInfoInTree();
+//		Information last = null;
+//		TreeNode tree = new TreeNode();
+//		for (Information information : informations) {
+//			if(information instanceof IClass){
+//				if(last instanceof IParameters || last instanceof IReturn || last == null){
+//					tree = tree.addChild(information);
+//				}else{
+//					tree = tree.getParent();
+//					tree = tree.addChild(information);
+//				}
+//			}else if(information instanceof IReturn && last instanceof IReturn){
+//					tree = tree.getParent();
+//					tree.addInfo(information);
+//			}else{
+//				tree.addInfo(information);
+//			}
+//			last = information;
+//		}
+//		tree = tree.getRoot();
+//		return tree.getAllInfoInTree();
 	}
 
 	private void generateInterfaces(List<Information> informations) {
@@ -269,7 +292,7 @@ public class ClassDiagram implements DiagramStrategy {
 	private void generateClasses(List<Information> informations) {
 		List<String> classNames = new LinkedList<String>();
 		for (Information information : informations) {
-			if(information instanceof ICaller || information instanceof ITarget
+			if(information instanceof IClass
 				|| information instanceof IHandler)
 				classNames.add(information.getValue());
 		}
@@ -290,9 +313,40 @@ public class ClassDiagram implements DiagramStrategy {
 		}
 		return classesNames;
 	}
+	private List<String>[] removeDuplicatedBiDirectionals(List<String>[] pairs) {		
+		pairs = removeDuplicatedUniDirectionals(pairs);
+		for (int i = 0; i < pairs[0].size(); i++) {
+			String caller1 = pairs[0].get(i);
+			String target1 = pairs[1].get(i);
+			for(int j = i+1; j < pairs[0].size();j++){
+				String caller2 = pairs[0].get(j);
+				String target2 = pairs[1].get(j);
+				if(caller1.equals(target2) && target1.equals(caller2)){
+					pairs[0].remove(j);
+					pairs[1].remove(j);
+				}
+			}
+		}
+		return pairs;
+	}
+	private List<String>[] removeDuplicatedUniDirectionals(List<String>[] pairs) {		
+		for (int i = 0; i < pairs[0].size(); i++) {
+			String caller1 = pairs[0].get(i);
+			String target1 = pairs[1].get(i);
+			for(int j = i+1; j < pairs[0].size();j++){
+				String caller2 = pairs[0].get(j);
+				String target2 = pairs[1].get(j);
+				if(caller1.equals(caller2) && target1.equals(target2)){
+					pairs[0].remove(j);
+					pairs[1].remove(j);
+				}
+			}
+		}
+		return pairs;
+	}
 
 	@Override
-	public ClassDiagramUtilities getUtil() {
+	public ClassDiagramFrameworkAdapter getUtil() {
 		return diagramUtilities;
 	}
 }
