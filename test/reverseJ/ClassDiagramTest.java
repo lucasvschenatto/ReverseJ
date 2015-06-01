@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.InterfaceRealization;
 import org.eclipse.uml2.uml.Operation;
@@ -594,8 +595,9 @@ public class ClassDiagramTest {
 		}
 
 		@Override
-		public void createUnidirectionalAssociation(String caller, String target) {
+		public Association createUnidirectionalAssociation(String caller, String target) {
 			createdAssociations.add(caller + " " + target);
+			return null;
 		}
 
 		@Before
@@ -718,8 +720,9 @@ public class ClassDiagramTest {
 		}
 
 		@Override
-		public void createUnidirectionalAssociation(String caller, String target) {
+		public Association createUnidirectionalAssociation(String caller, String target) {
 			createdUnidirectionalAssociations.add(caller + " " + target);
+			return null;
 		}
 
 		@Override
@@ -831,8 +834,9 @@ public class ClassDiagramTest {
 		}
 
 		@Override
-		public void createUnidirectionalAssociation(String caller, String target) {
+		public Association createUnidirectionalAssociation(String caller, String target) {
 			createdUnidirectionalAssociations.add(caller + " " + target);
+			return null;
 		}
 
 		@Override

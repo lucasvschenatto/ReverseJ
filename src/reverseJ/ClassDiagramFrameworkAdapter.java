@@ -69,8 +69,14 @@ public class ClassDiagramFrameworkAdapter{
 		Interface inter = (Interface)rootPackage.getOwnedMember(interface_);
 		return imp.createInterfaceRealization(interface_+implementer, inter);
 	}
-	public void createUnidirectionalAssociation(String caller, String target) {
-		// TODO Auto-generated method stub
+	public Association createUnidirectionalAssociation(String caller, String target) {
+		Class c = (Class)rootPackage.getOwnedMember(caller);
+		Class t = (Class)rootPackage.getOwnedMember(target);
+		return c.createAssociation(
+				true, AggregationKind.NONE_LITERAL, null,
+				0, LiteralUnlimitedNatural.UNLIMITED,
+				t, false, AggregationKind.NONE_LITERAL, null,
+				0, LiteralUnlimitedNatural.UNLIMITED);	
 	}
 	public void createBiDirectionalAssociation(String class1, String class2) {
 		// TODO Auto-generated method stub
