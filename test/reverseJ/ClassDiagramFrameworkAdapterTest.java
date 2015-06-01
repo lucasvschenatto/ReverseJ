@@ -132,8 +132,12 @@ public class ClassDiagramFrameworkAdapterTest{
 			String targetName = "Employee";
 			adapter.createConcreteClass(targetName);
 			Association received = adapter.createUnidirectionalAssociation(callerName, targetName);
-			fail("Not finished yet");
+			
+			System.out.println(received.isAbstract());
+			System.out.println(received.isBinary());
+			System.out.println(received.isDerived());
 //			received.getNavigableOwnedEnd(callerName, );
+			fail("Not finished yet");
 		}
 	}
 	public static class ToDo extends ClassDiagramFrameworkAdapterTest{

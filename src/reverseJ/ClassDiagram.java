@@ -19,12 +19,12 @@ public class ClassDiagram implements DiagramStrategy {
 
 	@Override
 	public Package generate(List<Information> informations) {
-		generateTypes(informations);
 		generateClasses(informations);		
 		generateInterfaces(informations);
 		generateImplementations(informations);
 		generateAssociations(informations);
 		generateDependencies(informations);
+		generateTypes(informations);
 		generateMethods(informations);
 		
 		return adapter.getPackage();

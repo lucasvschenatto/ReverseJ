@@ -70,8 +70,8 @@ public class ClassDiagramFrameworkAdapter{
 		return imp.createInterfaceRealization(interface_+implementer, inter);
 	}
 	public Association createUnidirectionalAssociation(String caller, String target) {
-		Class c = (Class)rootPackage.getOwnedMember(caller);
-		Class t = (Class)rootPackage.getOwnedMember(target);
+		Type c = (Type)rootPackage.getOwnedMember(caller);
+		Type t = (Type)rootPackage.getOwnedMember(target);
 		return c.createAssociation(
 				true, AggregationKind.NONE_LITERAL, null,
 				0, LiteralUnlimitedNatural.UNLIMITED,
