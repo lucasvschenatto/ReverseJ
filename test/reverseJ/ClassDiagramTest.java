@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.uml2.uml.Association;
+import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.InterfaceRealization;
 import org.eclipse.uml2.uml.Operation;
@@ -72,6 +73,23 @@ public class ClassDiagramTest {
 		informations.add(InformationFactory.createModifiers(modifiers + id));
 		informations.add(InformationFactory.createMethod(method + id));
 		informations.add(InformationFactory.createParameters(parameters + id));
+		informations.add(InformationFactory.createReturn(returnType + id));
+
+		return informations;
+	}
+	
+	public static List<Information> completeNestedInterfaceTrace(String id) {
+		List<Information> informations = new LinkedList<Information>();
+		informations.add(InformationFactory.createClass(class1 + id));
+		informations.add(InformationFactory.createModifiers(modifiers + id));
+		informations.add(InformationFactory.createMethod(methodR));
+		informations.add(InformationFactory.createParameters(parameters + id));
+		informations.add(InformationFactory.createInterface(interface_ + id));
+		informations.add(InformationFactory.createClass(class2 + id));
+		informations.add(InformationFactory.createModifiers(modifiers + id));
+		informations.add(InformationFactory.createMethod(methodR));
+		informations.add(InformationFactory.createParameters(parameters + id));
+		informations.add(InformationFactory.createReturn(returnType + id));
 		informations.add(InformationFactory.createReturn(returnType + id));
 
 		return informations;
@@ -512,9 +530,9 @@ public class ClassDiagramTest {
 
 		@Test
 		public void DoesntRepeatTypes() {
-			String signature = "int i, int d";
+			String parameters = "int i, int d";
 			List<Information> informations = new LinkedList<Information>();
-			informations.add(InformationFactory.createParameters(signature));
+			informations.add(InformationFactory.createParameters(parameters));
 
 			strategy.generate(informations);
 
@@ -524,10 +542,35 @@ public class ClassDiagramTest {
 		@Test
 		public void ifHasNoType_DoNotCreate() {
 			List<Information> informations = new LinkedList<Information>();
-
+			
 			strategy.generate(informations);
 
 			assertNumberOfCreatedTypes(0);
+		}
+		
+		@Test
+		public void doNotCreate_IfParameterIsClassType() {
+			String className = "Car";
+			String parameters = className+" c, int i";
+			List<Information> informations = new LinkedList<Information>();
+			informations.add(InformationFactory.createClass(className));
+			informations.add(InformationFactory.createParameters(parameters));
+			strategy.generate(informations);
+			
+			assertTypeCreated("int");
+			assertNumberOfCreatedTypes(1);
+		}
+		@Test
+		public void doNotCreate_IfParameterIsInterfaceType() {
+			String interfaceName = "Car";
+			String parameters = interfaceName+" c, boolean b";
+			List<Information> informations = new LinkedList<Information>();
+			informations.add(InformationFactory.createInterface(interfaceName));
+			informations.add(InformationFactory.createParameters(parameters));
+			strategy.generate(informations);
+			
+			assertTypeCreated("boolean");
+			assertNumberOfCreatedTypes(1);
 		}
 	}
 
@@ -654,8 +697,9 @@ public class ClassDiagramTest {
 		}
 
 		@Override
-		public void createBiDirectionalAssociation(String class1, String class2) {
+		public Association createBidirectionalAssociation(String class1, String class2) {
 			createdBiDirectionalAssociations.add(class1 + " " + class2);
+			return null;
 		}
 
 		@Before
@@ -726,8 +770,9 @@ public class ClassDiagramTest {
 		}
 
 		@Override
-		public void createBiDirectionalAssociation(String class1, String class2) {
+		public Association createBidirectionalAssociation(String class1, String class2) {
 			createdBiDirectionalAssociations.add(class1 + " " + class2);
+			return null;
 		}
 
 		@Before
@@ -769,8 +814,9 @@ public class ClassDiagramTest {
 		}
 
 		@Override
-		public void createDependency(String caller, String target) {
+		public Dependency createDependency(String caller, String target) {
 			createdDependencies.add(caller + " " + target);
+			return null;
 		}
 
 		@Before
@@ -800,6 +846,7 @@ public class ClassDiagramTest {
 
 			assertDependencyCreated(class1 + id1 + space + class2 + id1);
 			assertDependencyCreated(class1 + id2 + space + class2 + id2);
+			assertNumberOfCreatedDependencies(2);
 		}
 
 		@Test
@@ -811,6 +858,36 @@ public class ClassDiagramTest {
 
 			assertDependencyCreated("Caller123 Target123");
 			assertNumberOfCreatedDependencies(1);
+		}
+		@Test
+		public void createDependency_TargetIsInterface(){
+			String id = "123";
+			List<Information> informations = completeNestedInterfaceTrace(id);
+
+			strategy.generate(informations);
+
+			assertDependencyCreated(class1 + id + space + interface_ + id);
+			assertNumberOfCreatedDependencies(1);
+		}
+		@Test
+		public void doesntCreateDependency_IfThereIsUnidirectionalAssociation(){
+			String id = "123";
+			List<Information> informations = completeNestedConstructorTrace(id);
+			informations.addAll(completeNestedMethodTrace(id));
+			
+			strategy.generate(informations);
+			
+			assertNumberOfCreatedDependencies(0);
+		}
+		@Test
+		public void doesntCreateDependency_IfThereIsBidirectionalAssociation(){
+			String id = "123";
+			List<Information> informations = completeBiDirectionalConstructorTrace(id);
+			informations.addAll(completeNestedMethodTrace(id));
+			
+			strategy.generate(informations);
+			
+			assertNumberOfCreatedDependencies(0);
 		}
 	}
 
@@ -840,13 +917,15 @@ public class ClassDiagramTest {
 		}
 
 		@Override
-		public void createBiDirectionalAssociation(String class1, String class2) {
+		public Association createBidirectionalAssociation(String class1, String class2) {
 			createdBiDirectionalAssociations.add(class1 + " " + class2);
+			return null;
 		}
 
 		@Override
-		public void createDependency(String caller, String target) {
+		public Dependency createDependency(String caller, String target) {
 			createdDependencies.add(caller + " " + target);
+			return null;
 		}
 
 		@Before

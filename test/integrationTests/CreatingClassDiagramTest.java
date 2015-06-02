@@ -31,7 +31,9 @@ public class CreatingClassDiagramTest {
 		s.tellStory();
 		
 		Tracer.stop();
-		
+		for (String info : r.describeAll()) {
+			System.out.println(info);
+		}
 		dM.make();
 	}
 }

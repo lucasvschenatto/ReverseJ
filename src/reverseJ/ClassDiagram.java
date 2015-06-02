@@ -12,9 +12,18 @@ public class ClassDiagram implements DiagramStrategy {
 	private final String constructorCall = "<init>";
 	private final String void_ = "void";
 	private ClassDiagramFrameworkAdapter adapter;
+	private List<String> attributeClasses;
+	private List<String> attributeInterfaces;
+	private List<String> attributeTypes;
+	private List<String> attributeMethods;
+	private List<String>[] attributeUnidirectionals;
 	
 	public ClassDiagram(ClassDiagramFrameworkAdapter frameworkAdapter) {
 		adapter = frameworkAdapter;
+		attributeClasses = new LinkedList<String>();
+		attributeInterfaces = new LinkedList<String>();
+		attributeTypes = new LinkedList<String>();
+		attributeMethods = new LinkedList<String>();
 	}
 
 	@Override
@@ -32,11 +41,28 @@ public class ClassDiagram implements DiagramStrategy {
 
 	private void generateDependencies(List<Information> informations) {
 		List<String>[] dependencies = getDependencyPairs(informations);
+		dependencies = filterNonAssociations(dependencies, attributeUnidirectionals);
 		for (int i = 0; i < dependencies[0].size(); i++) {
 			String caller = dependencies[0].get(i);
 			String target = dependencies[1].get(i);
 			adapter.createDependency(caller, target);
 		}
+	}
+
+	private List<String>[] filterNonAssociations(List<String>[] dependencies,List<String>[] unidirectionals) {
+		for (int i = 0; i < dependencies[0].size(); i++) {
+			String caller1 = dependencies[0].get(i);
+			String target1 = dependencies[1].get(i);
+			for(int j = 0; j < unidirectionals[0].size();j++){
+				String caller2 = unidirectionals[0].get(j);
+				String target2 = unidirectionals[1].get(j);
+				if(caller1.equals(caller2) && target1.equals(target2)){
+					dependencies[0].remove(i);
+					dependencies[1].remove(i);
+				}
+			}
+		}
+		return dependencies;
 	}
 
 	private List<String>[] getDependencyPairs(List<Information> informations) {
@@ -46,9 +72,11 @@ public class ClassDiagram implements DiagramStrategy {
 		
 		Stack<String> stack = new Stack<String>();
 		boolean isMethod = false;
-		
+		Information last = InformationFactory.createDummy(null);
 		for (Information information : informations) {
-			if(information instanceof IClass)
+			if(information instanceof IInterface)
+				stack.push(information.getValue());
+			else if(information instanceof IClass && !(last instanceof IInterface))
 				stack.push(information.getValue());
 			else if(information instanceof IMethod)
 				isMethod = (information.getValue() != constructorCall)? true:false;
@@ -60,7 +88,8 @@ public class ClassDiagram implements DiagramStrategy {
 						dependencies[0].add(stack.peek());
 					}
 				}
-			}				
+			}
+			last = information;
 		}		
 		return dependencies;
 	}
@@ -79,6 +108,7 @@ public class ClassDiagram implements DiagramStrategy {
 			String target = associations[1].get(i);
 			adapter.createUnidirectionalAssociation(caller, target);
 		}
+		attributeUnidirectionals = associations;
 	}
 
 	private void generateBiDirectionalAssociations(List<String>[] associations) {
@@ -87,7 +117,7 @@ public class ClassDiagram implements DiagramStrategy {
 		for (int i = 0; i < biDirectionals[0].size(); i++) {
 			String caller = biDirectionals[0].get(i);
 			String target = biDirectionals[1].get(i);
-			adapter.createBiDirectionalAssociation(caller, target);
+			adapter.createBidirectionalAssociation(caller, target);
 		}
 	}
 	
@@ -202,8 +232,11 @@ public class ClassDiagram implements DiagramStrategy {
 			}
 		}
 		types = removeDuplicated(types);
+		types.removeAll(attributeClasses);
+		types.removeAll(attributeInterfaces);
 		for (String type : types) {
 			adapter.createType(type);
+			attributeTypes.add(type);
 		}
 	}
 
@@ -269,6 +302,7 @@ public class ClassDiagram implements DiagramStrategy {
 		interfaceNames = removeDuplicated(interfaceNames);
 		for (String interfaceName : interfaceNames){
 			adapter.createInterface(interfaceName);
+			attributeInterfaces.add(interfaceName);
 		}
 	}
 
@@ -282,6 +316,7 @@ public class ClassDiagram implements DiagramStrategy {
 		classNames = removeDuplicated(classNames);
 		for (String className : classNames){
 			adapter.createConcreteClass(className);
+			attributeClasses.add(className);
 		}
 	}
 	

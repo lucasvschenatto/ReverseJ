@@ -12,6 +12,7 @@ import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Classifier;
+import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Generalization;
@@ -69,20 +70,28 @@ public class ClassDiagramFrameworkAdapter{
 		Interface inter = (Interface)rootPackage.getOwnedMember(interface_);
 		return imp.createInterfaceRealization(interface_+implementer, inter);
 	}
-	public Association createUnidirectionalAssociation(String caller, String target) {
-		Type c = (Type)rootPackage.getOwnedMember(caller);
+	public Association createUnidirectionalAssociation(String source, String target) {
+		Type s = (Type)rootPackage.getOwnedMember(source);
 		Type t = (Type)rootPackage.getOwnedMember(target);
-		return c.createAssociation(
-				true, AggregationKind.NONE_LITERAL, null,
+		return s.createAssociation(
+				true, AggregationKind.NONE_LITERAL, "",
 				0, LiteralUnlimitedNatural.UNLIMITED,
-				t, false, AggregationKind.NONE_LITERAL, null,
+				t, false, AggregationKind.NONE_LITERAL, "",
 				0, LiteralUnlimitedNatural.UNLIMITED);	
 	}
-	public void createBiDirectionalAssociation(String class1, String class2) {
-		// TODO Auto-generated method stub
+	public Association createBidirectionalAssociation(String class1, String class2) {
+		Type end1 = (Type)rootPackage.getOwnedMember(class1);
+		Type end2 = (Type)rootPackage.getOwnedMember(class2);
+		return end1.createAssociation(
+				true, AggregationKind.NONE_LITERAL, "",
+				0, LiteralUnlimitedNatural.UNLIMITED,
+				end2, true, AggregationKind.NONE_LITERAL, "",
+				0, LiteralUnlimitedNatural.UNLIMITED);	
 	}
-	public void createDependency(String caller, String target) {
-		// TODO Auto-generated method stub
+	public Dependency createDependency(String source, String target) {
+		Type s = (Type)rootPackage.getOwnedMember(source);
+		Type t = (Type)rootPackage.getOwnedMember(target);
+		return s.createDependency(t);
 	}
 	
 	public static void main(String[] args)

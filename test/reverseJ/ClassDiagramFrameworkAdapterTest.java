@@ -4,13 +4,13 @@ import static org.junit.Assert.*;
 
 import org.junit.*;
 import org.eclipse.uml2.uml.Association;
+import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.InterfaceRealization;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PrimitiveType;
-import org.eclipse.uml2.uml.Type;
 
 public class ClassDiagramFrameworkAdapterTest{
 	protected ClassDiagramFrameworkAdapter adapter;
@@ -125,19 +125,27 @@ public class ClassDiagramFrameworkAdapterTest{
 			Association received = adapter.createUnidirectionalAssociation(callerName, targetName);
 			assertNotNull(received);
 		}
+	}
+	public static class CreateBidirectionalAssociation extends ClassDiagramFrameworkAdapterTest{
 		@Test
-		public void createUnidirectional_BoundToCaller() {
-			String callerName = "Person";
-			adapter.createConcreteClass(callerName);
-			String targetName = "Employee";
-			adapter.createConcreteClass(targetName);
-			Association received = adapter.createUnidirectionalAssociation(callerName, targetName);
-			
-			System.out.println(received.isAbstract());
-			System.out.println(received.isBinary());
-			System.out.println(received.isDerived());
-//			received.getNavigableOwnedEnd(callerName, );
-			fail("Not finished yet");
+		public void createBidirectional_ReturnsNotNull() {
+			String class1 = "Male";
+			adapter.createConcreteClass(class1);
+			String class2 = "Female";
+			adapter.createConcreteClass(class2);
+			Association received = adapter.createBidirectionalAssociation(class1, class2);
+			assertNotNull(received);
+		}
+	}
+	public static class CreateDependency extends ClassDiagramFrameworkAdapterTest{
+		@Test
+		public void createDependency_ReturnsNotNull() {
+			String depender = "Driver";
+			adapter.createConcreteClass(depender);
+			String dependedUpon = "Vehicle";
+			adapter.createConcreteClass(dependedUpon);
+			Dependency received = adapter.createDependency(depender, dependedUpon);
+			assertNotNull(received);
 		}
 	}
 	public static class ToDo extends ClassDiagramFrameworkAdapterTest{
@@ -151,16 +159,6 @@ public class ClassDiagramFrameworkAdapterTest{
 		}
 		@Test@Ignore
 		public void testCreateMethodWithReturn() {
-			fail("Not yet implemented");
-		}
-
-		@Test@Ignore
-		public void testCreateBiDirectionalAssociation() {
-			fail("Not yet implemented");
-		}
-
-		@Test@Ignore
-		public void testCreateDependency() {
 			fail("Not yet implemented");
 		}
 	}

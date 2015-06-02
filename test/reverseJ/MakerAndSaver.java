@@ -25,7 +25,7 @@ public class MakerAndSaver extends DiagramMaker {
 			packages.add(diagram.generate(infoProvider.getAll()));
 
 		ResourceSet resourceSet = new ResourceSetImpl();
-		URI outputURI = URI.createFileURI("../ReverseJ/files/diagrama de classe")
+		URI outputURI = URI.createFileURI("../ReverseJ/files/diagramaDeClasse")
 				.appendFileExtension(UMLResource.FILE_EXTENSION);
 		UMLResourcesUtil.init(resourceSet);
 
