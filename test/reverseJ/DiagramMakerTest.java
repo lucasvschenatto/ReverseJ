@@ -102,7 +102,7 @@ public class DiagramMakerTest{
 			}
 
 			@Override
-			public FrameworkAdapterToClass getUtil() {
+			public AdapterClassToUML2 getUtil() {
 				return null;
 			}
 		};
@@ -118,7 +118,7 @@ public class DiagramMakerTest{
 			}
 
 			@Override
-			public FrameworkAdapterToClass getUtil() {
+			public AdapterClassToUML2 getUtil() {
 				return null;
 			}
 		};

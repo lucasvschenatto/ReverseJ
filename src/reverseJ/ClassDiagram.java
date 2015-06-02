@@ -11,14 +11,14 @@ import org.eclipse.uml2.uml.Package;
 public class ClassDiagram implements DiagramStrategy {
 	private final String constructorCall = "<init>";
 	private final String void_ = "void";
-	private FrameworkAdapterToClass adapter;
+	private AdapterClassToUML2 adapter;
 	private List<String> attributeClasses;
 	private List<String> attributeInterfaces;
 	private List<String> attributeTypes;
 	private List<Pair> attributeUnidirectionals;
 	private List<Pair> attributeBidirectionals;
 	
-	public ClassDiagram(FrameworkAdapterToClass frameworkAdapter) {
+	public ClassDiagram(AdapterClassToUML2 frameworkAdapter) {
 		adapter = frameworkAdapter;
 		attributeClasses = new LinkedList<String>();
 		attributeInterfaces = new LinkedList<String>();
@@ -43,52 +43,60 @@ public class ClassDiagram implements DiagramStrategy {
 	private void generateDependencies(List<Information> informations) {
 		List<Pair> dependencies = getDependencyPairs(informations);
 		dependencies = removeDuplicatedPairs(dependencies);
-		dependencies = filterNonUnidirectionals(dependencies, attributeUnidirectionals);
-		dependencies = filterNonBidirectionals(dependencies, attributeBidirectionals);
+		dependencies = filterOnlyNonUnidirectionals(dependencies, attributeUnidirectionals);
+		dependencies = filterOnlyNonBidirectionals(dependencies, attributeBidirectionals);
 		for (Pair pair : dependencies) {
 			adapter.createDependency(pair.getFirst(), pair.getSecond());
 		}
 	}
 
-	private List<Pair> filterNonBidirectionals(List<Pair> dependencies,
+	private List<Pair> filterOnlyNonBidirectionals(List<Pair> dependencies,
 			List<Pair> bidirectionals) {
-		dependencies = filterNonUnidirectionals(dependencies, bidirectionals);
+		dependencies = filterOnlyNonUnidirectionals(dependencies, bidirectionals);
+		List<Pair> filtered = new LinkedList<Pair>();
 		for (Pair pair : dependencies) {
 			String caller1 = pair.getFirst();
 			String target1 = pair.getSecond();
+			boolean isBidirectionalAssociation = false;
 			for (Pair pair2 : bidirectionals) {
 				String caller2 = pair2.getFirst();
 				String target2 = pair2.getSecond();
 				if(caller1.equals(target2) && target1.equals(caller2)){
-					dependencies.remove(pair);
+					isBidirectionalAssociation = true;
 				}
 			}
+			if(!isBidirectionalAssociation)
+				filtered.add(pair);
 		}
 		
-		return dependencies;
+		return filtered;
 	}
 
-	private List<Pair> filterNonUnidirectionals(List<Pair> dependencies,List<Pair> unidirectionals) {
+	private List<Pair> filterOnlyNonUnidirectionals(List<Pair> dependencies,List<Pair> unidirectionals) {
+		List<Pair> filtered = new LinkedList<Pair>();
 		for (Pair pair : dependencies) {
 			String caller1 = pair.getFirst();
 			String target1 = pair.getSecond();
+			boolean isUnidirectionalAssociation = false;
 			for (Pair pair2 : unidirectionals) {
 				String caller2 = pair2.getFirst();
 				String target2 = pair2.getSecond();
 				if(caller1.equals(caller2) && target1.equals(target2)){
-					dependencies.remove(pair);
+					isUnidirectionalAssociation = true;
 				}
 			}
+			if (!isUnidirectionalAssociation)
+				filtered.add(pair);
 		}
-		return dependencies;
+		return filtered;
 	}
 
 	private List<Pair> getDependencyPairs(List<Information> informations) {
 		List<Pair> dependencies = new LinkedList<Pair>();
-		
 		Stack<String> stack = new Stack<String>();
 		boolean isMethod = false;
 		Information last = InformationFactory.createDummy(null);
+		
 		for (Information information : informations) {
 			if(information instanceof IInterface)
 				stack.push(information.getValue());
@@ -368,7 +376,7 @@ public class ClassDiagram implements DiagramStrategy {
 	}
 
 	@Override
-	public FrameworkAdapterToClass getUtil() {
+	public AdapterClassToUML2 getUtil() {
 		return adapter;
 	}
 	protected class Pair{

@@ -1,6 +1,5 @@
 package reverseJ;
 
-import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.UMLFactory;
 

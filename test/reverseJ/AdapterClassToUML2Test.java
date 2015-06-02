@@ -12,17 +12,17 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PrimitiveType;
 
-public class FrameworkAdapterToClassTest{
-	protected FrameworkAdapterToClass adapter;
+public class AdapterClassToUML2Test{
+	protected AdapterClassToUML2 adapter;
 	@Before
 	public void setup(){
 		Context context = Context.getInstance();
-		adapter = FrameworkAdapterToClass.make(context);
+		adapter = AdapterClassToUML2.make(context);
 	}
-	public static class General extends FrameworkAdapterToClassTest{
+	public static class General extends AdapterClassToUML2Test{
 		@Test
 		public void testMake() {
-			adapter = FrameworkAdapterToClass.make(null);
+			adapter = AdapterClassToUML2.make(null);
 			assertNotNull(adapter);
 		}
 		@Test
@@ -31,7 +31,7 @@ public class FrameworkAdapterToClassTest{
 			assertNotNull(p);
 		}
 	}
-	public static class CreateClass extends FrameworkAdapterToClassTest{
+	public static class CreateClass extends AdapterClassToUML2Test{
 		@Test
 		public void CreateConcrete_ReturnsClass() {
 			String name = "Employee";
@@ -55,7 +55,7 @@ public class FrameworkAdapterToClassTest{
 			assertFalse(((org.eclipse.uml2.uml.Class)actual).isAbstract());		
 		}
 	}
-	public static class CreateType extends FrameworkAdapterToClassTest{	
+	public static class CreateType extends AdapterClassToUML2Test{	
 		@Test
 		public void createType_ReturnsType() {
 			String name = "boolean";
@@ -69,7 +69,7 @@ public class FrameworkAdapterToClassTest{
 			assertEquals(p, adapter.getPackage().getOwnedType(name));
 		}
 	}
-	public static class CreateInterface extends FrameworkAdapterToClassTest{
+	public static class CreateInterface extends AdapterClassToUML2Test{
 		@Test
 		public void createInterface_ReturnsInterface() {
 			String name = "Person";
@@ -83,10 +83,10 @@ public class FrameworkAdapterToClassTest{
 			assertEquals(received, adapter.getPackage().getOwnedMember(name));
 		}
 	}
-	public static class CreateMethod extends FrameworkAdapterToClassTest{
+	public static class CreateMethod extends AdapterClassToUML2Test{
 		
 	}
-	public static class CreateImplementation extends FrameworkAdapterToClassTest{
+	public static class CreateImplementation extends AdapterClassToUML2Test{
 		@Test
 		public void createImplementation_ReturnsImplementation() {
 			String interfaceName = "Person";
@@ -115,7 +115,7 @@ public class FrameworkAdapterToClassTest{
 			assertEquals(interfaceName,received.getContract().getName());
 		}
 	}
-	public static class CreateUnidirectionalAssociation extends FrameworkAdapterToClassTest{
+	public static class CreateUnidirectionalAssociation extends AdapterClassToUML2Test{
 		@Test
 		public void createUnidirectional_ReturnsNotNull() {
 			String callerName = "Person";
@@ -126,7 +126,7 @@ public class FrameworkAdapterToClassTest{
 			assertNotNull(received);
 		}
 	}
-	public static class CreateBidirectionalAssociation extends FrameworkAdapterToClassTest{
+	public static class CreateBidirectionalAssociation extends AdapterClassToUML2Test{
 		@Test
 		public void createBidirectional_ReturnsNotNull() {
 			String class1 = "Male";
@@ -137,7 +137,7 @@ public class FrameworkAdapterToClassTest{
 			assertNotNull(received);
 		}
 	}
-	public static class CreateDependency extends FrameworkAdapterToClassTest{
+	public static class CreateDependency extends AdapterClassToUML2Test{
 		@Test
 		public void createDependency_ReturnsNotNull() {
 			String depender = "Driver";
@@ -148,7 +148,7 @@ public class FrameworkAdapterToClassTest{
 			assertNotNull(received);
 		}
 	}
-	public static class ToDo extends FrameworkAdapterToClassTest{
+	public static class ToDo extends AdapterClassToUML2Test{
 		@Test@Ignore
 		public void CreateMethod_ReturnsMethod() {
 			String className = "Visiter";

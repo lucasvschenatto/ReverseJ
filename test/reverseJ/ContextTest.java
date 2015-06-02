@@ -3,8 +3,7 @@ package reverseJ;
 import static org.junit.Assert.*;
 
 import org.eclipse.uml2.uml.Model;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 public class ContextTest {
 	@Test

@@ -12,22 +12,22 @@ import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Type;
 
-public class FrameworkAdapterToClass {
+public class AdapterClassToUML2 {
 	private Context context;
 	private Package rootPackage;
 
-	protected FrameworkAdapterToClass(String packageName, Context context) {
+	protected AdapterClassToUML2(String packageName, Context context) {
 		context = Context.getInstance();
 		rootPackage = context.getModel().createNestedPackage(packageName);
 	}
 
-	public FrameworkAdapterToClass() {
+	public AdapterClassToUML2() {
 		context = Context.getInstance();
 		rootPackage = context.getModel().createNestedPackage("default");
 	}
 
-	public static FrameworkAdapterToClass make(Context context) {
-		return new FrameworkAdapterToClass("classDiagram", context);
+	public static AdapterClassToUML2 make(Context context) {
+		return new AdapterClassToUML2("classDiagram", context);
 	}
 
 	public Package getPackage() {

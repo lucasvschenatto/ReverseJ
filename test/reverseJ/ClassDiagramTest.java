@@ -186,21 +186,21 @@ public class ClassDiagramTest {
 		return nesting;
 	}
 
-	public static class GeneralTests extends FrameworkAdapterToClass {
+	public static class GeneralTests extends AdapterClassToUML2 {
 		private DiagramStrategy strategy;
 
 		@Test
 		public void constructorSetsUtilities() {
-			FrameworkAdapterToClass expected = FrameworkAdapterToClass
+			AdapterClassToUML2 expected = AdapterClassToUML2
 					.make(null);
 			strategy = new ClassDiagram(expected);
-			FrameworkAdapterToClass actual = strategy.getUtil();
+			AdapterClassToUML2 actual = strategy.getUtil();
 
 			assertEquals(expected, actual);
 		}
 	}
 
-	public static class CreateClass extends FrameworkAdapterToClass {
+	public static class CreateClass extends AdapterClassToUML2 {
 		private DiagramStrategy strategy;
 		private List<String> createdClasses;
 
@@ -282,7 +282,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateMethod extends FrameworkAdapterToClass {
+	public static class CreateMethod extends AdapterClassToUML2 {
 		private DiagramStrategy strategy;
 		private String lastMethod;
 		private List<String> createdMethods;
@@ -394,7 +394,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateInterface extends FrameworkAdapterToClass {
+	public static class CreateInterface extends AdapterClassToUML2 {
 		private DiagramStrategy strategy;
 		private List<String> createdInterfaces;
 
@@ -473,7 +473,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateTypes extends FrameworkAdapterToClass {
+	public static class CreateTypes extends AdapterClassToUML2 {
 		private DiagramStrategy strategy;
 		private List<String> createdTypes;
 
@@ -576,7 +576,7 @@ public class ClassDiagramTest {
 	}
 
 	public static class CreateImplementation extends
-			FrameworkAdapterToClass {
+			AdapterClassToUML2 {
 		private DiagramStrategy strategy;
 		private List<String> createdImplementations;
 
@@ -626,7 +626,7 @@ public class ClassDiagramTest {
 	}
 
 	public static class CreateUnidirectionalAssociation extends
-			FrameworkAdapterToClass {
+			AdapterClassToUML2 {
 		private DiagramStrategy strategy;
 		private List<String> createdAssociations;
 
@@ -683,7 +683,7 @@ public class ClassDiagramTest {
 	}
 
 	public static class CreateBidirectionalAssociation extends
-			FrameworkAdapterToClass {
+			AdapterClassToUML2 {
 		private DiagramStrategy strategy;
 		private List<String> createdBiDirectionalAssociations;
 
@@ -751,7 +751,7 @@ public class ClassDiagramTest {
 	}
 
 	public static class UniBiDirectionalAssociationTests extends
-			FrameworkAdapterToClass {
+			AdapterClassToUML2 {
 		private DiagramStrategy strategy;
 		private List<String> createdUnidirectionalAssociations;
 		private List<String> createdBiDirectionalAssociations;
@@ -802,7 +802,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateDependency extends FrameworkAdapterToClass {
+	public static class CreateDependency extends AdapterClassToUML2 {
 		private DiagramStrategy strategy;
 		private List<String> createdDependencies;
 
@@ -881,6 +881,18 @@ public class ClassDiagramTest {
 			assertNumberOfCreatedDependencies(0);
 		}
 		@Test
+		public void doesntCreateDependency_ForNotUnidirectionalAssociation(){
+			String id = "123";
+			String id2 = "aaa";
+			List<Information> informations = completeNestedConstructorTrace(id);
+			informations.addAll(completeNestedMethodTrace(id));
+			informations.addAll(completeNestedMethodTrace(id2));
+			
+			strategy.generate(informations);
+			
+			assertNumberOfCreatedDependencies(1);
+		}
+		@Test
 		public void doesntCreateDependency_IfThereIsBidirectionalAssociation(){
 			String id = "123";
 			List<Information> informations = completeBiDirectionalConstructorTrace(id);
@@ -890,10 +902,22 @@ public class ClassDiagramTest {
 			
 			assertNumberOfCreatedDependencies(0);
 		}
+		@Test
+		public void CreateDependency_ForNotBidirectionalAssociation(){
+			String id = "123";
+			String id2 = "dependency";
+			List<Information> informations = completeBiDirectionalConstructorTrace(id);
+			informations.addAll(completeNestedMethodTrace(id));
+			informations.addAll(completeNestedMethodTrace(id2));
+			
+			strategy.generate(informations);
+			
+			assertNumberOfCreatedDependencies(1);
+		}
 	}
 
 	public static class AssociationDependenciyTests extends
-			FrameworkAdapterToClass {
+			AdapterClassToUML2 {
 		private DiagramStrategy strategy;
 		private List<String> createdUnidirectionalAssociations;
 		private List<String> createdBiDirectionalAssociations;
