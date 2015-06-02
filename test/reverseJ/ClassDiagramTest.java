@@ -186,21 +186,21 @@ public class ClassDiagramTest {
 		return nesting;
 	}
 
-	public static class GeneralTests extends ClassDiagramFrameworkAdapter {
+	public static class GeneralTests extends FrameworkAdapterToClass {
 		private DiagramStrategy strategy;
 
 		@Test
 		public void constructorSetsUtilities() {
-			ClassDiagramFrameworkAdapter expected = ClassDiagramFrameworkAdapter
+			FrameworkAdapterToClass expected = FrameworkAdapterToClass
 					.make(null);
 			strategy = new ClassDiagram(expected);
-			ClassDiagramFrameworkAdapter actual = strategy.getUtil();
+			FrameworkAdapterToClass actual = strategy.getUtil();
 
 			assertEquals(expected, actual);
 		}
 	}
 
-	public static class CreateClass extends ClassDiagramFrameworkAdapter {
+	public static class CreateClass extends FrameworkAdapterToClass {
 		private DiagramStrategy strategy;
 		private List<String> createdClasses;
 
@@ -282,7 +282,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateMethod extends ClassDiagramFrameworkAdapter {
+	public static class CreateMethod extends FrameworkAdapterToClass {
 		private DiagramStrategy strategy;
 		private String lastMethod;
 		private List<String> createdMethods;
@@ -310,12 +310,13 @@ public class ClassDiagramTest {
 		}
 
 		@Override
-		public void createMethodWithReturn(String className, String methodName,
+		public Operation createMethodWithReturn(String className, String methodName,
 				String signature, String returnType) {
 			String createdMethod = (className + " " + methodName + " "
 					+ signature + " " + returnType).trim();
 			createdMethods.add(createdMethod);
 			lastMethod = createdMethod;
+			return null;
 		}
 
 		@Before
@@ -393,7 +394,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateInterface extends ClassDiagramFrameworkAdapter {
+	public static class CreateInterface extends FrameworkAdapterToClass {
 		private DiagramStrategy strategy;
 		private List<String> createdInterfaces;
 
@@ -472,7 +473,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateTypes extends ClassDiagramFrameworkAdapter {
+	public static class CreateTypes extends FrameworkAdapterToClass {
 		private DiagramStrategy strategy;
 		private List<String> createdTypes;
 
@@ -575,7 +576,7 @@ public class ClassDiagramTest {
 	}
 
 	public static class CreateImplementation extends
-			ClassDiagramFrameworkAdapter {
+			FrameworkAdapterToClass {
 		private DiagramStrategy strategy;
 		private List<String> createdImplementations;
 
@@ -625,7 +626,7 @@ public class ClassDiagramTest {
 	}
 
 	public static class CreateUnidirectionalAssociation extends
-			ClassDiagramFrameworkAdapter {
+			FrameworkAdapterToClass {
 		private DiagramStrategy strategy;
 		private List<String> createdAssociations;
 
@@ -682,7 +683,7 @@ public class ClassDiagramTest {
 	}
 
 	public static class CreateBidirectionalAssociation extends
-			ClassDiagramFrameworkAdapter {
+			FrameworkAdapterToClass {
 		private DiagramStrategy strategy;
 		private List<String> createdBiDirectionalAssociations;
 
@@ -750,7 +751,7 @@ public class ClassDiagramTest {
 	}
 
 	public static class UniBiDirectionalAssociationTests extends
-			ClassDiagramFrameworkAdapter {
+			FrameworkAdapterToClass {
 		private DiagramStrategy strategy;
 		private List<String> createdUnidirectionalAssociations;
 		private List<String> createdBiDirectionalAssociations;
@@ -801,7 +802,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateDependency extends ClassDiagramFrameworkAdapter {
+	public static class CreateDependency extends FrameworkAdapterToClass {
 		private DiagramStrategy strategy;
 		private List<String> createdDependencies;
 
@@ -892,7 +893,7 @@ public class ClassDiagramTest {
 	}
 
 	public static class AssociationDependenciyTests extends
-			ClassDiagramFrameworkAdapter {
+			FrameworkAdapterToClass {
 		private DiagramStrategy strategy;
 		private List<String> createdUnidirectionalAssociations;
 		private List<String> createdBiDirectionalAssociations;

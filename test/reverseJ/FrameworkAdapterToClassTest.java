@@ -12,17 +12,17 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PrimitiveType;
 
-public class ClassDiagramFrameworkAdapterTest{
-	protected ClassDiagramFrameworkAdapter adapter;
+public class FrameworkAdapterToClassTest{
+	protected FrameworkAdapterToClass adapter;
 	@Before
 	public void setup(){
 		Context context = Context.getInstance();
-		adapter = ClassDiagramFrameworkAdapter.make(context);
+		adapter = FrameworkAdapterToClass.make(context);
 	}
-	public static class General extends ClassDiagramFrameworkAdapterTest{
+	public static class General extends FrameworkAdapterToClassTest{
 		@Test
 		public void testMake() {
-			adapter = ClassDiagramFrameworkAdapter.make(null);
+			adapter = FrameworkAdapterToClass.make(null);
 			assertNotNull(adapter);
 		}
 		@Test
@@ -31,7 +31,7 @@ public class ClassDiagramFrameworkAdapterTest{
 			assertNotNull(p);
 		}
 	}
-	public static class CreateClass extends ClassDiagramFrameworkAdapterTest{
+	public static class CreateClass extends FrameworkAdapterToClassTest{
 		@Test
 		public void CreateConcrete_ReturnsClass() {
 			String name = "Employee";
@@ -55,7 +55,7 @@ public class ClassDiagramFrameworkAdapterTest{
 			assertFalse(((org.eclipse.uml2.uml.Class)actual).isAbstract());		
 		}
 	}
-	public static class CreateType extends ClassDiagramFrameworkAdapterTest{	
+	public static class CreateType extends FrameworkAdapterToClassTest{	
 		@Test
 		public void createType_ReturnsType() {
 			String name = "boolean";
@@ -69,7 +69,7 @@ public class ClassDiagramFrameworkAdapterTest{
 			assertEquals(p, adapter.getPackage().getOwnedType(name));
 		}
 	}
-	public static class CreateInterface extends ClassDiagramFrameworkAdapterTest{
+	public static class CreateInterface extends FrameworkAdapterToClassTest{
 		@Test
 		public void createInterface_ReturnsInterface() {
 			String name = "Person";
@@ -83,10 +83,10 @@ public class ClassDiagramFrameworkAdapterTest{
 			assertEquals(received, adapter.getPackage().getOwnedMember(name));
 		}
 	}
-	public static class CreateMethod extends ClassDiagramFrameworkAdapterTest{
+	public static class CreateMethod extends FrameworkAdapterToClassTest{
 		
 	}
-	public static class CreateImplementation extends ClassDiagramFrameworkAdapterTest{
+	public static class CreateImplementation extends FrameworkAdapterToClassTest{
 		@Test
 		public void createImplementation_ReturnsImplementation() {
 			String interfaceName = "Person";
@@ -115,7 +115,7 @@ public class ClassDiagramFrameworkAdapterTest{
 			assertEquals(interfaceName,received.getContract().getName());
 		}
 	}
-	public static class CreateUnidirectionalAssociation extends ClassDiagramFrameworkAdapterTest{
+	public static class CreateUnidirectionalAssociation extends FrameworkAdapterToClassTest{
 		@Test
 		public void createUnidirectional_ReturnsNotNull() {
 			String callerName = "Person";
@@ -126,7 +126,7 @@ public class ClassDiagramFrameworkAdapterTest{
 			assertNotNull(received);
 		}
 	}
-	public static class CreateBidirectionalAssociation extends ClassDiagramFrameworkAdapterTest{
+	public static class CreateBidirectionalAssociation extends FrameworkAdapterToClassTest{
 		@Test
 		public void createBidirectional_ReturnsNotNull() {
 			String class1 = "Male";
@@ -137,7 +137,7 @@ public class ClassDiagramFrameworkAdapterTest{
 			assertNotNull(received);
 		}
 	}
-	public static class CreateDependency extends ClassDiagramFrameworkAdapterTest{
+	public static class CreateDependency extends FrameworkAdapterToClassTest{
 		@Test
 		public void createDependency_ReturnsNotNull() {
 			String depender = "Driver";
@@ -148,7 +148,7 @@ public class ClassDiagramFrameworkAdapterTest{
 			assertNotNull(received);
 		}
 	}
-	public static class ToDo extends ClassDiagramFrameworkAdapterTest{
+	public static class ToDo extends FrameworkAdapterToClassTest{
 		@Test@Ignore
 		public void CreateMethod_ReturnsMethod() {
 			String className = "Visiter";

@@ -102,7 +102,7 @@ public class DiagramMakerTest{
 			}
 
 			@Override
-			public ClassDiagramFrameworkAdapter getUtil() {
+			public FrameworkAdapterToClass getUtil() {
 				return null;
 			}
 		};
@@ -118,7 +118,7 @@ public class DiagramMakerTest{
 			}
 
 			@Override
-			public ClassDiagramFrameworkAdapter getUtil() {
+			public FrameworkAdapterToClass getUtil() {
 				return null;
 			}
 		};

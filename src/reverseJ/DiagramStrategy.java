@@ -7,6 +7,6 @@ public interface DiagramStrategy {
 
 	 Package generate(List<Information> informations);
 
-	ClassDiagramFrameworkAdapter getUtil();
+	FrameworkAdapterToClass getUtil();
 
 }

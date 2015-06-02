@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import reverseJ.ClassDiagram;
-import reverseJ.ClassDiagramFrameworkAdapter;
+import reverseJ.FrameworkAdapterToClass;
 import reverseJ.DiagramMaker;
 import reverseJ.DiagramStrategy;
 import reverseJ.InformationProvider;
@@ -19,7 +19,7 @@ public class CreatingClassDiagramTest {
 		InformationStorageProvider i = new InformationStorageProvider();
 		RecorderStorage r = i;
 		InformationProvider p = i;
-		ClassDiagramFrameworkAdapter cDFA = new ClassDiagramFrameworkAdapter();
+		FrameworkAdapterToClass cDFA = new FrameworkAdapterToClass();
 		DiagramStrategy dS = new ClassDiagram(cDFA);
 		List<DiagramStrategy> lds = new LinkedList<DiagramStrategy>();
 		lds.add(dS);

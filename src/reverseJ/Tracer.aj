@@ -50,12 +50,8 @@ public aspect Tracer {
 		Signature s = thisJoinPointStaticPart.getSignature();
 		String declaredTargetName = s.getDeclaringType().getCanonicalName();		
 		if(s.getDeclaringType().isInterface()){
-			String targetName = thisJoinPoint.getTarget().getClass().getCanonicalName();
 			recorderStorage.addInformation(InformationFactory.createInterface(declaredTargetName));
-//			recorderStorage.addInformation(InformationFactory.createTarget(targetName));
-		}
-//		else
-//			recorderStorage.addInformation(InformationFactory.createTarget(declaredTargetName));	
+		}	
 	}
 	before():exceptionHandle(){
 		Signature s = thisJoinPointStaticPart.getSignature();
