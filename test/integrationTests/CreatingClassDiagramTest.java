@@ -27,7 +27,7 @@ public class CreatingClassDiagramTest {
 		
 		Tracer.start(r);
 		
-		Story s = new Story();		
+		Story s = new Story();
 		s.tellStory();
 		
 		Tracer.stop();

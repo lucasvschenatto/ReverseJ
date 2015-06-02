@@ -17,6 +17,7 @@ public class ClassDiagram implements DiagramStrategy {
 	private List<String> attributeTypes;
 	private List<String> attributeMethods;
 	private List<String>[] attributeUnidirectionals;
+	private List<String>[] attributeBidirectionals;
 	
 	public ClassDiagram(ClassDiagramFrameworkAdapter frameworkAdapter) {
 		adapter = frameworkAdapter;
@@ -24,6 +25,10 @@ public class ClassDiagram implements DiagramStrategy {
 		attributeInterfaces = new LinkedList<String>();
 		attributeTypes = new LinkedList<String>();
 		attributeMethods = new LinkedList<String>();
+		attributeUnidirectionals = (List<String>[])new List[]{
+			new LinkedList<String>(), new LinkedList<String>()};
+		attributeBidirectionals = (List<String>[])new List[]{
+			new LinkedList<String>(), new LinkedList<String>()};
 	}
 
 	@Override
@@ -41,7 +46,9 @@ public class ClassDiagram implements DiagramStrategy {
 
 	private void generateDependencies(List<Information> informations) {
 		List<String>[] dependencies = getDependencyPairs(informations);
-		dependencies = filterNonAssociations(dependencies, attributeUnidirectionals);
+		dependencies = removeDuplicatedUniDirectionals(dependencies);
+		dependencies = filterNonUnidirectionals(dependencies, attributeUnidirectionals);
+		dependencies = filterNonBidirectionals(dependencies, attributeBidirectionals);
 		for (int i = 0; i < dependencies[0].size(); i++) {
 			String caller = dependencies[0].get(i);
 			String target = dependencies[1].get(i);
@@ -49,19 +56,42 @@ public class ClassDiagram implements DiagramStrategy {
 		}
 	}
 
-	private List<String>[] filterNonAssociations(List<String>[] dependencies,List<String>[] unidirectionals) {
-		for (int i = 0; i < dependencies[0].size(); i++) {
-			String caller1 = dependencies[0].get(i);
-			String target1 = dependencies[1].get(i);
+	private List<String>[] filterNonBidirectionals(List<String>[] dependencies,
+			List<String>[] bidirectionals) {
+		dependencies = filterNonUnidirectionals(dependencies, bidirectionals);
+		
+		List<String> aux  = bidirectionals[0];
+		bidirectionals[0] = bidirectionals[1];
+		bidirectionals[1] = aux;
+		dependencies = filterNonUnidirectionals(dependencies, bidirectionals);
+		
+		return dependencies;
+	}
+
+	private List<String>[] filterNonUnidirectionals(List<String>[] dependencies,List<String>[] unidirectionals) {
+		for (String caller1 : dependencies[0]) {
+			String target1 = dependencies[1].get(dependencies[0].indexOf(caller1));
 			for(int j = 0; j < unidirectionals[0].size();j++){
 				String caller2 = unidirectionals[0].get(j);
 				String target2 = unidirectionals[1].get(j);
-				if(caller1.equals(caller2) && target1.equals(target2)){
-					dependencies[0].remove(i);
-					dependencies[1].remove(i);
+				if((!caller1.equals(caller2)) && (!target1.equals(target2))){
+					dependencies[0].remove(caller1);
+					dependencies[1].remove(target1);
 				}
 			}
 		}
+//		for (int i = 0; i < dependencies[0].size(); i++) {
+//			String caller1 = dependencies[0].get(i);
+//			String target1 = dependencies[1].get(i);
+//			for(int j = 0; j < unidirectionals[0].size();j++){
+//				String caller2 = unidirectionals[0].get(j);
+//				String target2 = unidirectionals[1].get(j);
+//				if(caller1.equals(caller2) && target1.equals(target2)){
+//					dependencies[0].remove(i);
+//					dependencies[1].remove(i);
+//				}
+//			}
+//		}
 		return dependencies;
 	}
 
@@ -112,13 +142,14 @@ public class ClassDiagram implements DiagramStrategy {
 	}
 
 	private void generateBiDirectionalAssociations(List<String>[] associations) {
-		List<String>[] biDirectionals = removeUniDirectionals(associations);
-		biDirectionals = removeDuplicatedBiDirectionals(biDirectionals);
-		for (int i = 0; i < biDirectionals[0].size(); i++) {
-			String caller = biDirectionals[0].get(i);
-			String target = biDirectionals[1].get(i);
+		List<String>[] bidirectionals = removeUniDirectionals(associations);
+		bidirectionals = removeDuplicatedBiDirectionals(bidirectionals);
+		for (int i = 0; i < bidirectionals[0].size(); i++) {
+			String caller = bidirectionals[0].get(i);
+			String target = bidirectionals[1].get(i);
 			adapter.createBidirectionalAssociation(caller, target);
 		}
+		attributeBidirectionals = bidirectionals;
 	}
 	
 	private List<String>[] removeUniDirectionals(List<String>[] associations) {

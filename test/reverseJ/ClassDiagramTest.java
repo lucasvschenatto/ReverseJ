@@ -852,7 +852,7 @@ public class ClassDiagramTest {
 		@Test
 		public void DoesntRepeatDependencies() {
 			List<Information> informations = completeNestedMethodTrace("123");
-			informations.addAll(completeMethodTrace("123"));
+			informations.addAll(completeNestedMethodTrace("123"));
 
 			strategy.generate(informations);
 
