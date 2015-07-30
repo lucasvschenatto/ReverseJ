@@ -186,21 +186,21 @@ public class ClassDiagramTest {
 		return nesting;
 	}
 
-	public static class GeneralTests extends AdapterClassToUML2 {
+	public static class GeneralTests extends AdapterClassToUml2 {
 		private DiagramStrategy strategy;
 
 		@Test
 		public void constructorSetsUtilities() {
-			AdapterClassToUML2 expected = AdapterClassToUML2
+			AdapterClassToUml2 expected = AdapterClassToUml2
 					.make(null);
 			strategy = new ClassDiagram(expected);
-			AdapterClassToUML2 actual = strategy.getUtil();
+			AdapterToUml2 actual = strategy.getUtil();
 
 			assertEquals(expected, actual);
 		}
 	}
 
-	public static class CreateClass extends AdapterClassToUML2 {
+	public static class CreateClass extends AdapterClassToUml2 {
 		private DiagramStrategy strategy;
 		private List<String> createdClasses;
 
@@ -282,7 +282,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateMethod extends AdapterClassToUML2 {
+	public static class CreateMethod extends AdapterClassToUml2 {
 		private DiagramStrategy strategy;
 		private String lastMethod;
 		private List<String> createdMethods;
@@ -394,7 +394,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateInterface extends AdapterClassToUML2 {
+	public static class CreateInterface extends AdapterClassToUml2 {
 		private DiagramStrategy strategy;
 		private List<String> createdInterfaces;
 
@@ -473,7 +473,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateTypes extends AdapterClassToUML2 {
+	public static class CreateTypes extends AdapterClassToUml2 {
 		private DiagramStrategy strategy;
 		private List<String> createdTypes;
 
@@ -576,7 +576,7 @@ public class ClassDiagramTest {
 	}
 
 	public static class CreateImplementation extends
-			AdapterClassToUML2 {
+			AdapterClassToUml2 {
 		private DiagramStrategy strategy;
 		private List<String> createdImplementations;
 
@@ -626,7 +626,7 @@ public class ClassDiagramTest {
 	}
 
 	public static class CreateUnidirectionalAssociation extends
-			AdapterClassToUML2 {
+			AdapterClassToUml2 {
 		private DiagramStrategy strategy;
 		private List<String> createdAssociations;
 
@@ -683,7 +683,7 @@ public class ClassDiagramTest {
 	}
 
 	public static class CreateBidirectionalAssociation extends
-			AdapterClassToUML2 {
+			AdapterClassToUml2 {
 		private DiagramStrategy strategy;
 		private List<String> createdBiDirectionalAssociations;
 
@@ -751,7 +751,7 @@ public class ClassDiagramTest {
 	}
 
 	public static class UniBiDirectionalAssociationTests extends
-			AdapterClassToUML2 {
+			AdapterClassToUml2 {
 		private DiagramStrategy strategy;
 		private List<String> createdUnidirectionalAssociations;
 		private List<String> createdBiDirectionalAssociations;
@@ -802,7 +802,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateDependency extends AdapterClassToUML2 {
+	public static class CreateDependency extends AdapterClassToUml2 {
 		private DiagramStrategy strategy;
 		private List<String> createdDependencies;
 
@@ -917,7 +917,7 @@ public class ClassDiagramTest {
 	}
 
 	public static class AssociationDependenciyTests extends
-			AdapterClassToUML2 {
+			AdapterClassToUml2 {
 		private DiagramStrategy strategy;
 		private List<String> createdUnidirectionalAssociations;
 		private List<String> createdBiDirectionalAssociations;

@@ -13,16 +13,16 @@ import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PrimitiveType;
 
 public class AdapterClassToUML2Test{
-	protected AdapterClassToUML2 adapter;
+	protected AdapterClassToUml2 adapter;
 	@Before
 	public void setup(){
 		Context context = Context.getInstance();
-		adapter = AdapterClassToUML2.make(context);
+		adapter = AdapterClassToUml2.make(context);
 	}
 	public static class General extends AdapterClassToUML2Test{
 		@Test
 		public void testMake() {
-			adapter = AdapterClassToUML2.make(null);
+			adapter = AdapterClassToUml2.make(null);
 			assertNotNull(adapter);
 		}
 		@Test

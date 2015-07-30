@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import reverseJ.ClassDiagram;
-import reverseJ.AdapterClassToUML2;
+import reverseJ.AdapterClassToUml2;
 import reverseJ.DiagramMaker;
 import reverseJ.DiagramStrategy;
 import reverseJ.InformationProvider;
@@ -19,7 +19,7 @@ public class StoryClassDiagramTest {
 		InformationStorageProvider i = new InformationStorageProvider();
 		RecorderStorage r = i;
 		InformationProvider p = i;
-		AdapterClassToUML2 cDFA = new AdapterClassToUML2();
+		AdapterClassToUml2 cDFA = new AdapterClassToUml2();
 		DiagramStrategy dS = new ClassDiagram(cDFA);
 		List<DiagramStrategy> lds = new LinkedList<DiagramStrategy>();
 		lds.add(dS);

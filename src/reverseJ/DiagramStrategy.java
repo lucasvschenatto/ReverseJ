@@ -7,6 +7,6 @@ public interface DiagramStrategy {
 
 	 Package generate(List<Information> informations);
 
-	AdapterClassToUML2 getUtil();
+	AdapterToUml2 getUtil();
 
 }

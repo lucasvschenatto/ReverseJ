@@ -11,16 +11,16 @@ import org.eclipse.uml2.uml.Package;
 import org.junit.*;
 
 public class AdapterSequenceToUML2Test {
-	protected AdapterSequenceToUML2 adapter;
+	protected AdapterSequenceToUml2 adapter;
 	@Before
 	public void setup(){
 		Context context = Context.getInstance();
-		adapter = AdapterSequenceToUML2.make(context);
+		adapter = AdapterSequenceToUml2.make(context);
 	}
 	public static class General extends AdapterSequenceToUML2Test{
 		@Test
 		public void testMake() {
-			adapter = AdapterSequenceToUML2.make(null);
+			adapter = AdapterSequenceToUml2.make(null);
 			assertNotNull(adapter);
 		}
 		@Test

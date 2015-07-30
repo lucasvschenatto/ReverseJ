@@ -11,14 +11,14 @@ import org.eclipse.uml2.uml.Package;
 public class ClassDiagram implements DiagramStrategy {
 	private final String constructorCall = "<init>";
 	private final String void_ = "void";
-	private AdapterClassToUML2 adapter;
+	private AdapterClassToUml2 adapter;
 	private List<String> attributeClasses;
 	private List<String> attributeInterfaces;
 	private List<String> attributeTypes;
 	private List<Pair> attributeUnidirectionals;
 	private List<Pair> attributeBidirectionals;
 	
-	public ClassDiagram(AdapterClassToUML2 frameworkAdapter) {
+	public ClassDiagram(AdapterClassToUml2 frameworkAdapter) {
 		adapter = frameworkAdapter;
 		attributeClasses = new LinkedList<String>();
 		attributeInterfaces = new LinkedList<String>();
@@ -376,7 +376,7 @@ public class ClassDiagram implements DiagramStrategy {
 	}
 
 	@Override
-	public AdapterClassToUML2 getUtil() {
+	public AdapterToUml2 getUtil() {
 		return adapter;
 	}
 	protected class Pair{

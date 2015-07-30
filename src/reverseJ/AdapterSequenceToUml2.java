@@ -6,22 +6,22 @@ import org.eclipse.uml2.uml.Lifeline;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.UMLFactory;
 
-public class AdapterSequenceToUML2 {
+public class AdapterSequenceToUml2 implements AdapterToUml2{
 	private Context context;
 	private Package rootPackage;
 
-	protected AdapterSequenceToUML2(String packageName, Context context) {
+	protected AdapterSequenceToUml2(String packageName, Context context) {
 		context = Context.getInstance();
 		rootPackage = context.getModel().createNestedPackage(packageName);
 	}
 
-	public AdapterSequenceToUML2() {
+	public AdapterSequenceToUml2() {
 		context = Context.getInstance();
 		rootPackage = context.getModel().createNestedPackage("default");
 	}
 
-	public static AdapterSequenceToUML2 make(Context context) {
-		return new AdapterSequenceToUML2("classDiagram", context);
+	public static AdapterSequenceToUml2 make(Context context) {
+		return new AdapterSequenceToUml2("classDiagram", context);
 	}
 
 	public Package getPackage() {
