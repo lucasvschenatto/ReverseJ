@@ -10,14 +10,14 @@ import org.eclipse.uml2.uml.Lifeline;
 import org.eclipse.uml2.uml.Package;
 import org.junit.*;
 
-public class AdapterSequenceToUML2Test {
+public class AdapterSequenceToUml2Test {
 	protected AdapterSequenceToUml2 adapter;
 	@Before
 	public void setup(){
 		Context context = Context.getInstance();
 		adapter = AdapterSequenceToUml2.make(context);
 	}
-	public static class General extends AdapterSequenceToUML2Test{
+	public static class General extends AdapterSequenceToUml2Test{
 		@Test
 		public void testMake() {
 			adapter = AdapterSequenceToUml2.make(null);
