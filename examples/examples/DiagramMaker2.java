@@ -20,7 +20,7 @@ import org.eclipse.uml2.uml.Interaction;
 
 public class DiagramMaker2 {
 	private static ResourceSet resourceSet = new ResourceSetImpl();
-	/*public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws Exception{
 		Package myPackage = UMLFactory.eINSTANCE.createPackage();
 		myPackage.setName("packageSequenceGoal");
 		Interaction myInteraction = UMLFactory.eINSTANCE.createInteraction();
@@ -68,7 +68,7 @@ public class DiagramMaker2 {
 		execBody1.setFinish(eTargetFinish);
 		
 		save(myPackage);
-	}*/
+	}
 	
 	private static void save(org.eclipse.uml2.uml.Package package_) {
 		URI uri = URI.createFileURI("../ReverseJ/files/diagramStudy2")

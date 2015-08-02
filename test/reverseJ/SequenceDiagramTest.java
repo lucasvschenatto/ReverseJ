@@ -27,50 +27,50 @@ public class SequenceDiagramTest {
 		}
 	}
 
-//	public static class CreateClass extends AdapterClassToUML2 {
-//		private DiagramStrategy strategy;
-//		private List<String> createdClasses;
-//
-//		private void assertClassCreated(String className) {
-//			assertTrue(createdClasses.contains(className));
-//		}
-//
-//		private void assertNumberOfCreatedClasses(int number) {
-//			assertEquals(number, createdClasses.size());
-//		}
+	public static class CreateSequence extends AdapterSequenceToUml2 {
+		private DiagramStrategy strategy;
+		private List<String> createdLifelines;
+
+		private void assertLifelineCreated(String className) {
+			assertTrue(createdLifelines.contains(className));
+		}
+
+		private void assertNumberOfCreatedLifelines(int number) {
+			assertEquals(number, createdLifelines.size());
+		}
 //
 //		@Override
-//		public org.eclipse.uml2.uml.Class createConcreteClass(String name) {
+//		public org.eclipse.uml2.uml.Class createConcreteLifeline(String name) {
 //			createdClasses.add(name);
 //			return null;
 //		}
 //
-//		@Before
-//		public void setup() {
-//			strategy = new ClassDiagram(this);
-//			createdClasses = new LinkedList<String>();
-//		}
-//
-//		@Test
-//		public void ifHasNoClass_DoNotCreate() {
-//			List<Information> informations = new LinkedList<Information>();
-//
-//			strategy.generate(informations);
-//
-//			assertNumberOfCreatedClasses(0);
-//		}
-//
-//		@Test
-//		public void CreateConcreteClass() {
-//			String className = "myTestClass";
-//			Information info = InformationFactory.createClass(className);
-//			List<Information> informations = new LinkedList<Information>();
-//			informations.add(info);
-//
-//			strategy.generate(informations);
-//
-//			assertClassCreated(className);
-//		}
+		@Before
+		public void setup() {
+			strategy = new SequenceDiagram(this);
+			createdLifelines = new LinkedList<String>();
+		}
+
+		@Test
+		public void ifHasNoClass_DoNotCreate() {
+			List<Information> informations = new LinkedList<Information>();
+
+			strategy.generate(informations);
+
+			assertNumberOfCreatedLifelines(0);
+		}
+
+		@Test
+		public void CreateLifeline() {
+			String className = "myTestClass";
+			Information info = InformationFactory.createClass(className);
+			List<Information> informations = new LinkedList<Information>();
+			informations.add(info);
+
+			strategy.generate(informations);
+
+			assertLifelineCreated(className);
+		}
 //
 //		@Test
 //		public void CreateConcreteClassForHandler() {
@@ -107,5 +107,5 @@ public class SequenceDiagramTest {
 //			assertClassCreated("Class001");
 //			assertClassCreated("Class002");
 //		}
-//	}
+	}
 }
