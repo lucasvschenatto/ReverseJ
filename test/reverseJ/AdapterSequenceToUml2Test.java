@@ -14,13 +14,12 @@ public class AdapterSequenceToUml2Test {
 	protected AdapterSequenceToUml2 adapter;
 	@Before
 	public void setup(){
-		Context context = Context.getInstance();
-		adapter = AdapterSequenceToUml2.make(context);
+		adapter = AdapterSequenceToUml2.make();
 	}
 	public static class General extends AdapterSequenceToUml2Test{
 		@Test
 		public void testMake() {
-			adapter = AdapterSequenceToUml2.make(null);
+			adapter = AdapterSequenceToUml2.make();
 			assertNotNull(adapter);
 		}
 		@Test

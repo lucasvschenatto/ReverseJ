@@ -16,9 +16,9 @@ public class AdapterClassToUml2 implements AdapterToUml2{
 	private Context context;
 	private Package rootPackage;
 
-	protected AdapterClassToUml2(String packageName, Context context) {
-		context = Context.getInstance();
-		rootPackage = context.getModel().createNestedPackage(packageName);
+	protected AdapterClassToUml2(String packageName) {
+		this.context = Context.getInstance();
+		rootPackage = this.context.getModel().createNestedPackage(packageName);
 	}
 
 	public AdapterClassToUml2() {
@@ -26,10 +26,10 @@ public class AdapterClassToUml2 implements AdapterToUml2{
 		rootPackage = context.getModel().createNestedPackage("default");
 	}
 
-	public static AdapterClassToUml2 make(Context context) {
-		return new AdapterClassToUml2("classDiagram", context);
+	public static AdapterClassToUml2 make() {
+		return new AdapterClassToUml2("classDiagram");
 	}
-
+	@Override
 	public Package getPackage() {
 		return rootPackage;
 	}

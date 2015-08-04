@@ -29,14 +29,15 @@ public class ClassDiagram implements DiagramStrategy {
 
 	@Override
 	public Package generate(List<Information> informations) {
-		generateClasses(informations);		
-		generateInterfaces(informations);
-		generateImplementations(informations);
-		generateAssociations(informations);
-		generateDependencies(informations);
-		generateTypes(informations);
-		generateMethods(informations);
-		
+		if(informations != null && !informations.isEmpty()){
+			generateClasses(informations);		
+			generateInterfaces(informations);
+			generateImplementations(informations);
+			generateAssociations(informations);
+			generateDependencies(informations);
+			generateTypes(informations);
+			generateMethods(informations);	
+		}
 		return adapter.getPackage();
 	}
 

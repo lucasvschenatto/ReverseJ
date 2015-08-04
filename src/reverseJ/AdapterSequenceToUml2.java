@@ -10,7 +10,7 @@ public class AdapterSequenceToUml2 implements AdapterToUml2{
 	private Context context;
 	private Package rootPackage;
 
-	protected AdapterSequenceToUml2(String packageName, Context context) {
+	protected AdapterSequenceToUml2(String packageName) {
 		context = Context.getInstance();
 		rootPackage = context.getModel().createNestedPackage(packageName);
 	}
@@ -20,12 +20,17 @@ public class AdapterSequenceToUml2 implements AdapterToUml2{
 		rootPackage = context.getModel().createNestedPackage("default");
 	}
 
-	public static AdapterSequenceToUml2 make(Context context) {
-		return new AdapterSequenceToUml2("classDiagram", context);
+	public static AdapterSequenceToUml2 make() {
+		return new AdapterSequenceToUml2("classDiagram");
 	}
 
 	public Package getPackage() {
 		return rootPackage;
+	}
+	
+	public Lifeline createLifeline(String name) {
+//		TODO Auto-generated method stub
+		return null;		
 	}
 //	public AdapterSequenceToUML2(){
 //		lifelines = new LinkedList<Lifeline>();

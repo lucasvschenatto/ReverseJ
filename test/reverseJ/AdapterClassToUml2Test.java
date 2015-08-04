@@ -15,14 +15,13 @@ import org.eclipse.uml2.uml.PrimitiveType;
 public class AdapterClassToUml2Test{
 	protected AdapterClassToUml2 adapter;
 	@Before
-	public void setup(){
-		Context context = Context.getInstance();
-		adapter = AdapterClassToUml2.make(context);
+	public void setup(){		
+		adapter = AdapterClassToUml2.make();
 	}
 	public static class General extends AdapterClassToUml2Test{
 		@Test
 		public void testMake() {
-			adapter = AdapterClassToUml2.make(null);
+			adapter = AdapterClassToUml2.make();
 			assertNotNull(adapter);
 		}
 		@Test

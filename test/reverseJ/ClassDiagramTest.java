@@ -191,12 +191,18 @@ public class ClassDiagramTest {
 
 		@Test
 		public void constructorSetsUtilities() {
-			AdapterClassToUml2 expected = AdapterClassToUml2
-					.make(null);
+			AdapterClassToUml2 expected = AdapterClassToUml2.make();
 			strategy = new ClassDiagram(expected);
 			AdapterToUml2 actual = strategy.getUtil();
-
 			assertEquals(expected, actual);
+		}
+		@Test
+		public void returnsPackageFromAdapter(){
+			AdapterToUml2 adapter = AdapterClassToUml2.make();
+			strategy = new ClassDiagram((AdapterClassToUml2)adapter);
+			org.eclipse.uml2.uml.Package p = strategy.generate(null);
+			assertNotNull(p);
+			assertEquals(adapter.getPackage(), p);
 		}
 	}
 
