@@ -190,7 +190,7 @@ public class ClassDiagramTest {
 		private DiagramStrategy strategy;
 
 		@Test
-		public void constructorSetsUtilities() {
+		public void constructorSetsAdapter() {
 			AdapterClassToUml2 expected = AdapterClassToUml2.make();
 			strategy = new ClassDiagram(expected);
 			AdapterToUml2 actual = strategy.getUtil();

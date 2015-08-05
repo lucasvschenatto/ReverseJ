@@ -32,7 +32,11 @@ public class AdapterSequenceToUml2 implements AdapterToUml2{
 //		TODO Auto-generated method stub
 		return null;		
 	}
-//	public AdapterSequenceToUML2(){
+	public void createInteraction() {
+		// TODO Auto-generated method stub
+		
+	}
+	//	public AdapterSequenceToUML2(){
 //		lifelines = new LinkedList<Lifeline>();
 //	}
 //	public Lifeline getLifeline(String name) {
@@ -56,4 +60,6 @@ public class AdapterSequenceToUml2 implements AdapterToUml2{
 //	public List<Lifeline> getLifelines() {
 //		return lifelines;
 //	}
+
+
 }

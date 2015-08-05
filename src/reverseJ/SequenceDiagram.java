@@ -13,8 +13,12 @@ public class SequenceDiagram implements DiagramStrategy {
 
 	@Override
 	public Package generate(List<Information> informations) {
+		adapter.createInteraction();
 		if(informations != null && !informations.isEmpty())
-			adapter.createLifeline(informations.get(0).getValue());
+			for (Information information : informations) {
+				adapter.createLifeline(information.getValue());
+			}
+			
 		return adapter.getPackage();
 	}
 
