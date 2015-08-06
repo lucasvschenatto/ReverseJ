@@ -37,27 +37,25 @@ public class DiagramMaker4 {
 		Message messageSend = interaction.createMessage("messageSend4");
 		Message replyMessage = interaction.createMessage("messageReply4");
 		
+		ExecutionSpecification e = UMLFactory.eINSTANCE.createActionExecutionSpecification();
 		MessageOccurrenceSpecification send1 = createMessageOccurrenceSpecification(sender, messageSend,"messageOcurrenceSpecificationSend4");
-		messageSend.setSendEvent(send1);
 		MessageOccurrenceSpecification receive1 = createMessageOccurrenceSpecification(receiver, messageSend,"messageOcurrenceSpecificationReceive4");
-		messageSend.setReceiveEvent(receive1);
 		
 		MessageOccurrenceSpecification replySend2 = createMessageOccurrenceSpecification(receiver, replyMessage,"messageOcurrenceSpecificationReplySend4");
-		replyMessage.setSendEvent(replySend2);
 		MessageOccurrenceSpecification replyReceive2 = createMessageOccurrenceSpecification(sender, replyMessage,"messageOcurrenceSpecificationReplyReceive4");
+		messageSend.setSendEvent(send1);
+		messageSend.setReceiveEvent(receive1);
+		replyMessage.setSendEvent(replySend2);
 		replyMessage.setReceiveEvent(replyReceive2);
 		
 //		BehaviorExecutionSpecification operation1 = createBehaviorExecutionSpecification(receive1, replySend2, "behaviorExecutionBody");
 //		operation1.setBehavior(behavior);
-		ExecutionSpecification e = UMLFactory.eINSTANCE.createActionExecutionSpecification();
-		if(send1.getCovered() == replyReceive2.getCovered()){
 			e.setStart(send1);
 			e.setFinish(replyReceive2);
 //			EClass er = UMLFactory.eINSTANCE.
 //			Action a = interaction.createAction("aaaaaa", );
 //			((ActionExecutionSpecification)e).setAction(a);
 			
-		}
 //		receiver.destroy();
 		
 		
