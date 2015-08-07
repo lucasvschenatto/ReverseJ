@@ -12,6 +12,7 @@ import org.eclipse.uml2.uml.InterfaceRealization;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.junit.*;
+import static reverseJ.ClassDiagramTest.*;
 public class SequenceDiagramTest {
 	public static class GeneralTests{
 		private DiagramStrategy strategy;
@@ -123,22 +124,13 @@ public class SequenceDiagramTest {
 		}
 		@Test
 		public void createMessageSignature(){
-			fail("Not yet implemented");
+			List<Information> informations = completeNestedMethodTrace("00001");
+
+			strategy.generate(informations);
+			
+			assertMethodCallCreated("myMethod00001");
 		}
 		
-
-//		@Test
-//		public void CreateLifeline() {
-//			String className = "myTestClass";
-//			Information info = InformationFactory.createClass(className);
-//			List<Information> informations = new LinkedList<Information>();
-//			informations.add(info);
-//
-//			strategy.generate(informations);
-//
-//			assertLifelineCreated(className);
-//		}
-//
 //		@Test
 //		public void CreateLifelineForHandler() {
 //			String className = "myTestClassTarget";
