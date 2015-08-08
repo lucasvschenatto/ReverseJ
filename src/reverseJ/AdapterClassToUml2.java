@@ -12,7 +12,7 @@ import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Type;
 
-public class AdapterClassToUml2 implements AdapterToUml2{
+class AdapterClassToUml2 implements AdapterToUml2{
 	private Context context;
 	private Package rootPackage;
 

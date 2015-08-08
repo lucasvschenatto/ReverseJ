@@ -1,18 +1,12 @@
 package reverseJ;
 import static org.junit.Assert.*;
+import static reverseJ.TestUtilities.*;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.uml2.uml.Association;
-import org.eclipse.uml2.uml.Dependency;
-import org.eclipse.uml2.uml.Interface;
-import org.eclipse.uml2.uml.InterfaceRealization;
-import org.eclipse.uml2.uml.Operation;
-import org.eclipse.uml2.uml.PrimitiveType;
+import org.eclipse.uml2.uml.Message;
 import org.junit.*;
-import static reverseJ.ClassDiagramTest.*;
 public class SequenceDiagramTest {
 	public static class GeneralTests{
 		private DiagramStrategy strategy;
@@ -21,7 +15,7 @@ public class SequenceDiagramTest {
 		public void constructorSetsAdapter() {
 			AdapterSequenceToUml2 expected = AdapterSequenceToUml2.make();
 			strategy = new SequenceDiagram(expected);
-			AdapterToUml2 actual = strategy.getUtil();
+			AdapterToUml2 actual = strategy.getAdapter();
 
 			assertEquals(expected, actual);
 		}
@@ -35,46 +29,25 @@ public class SequenceDiagramTest {
 		}
 	}
 
-	public static class CreateLifeline extends AdapterSequenceToUml2 {
-		private final String interaction = "Interaction";
-		private final String lifeline = "Lifeline";
+	public static class CreateLifelineTests extends AdapterSequenceToUml2 {
 		private DiagramStrategy strategy;
 		private List<String> createdLifelines;
-		private List<String> actionsOrder;
-		private boolean interactionCreated;
-
+		
 		private void assertLifelineCreated(String className) {
 			assertTrue(createdLifelines.contains(className));
 		}
 		private void assertNumberOfCreatedLifelines(int number) {
 			assertEquals(number, createdLifelines.size());
 		}
-		private void assertInteractionCreated(){
-			assertTrue(interactionCreated);
-		}
-		private void assertCreationOrder(String ...strings) {
-			List<String> expectedOrder = Arrays.asList(strings);
-			for(int i = 0; i<expectedOrder.size() & i<actionsOrder.size();i++)
-				assertEquals(expectedOrder.get(i), actionsOrder.get(i));			
-			assertEquals(expectedOrder.size(),actionsOrder.size());
-		}
-
 		@Override
 		public org.eclipse.uml2.uml.Lifeline createLifeline(String name) {
 			createdLifelines.add(name);
-			actionsOrder.add(lifeline);
 			return null;
-		}
-		@Override
-		public void createInteraction() {
-			interactionCreated = true;
-			actionsOrder.add(interaction);
 		}
 		@Before
 		public void setup() {
 			strategy = new SequenceDiagram(this);
 			createdLifelines = new LinkedList<String>();
-			actionsOrder = new LinkedList<String>();
 		}
 		@Test
 		public void CreateLifelineTest() {
@@ -108,63 +81,140 @@ public class SequenceDiagramTest {
 			assertLifelineCreated(className1);
 			assertLifelineCreated(className2);
 		}
+		
 		@Test
-		public void createInteractionTest(){
-			strategy.generate(null);			
-			assertInteractionCreated();
+		public void doesntDuplicateLifelines() {
+			List<Information> informations = completeMethodTrace("001");
+			informations.addAll(completeMethodTrace("001"));
+			informations.addAll(completeMethodTrace("001"));
+			informations.addAll(completeMethodTrace("001"));
+			informations.addAll(completeMethodTrace("001"));
+
+			strategy.generate(informations);
+
+			assertNumberOfCreatedLifelines(1);
+		}
+	}
+	public static class CreateMessageTests extends AdapterSequenceToUml2 {
+		private DiagramStrategy strategy;
+		private List<String> createdMessages;
+
+		private void assertMessageCreated(String message) {
+			assertTrue(createdMessages.contains(message));
+		}
+		private void assertNumberOfCreatedMessageCalls(int number) {
+			int actual = 0;
+			for (String message : createdMessages)
+				if(message.contains("("))
+					actual++;
+			assertEquals(number, actual);
+		}
+		private void assertNumberOfCreatedMessageReturns(int number) {
+			int actual = 0;
+			for (String message : createdMessages) {
+				if(!message.contains("("))
+					actual++;
+			}
+			assertEquals(number, actual);
+		}
+		@Override
+		public Message createMessage(
+				String caller, String message, String target) {
+			createdMessages.add(message);
+			return null;
+		}
+		@Before
+		public void setup() {
+			strategy = new SequenceDiagram(this);
+			createdMessages = new LinkedList<String>();
 		}
 		@Test
-		public void creationOrder(){
-			List<Information> informations = new LinkedList<Information>();
-			informations.add(InformationFactory.createClass("classDummy"));
+		public void createMessageCall(){
+			String id = "00001";
+			List<Information> informations = completeMethodTrace(id);
 
 			strategy.generate(informations);
 			
-			assertCreationOrder(interaction,lifeline);
-		}
-		@Test
-		public void createMessageSignature(){
-			List<Information> informations = completeNestedMethodTrace("00001");
-
-			strategy.generate(informations);
-			
-			assertMethodCallCreated("myMethod00001");
+			assertMessageCreated(METHOD+id + "(" + PARAMETERS + id + ")");
 		}
 		
-//		@Test
-//		public void CreateLifelineForHandler() {
-//			String className = "myTestClassTarget";
-//			Information info = InformationFactory.createHandler(className);
-//			List<Information> informations = new LinkedList<Information>();
-//			informations.add(info);
-//
-//			strategy.generate(informations);
-//
-//			assertLifelineCreated(className);
-//		}
-//
-//		@Test
-//		public void doesntDuplicateClasses() {
-//			List<Information> informations = completeMethodTrace("001");
-//			informations.addAll(completeMethodTrace("001"));
-//			informations.addAll(completeMethodTrace("001"));
-//			informations.addAll(completeMethodTrace("001"));
-//			informations.addAll(completeMethodTrace("001"));
-//
-//			strategy.generate(informations);
-//
-//			assertNumberOfCreatedClasses(1);
-//		}
-//
-//		@Test
-//		public void doesntDeleteNotDuplicatedClasses() {
-//			List<Information> informations = completeMethodTrace("001");
-//			informations.addAll(completeMethodTrace("002"));
-//
-//			strategy.generate(informations);
-//
-//			assertClassCreated("Class001");
-//			assertClassCreated("Class002");
-//		}
+		@Test
+		public void createTwoMessageCalls(){
+			String id1 = "1";
+			String id2 = "2";
+			List<Information> informations = completeMethodTrace(id1);
+			informations.addAll(completeMethodTrace(id2));
+			
+			strategy.generate(informations);
+			
+			assertMessageCreated(METHOD+id1 + "(" + PARAMETERS + id1 + ")");
+			assertMessageCreated(METHOD+id2 + "(" + PARAMETERS + id2 + ")");
+		}
+		
+		@Test
+		public void createTwoMessagesCallsForNestedTrace(){
+			String id1 = "1";
+			List<Information> informations = completeNestedMethodTrace(id1);
+			
+			strategy.generate(informations);
+			
+			assertMessageCreated(METHOD_R + "(" + PARAMETERS + id1 + ")");
+			assertNumberOfCreatedMessageCalls(2);
+		}
+		
+		@Test
+		public void createReturn(){
+			String id = "00001";
+			List<Information> informations = completeMethodTrace(id);
+
+			strategy.generate(informations);
+			
+			assertMessageCreated(RETURN_TYPE+id);
+		}
+		@Test
+		public void createTwoIdenticalReturns(){
+			String id = "1";
+			List<Information> informations = completeMethodTrace(id);
+			informations.addAll(completeMethodTrace(id));
+			
+			strategy.generate(informations);
+			
+			assertMessageCreated(RETURN_TYPE+id);
+			assertNumberOfCreatedMessageReturns(2);
+		}
+		@Test
+		public void createTwoDifferentReturns(){
+			String id1 = "1";
+			String id2 = "2";
+			List<Information> informations = completeMethodTrace(id1);
+			informations.addAll(completeMethodTrace(id2));
+			
+			strategy.generate(informations);
+			
+			assertMessageCreated(RETURN_TYPE+id1);
+			assertMessageCreated(RETURN_TYPE+id2);
+		}
+		
+		@Test
+		public void createTwoReturnsForNestedTrace(){
+			String id1 = "1";
+			List<Information> informations = completeNestedMethodTrace(id1);
+			
+			strategy.generate(informations);
+			
+			assertMessageCreated(RETURN_TYPE+id1);
+			assertNumberOfCreatedMessageReturns(2);
+		}
+		
+		@Test
+		public void whenReturnIsVoidDoNotCreateReturnMessage(){
+			String id = "00001";
+			List<Information> informations = completeVoidMethodTrace(id);
+
+			strategy.generate(informations);
+			
+			assertNumberOfCreatedMessageReturns(0);
+			assertNumberOfCreatedMessageCalls(1);
+		}
 	}
 }

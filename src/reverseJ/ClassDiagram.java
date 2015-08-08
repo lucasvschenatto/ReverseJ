@@ -17,8 +17,13 @@ public class ClassDiagram implements DiagramStrategy {
 	private List<String> attributeTypes;
 	private List<Pair> attributeUnidirectionals;
 	private List<Pair> attributeBidirectionals;
-	
+	public ClassDiagram(){
+		setAttributes(AdapterClassToUml2.make());
+	}
 	public ClassDiagram(AdapterClassToUml2 frameworkAdapter) {
+		setAttributes(frameworkAdapter);
+	}
+	private void setAttributes(AdapterClassToUml2 frameworkAdapter) {
 		adapter = frameworkAdapter;
 		attributeClasses = new LinkedList<String>();
 		attributeInterfaces = new LinkedList<String>();
@@ -377,7 +382,7 @@ public class ClassDiagram implements DiagramStrategy {
 	}
 
 	@Override
-	public AdapterToUml2 getUtil() {
+	public AdapterToUml2 getAdapter() {
 		return adapter;
 	}
 	protected class Pair{

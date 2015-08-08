@@ -9,7 +9,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.uml2.uml.BehaviorExecutionSpecification;
 import org.eclipse.uml2.uml.Lifeline;
 import org.eclipse.uml2.uml.Message;
+import org.eclipse.uml2.uml.MessageEnd;
 import org.eclipse.uml2.uml.MessageOccurrenceSpecification;
+import org.eclipse.uml2.uml.MessageSort;
 import org.eclipse.uml2.uml.OpaqueBehavior;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.resource.UMLResource;
@@ -17,40 +19,53 @@ import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Interaction;
 
-public class DiagramMaker3 {
+public class DiagramMaker5 {
 
 	private static ResourceSet resourceSet = new ResourceSetImpl();
 	private static Interaction interaction;
 	public static void main(String[] args) throws Exception{
-		Package myPackage = createPackage("packageSequenceGoal");
-		interaction = createInteraction(myPackage, "interactionTest1");
+		Package myPackage = createPackage("package5");
+		interaction = createInteraction(myPackage, "interaction5");
 //		OpaqueBehavior behavior = createOpaqueBehavior(myPackage,"operation1Behavior");
-		Lifeline sender = createLifeLine(interaction, "sender");
-		Lifeline receiver = createLifeLine(interaction, "receiver");
+		Lifeline sender = createLifeLine(interaction, "sender5");
 		
-		Message messageSend = interaction.createMessage("messageSend");
-		Message replyMessage = interaction.createMessage("replyMessage");
+		Message messageSend = interaction.createMessage("messageSend5");
+		Message replyMessage = interaction.createMessage("messageReply5");
+		MessageOccurrenceSpecification send1 = createMessageOccurrenceSpecification(sender, messageSend,"messageOcurrenceSpecificationSend5");
 		
-		MessageOccurrenceSpecification send1 = createMessageOccurrenceSpecification(sender, messageSend,"send1");
-		messageSend.setSendEvent(send1);
-		MessageOccurrenceSpecification receive1 = createMessageOccurrenceSpecification(receiver, messageSend,"receive1");
-		messageSend.setReceiveEvent(receive1);
+		Lifeline receiver = createLifeLine(interaction, "receiver5");
+		MessageOccurrenceSpecification receive1 = createMessageOccurrenceSpecification(receiver, messageSend,"messageOcurrenceSpecificationReceive5");
+		MessageOccurrenceSpecification replyReceive2 = createMessageOccurrenceSpecification(sender, replyMessage,"messageOcurrenceSpecificationReplyReceive5");
+		MessageOccurrenceSpecification replySend2 = createMessageOccurrenceSpecification(sender/*receiver*/, replyMessage,"messageOcurrenceSpecificationReplySend5");
 		
-		MessageOccurrenceSpecification replySend2 = createMessageOccurrenceSpecification(receiver, replyMessage,"replySend2");
-		replyMessage.setSendEvent(replySend2);
-		
-		BehaviorExecutionSpecification operation1 = createBehaviorExecutionSpecification(receive1, replySend2, "behaviorExecutionBody");
-//		operation1.setBehavior(behavior);
-		MessageOccurrenceSpecification replyReceive2 = createMessageOccurrenceSpecification(sender, replyMessage,"replyReceive2");
 		replyMessage.setReceiveEvent(replyReceive2);
+		replyMessage.setSendEvent(replySend2);
+		messageSend.setSendEvent(send1);
+		messageSend.setReceiveEvent(receive1);
+		messageSend.setMessageSort(MessageSort.CREATE_MESSAGE_LITERAL);
 		
 		
-		URI outputURI = URI.createFileURI("../ReverseJ/files/diagramStudy3")
+//		BehaviorExecutionSpecification operation1 = createBehaviorExecutionSpecification(receive1, replySend2, "behaviorExecutionBody");
+//		operation1.setBehavior(behavior);
+//		ExecutionSpecification e = UMLFactory.eINSTANCE.createActionExecutionSpecification();
+//		if(send1.getCovered() == replyReceive2.getCovered()){
+//			e.setStart(send1);
+//			e.setFinish(replyReceive2);
+//			EClass er = UMLFactory.eINSTANCE.
+//			Action a = interaction.createAction("aaaaaa", );
+//			((ActionExecutionSpecification)e).setAction(a);
+			
+//		}
+//		receiver.destroy();
+		
+		
+		URI outputURI = URI.createFileURI("../ReverseJ/files/diagramStudy52")
 		.appendFileExtension(UMLResource.FILE_EXTENSION);
 		save(myPackage, outputURI);
 	}
 	private static OpaqueBehavior createOpaqueBehavior(Package package_,
 			String name) {
+		
 		OpaqueBehavior behavior = UMLFactory.eINSTANCE.createOpaqueBehavior();
 		behavior.setPackage(package_);
 		behavior.setName("genericBehavior");
@@ -97,6 +112,7 @@ public class DiagramMaker3 {
 		resource.getContents().add(package_);
 		try {
 			resource.save(null);
+			System.out.println("finished");
 		} catch (IOException ioe) {
 			err(ioe.getMessage());
 		}

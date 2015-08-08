@@ -1,23 +1,31 @@
 package reverseJ;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.eclipse.uml2.uml.Lifeline;
+import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.UMLFactory;
+import org.eclipse.uml2.uml.Interaction;
+import org.eclipse.uml2.uml.MessageOccurrenceSpecification;
 
-public class AdapterSequenceToUml2 implements AdapterToUml2{
+class AdapterSequenceToUml2 implements AdapterToUml2{
+	public static final String DIAGRAM_TYPE = "Sequence Diagram";
 	private Context context;
 	private Package rootPackage;
+	private Interaction interaction;
 
 	protected AdapterSequenceToUml2(String packageName) {
+		setAttributes(packageName);
+	}
+
+	private void setAttributes(String packageName) {
 		context = Context.getInstance();
 		rootPackage = context.getModel().createNestedPackage(packageName);
+		interaction = UMLFactory.eINSTANCE.createInteraction();
+		interaction.setName(DIAGRAM_TYPE);
+		interaction.setPackage(rootPackage);
 	}
 
 	public AdapterSequenceToUml2() {
-		context = Context.getInstance();
-		rootPackage = context.getModel().createNestedPackage("default");
+		setAttributes("default");
 	}
 
 	public static AdapterSequenceToUml2 make() {
@@ -28,38 +36,33 @@ public class AdapterSequenceToUml2 implements AdapterToUml2{
 		return rootPackage;
 	}
 	
-	public Lifeline createLifeline(String name) {
-//		TODO Auto-generated method stub
-		return null;		
+	public Interaction getInteraction() {		
+		return interaction;
 	}
-	public void createInteraction() {
-		// TODO Auto-generated method stub
+	public Lifeline createLifeline(String name) {
+		Lifeline newLifeline = UMLFactory.eINSTANCE.createLifeline();
+		newLifeline.setInteraction(interaction);
+		newLifeline.setName(name);
+		return newLifeline;
+	}
+
+	public Message createMessage(String sender, String messageContent, String receiver) {
+		Message m = interaction.createMessage(messageContent);
+		MessageOccurrenceSpecification send = createMessageOccurrenceSpecification(sender,m);
+		MessageOccurrenceSpecification receive = createMessageOccurrenceSpecification(sender,m);
+		m.setSendEvent(send);
+		m.setReceiveEvent(receive);
+		return m;
 		
 	}
-	//	public AdapterSequenceToUML2(){
-//		lifelines = new LinkedList<Lifeline>();
-//	}
-//	public Lifeline getLifeline(String name) {
-//		for (Lifeline lifeline : lifelines) {
-//			if (lifeline.getName() == name)
-//				return lifeline;
-//		}
-//		return null;
-//	}
-//
-//	public boolean createLifeline(String name) {
-//		if (context != null){
-//			Lifeline newLifeline = UMLFactory.eINSTANCE.createLifeline();
-////			newLifeline.setInteraction(context.getInteraction());
-//			newLifeline.setName(name);
-//			lifelines.add(newLifeline);
-//			return true;
-//		}else
-//			return false;
-//	}
-//	public List<Lifeline> getLifelines() {
-//		return lifelines;
-//	}
-
+	private MessageOccurrenceSpecification createMessageOccurrenceSpecification(
+			String covered, Message message) {
+		MessageOccurrenceSpecification mo = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
+//		m.setEnclosingInteraction(interaction);
+//		m.setCovered(covered);
+//		m.setMessage(message);
+//		m.setName(name);
+		return mo;
+	}
 
 }

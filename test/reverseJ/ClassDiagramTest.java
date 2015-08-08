@@ -1,6 +1,7 @@
 package reverseJ;
 
 import static org.junit.Assert.*;
+import static reverseJ.TestUtilities.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,178 +15,6 @@ import org.eclipse.uml2.uml.PrimitiveType;
 import org.junit.*;
 
 public class ClassDiagramTest {
-	static final String space = " ";
-	static final String interface_ = "Interface";
-	static final String class_ = "Class";
-	static final String class1 = "Caller";
-	static final String class2 = "Target";
-	static final String modifiers = "modifier";
-	static final String method = "method";
-	static final String methodR = "run";
-	static final String methodC = "<init>";
-	static final String parameters = "double d";
-	static final String returnType = "boolean";
-	static final String returnVoid = "void";
-	static final String returnClass1 = class1;
-	static final String returnClass2 = class2;
-
-	public static List<Information> completeMethodTrace(String id) {
-		List<Information> informations = new LinkedList<Information>();
-		informations.add(InformationFactory.createClass(class_ + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(method + id));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createReturn(returnType + id));
-
-		return informations;
-	}
-	public static List<Information> completeVoidMethodTrace(String id) {
-		List<Information> informations = new LinkedList<Information>();
-		informations.add(InformationFactory.createClass(class_ + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(method + id));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createReturn(returnVoid));
-
-		return informations;
-	}
-
-	public static List<Information> completeNestedMethodTrace(String id) {
-		List<Information> informations = new LinkedList<Information>();
-		informations.add(InformationFactory.createClass(class1 + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(methodR));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createClass(class2 + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(methodR));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createReturn(returnType + id));
-		informations.add(InformationFactory.createReturn(returnType + id));
-
-		return informations;
-	}
-
-	public static List<Information> completeInterfaceTrace(String id) {
-		List<Information> informations = new LinkedList<Information>();
-		informations.add(InformationFactory.createInterface(interface_ + id));
-		informations.add(InformationFactory.createClass(class_ + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(method + id));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createReturn(returnType + id));
-
-		return informations;
-	}
-	
-	public static List<Information> completeNestedInterfaceTrace(String id) {
-		List<Information> informations = new LinkedList<Information>();
-		informations.add(InformationFactory.createClass(class1 + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(methodR));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createInterface(interface_ + id));
-		informations.add(InformationFactory.createClass(class2 + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(methodR));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createReturn(returnType + id));
-		informations.add(InformationFactory.createReturn(returnType + id));
-
-		return informations;
-	}
-
-	public static List<Information> completeConstructorTrace(String id) {
-		List<Information> informations = new LinkedList<Information>();
-		informations.add(InformationFactory.createClass(class_ + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(methodC));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createReturn(returnType + id));
-
-		return informations;
-	}
-
-	public static List<Information> completeNestedConstructorTrace(String id) {
-		List<Information> informations = new LinkedList<Information>();
-		informations.add(InformationFactory.createClass(class1 + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(methodR));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createClass(class2 + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(methodC));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createReturn(returnClass2));
-		informations.add(InformationFactory.createReturn(returnClass1));
-
-		return informations;
-	}
-
-	public static List<Information> completeBiDirectionalConstructorTrace(
-			String id) {
-		List<Information> informations = new LinkedList<Information>();
-
-		informations.add(InformationFactory.createClass(class1 + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(methodR));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createClass(class2 + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(methodC));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createReturn(returnClass2));
-		informations.add(InformationFactory.createReturn(returnClass1));
-
-		informations.add(InformationFactory.createClass(class2 + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(methodR));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createClass(class1 + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(methodC));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createReturn(returnClass1));
-		informations.add(InformationFactory.createReturn(returnClass2));
-		return informations;
-	}
-
-	public static List<Information> completeBiDirectionalMethodTrace(String id) {
-		List<Information> informations = new LinkedList<Information>();
-
-		informations.add(InformationFactory.createClass(class1 + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(methodR));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createClass(class2 + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(methodR));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createReturn(returnClass2));
-		informations.add(InformationFactory.createReturn(returnClass1));
-
-		informations.add(InformationFactory.createClass(class2 + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(methodR));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createClass(class1 + id));
-		informations.add(InformationFactory.createModifiers(modifiers + id));
-		informations.add(InformationFactory.createMethod(methodR));
-		informations.add(InformationFactory.createParameters(parameters + id));
-		informations.add(InformationFactory.createReturn(returnClass1));
-		informations.add(InformationFactory.createReturn(returnClass2));
-		return informations;
-	}
-
-	public static List<Information> nestInformations(List<Information> nesting,
-			List<Information> nested) {
-		Information last = nesting.get(nesting.size() - 1);
-		nesting.remove(nesting.size() - 1);
-		nesting.addAll(nested);
-		nesting.add(last);
-		return nesting;
-	}
-
 	public static class GeneralTests extends AdapterClassToUml2 {
 		private DiagramStrategy strategy;
 
@@ -193,7 +22,7 @@ public class ClassDiagramTest {
 		public void constructorSetsAdapter() {
 			AdapterClassToUml2 expected = AdapterClassToUml2.make();
 			strategy = new ClassDiagram(expected);
-			AdapterToUml2 actual = strategy.getUtil();
+			AdapterToUml2 actual = strategy.getAdapter();
 			assertEquals(expected, actual);
 		}
 		@Test
@@ -283,8 +112,8 @@ public class ClassDiagramTest {
 
 			strategy.generate(informations);
 
-			assertClassCreated("Class001");
-			assertClassCreated("Class002");
+			assertClassCreated(CLASS + "001");
+			assertClassCreated(CLASS + "002");
 		}
 	}
 
@@ -348,9 +177,9 @@ public class ClassDiagramTest {
 
 			strategy.generate(informations);
 
-			assertMethodContains(class_+id);
-			assertMethodContains(method+id);
-			assertMethodContains(parameters+id);
+			assertMethodContains(CLASS+id);
+			assertMethodContains(METHOD+id);
+			assertMethodContains(PARAMETERS+id);
 		}
 
 		@Test
@@ -360,20 +189,20 @@ public class ClassDiagramTest {
 
 			strategy.generate(informations);
 
-			assertMethodContains(class_+id);
-			assertMethodContains(method+id);
-			assertMethodContains(parameters+id);
-			assertMethodContains(returnType+id);
+			assertMethodContains(CLASS+id);
+			assertMethodContains(METHOD+id);
+			assertMethodContains(PARAMETERS+id);
+			assertMethodContains(RETURN_TYPE+id);
 		}
 
 		@Test
 		public void CreateTwoMethodsInSameHierarchy() {
 			String id1 = "001";
 			String id2 = "002";
-			String method1 = class_ + id1 + space + method+id1+ space
-					+ parameters + id1 + space + returnType + id1;
-			String method2 = class_ + id2 + space + method+id2 + space
-					+ parameters + id2 + space + returnType + id2;
+			String method1 = CLASS + id1 + SPACE + METHOD+id1+ SPACE
+					+ PARAMETERS + id1 + SPACE + RETURN_TYPE + id1;
+			String method2 = CLASS + id2 + SPACE + METHOD+id2 + SPACE
+					+ PARAMETERS + id2 + SPACE + RETURN_TYPE + id2;
 			List<Information> informations = completeMethodTrace(id1);
 			informations.addAll(completeMethodTrace(id2));
 
@@ -386,10 +215,10 @@ public class ClassDiagramTest {
 		@Test
 		public void CreateTwoMethodsNested() {
 			String id = "001";
-			String method1 = class1 + id + space + methodR + space
-					+ parameters + id + space + returnType + id;
-			String method2 = class2 + id + space + methodR + space
-					+ parameters + id + space + returnType + id;
+			String method1 = CLASS1 + id + SPACE + METHOD_R + SPACE
+					+ PARAMETERS + id + SPACE + RETURN_TYPE + id;
+			String method2 = CLASS2 + id + SPACE + METHOD_R + SPACE
+					+ PARAMETERS + id + SPACE + RETURN_TYPE + id;
 
 			List<Information> informations = completeNestedMethodTrace(id);
 
@@ -509,7 +338,7 @@ public class ClassDiagramTest {
 
 			strategy.generate(informations);
 
-			assertTypeCreated(returnType + "5");
+			assertTypeCreated(RETURN_TYPE + "5");
 		}
 
 		@Test
@@ -613,7 +442,7 @@ public class ClassDiagramTest {
 
 			strategy.generate(informations);
 
-			assertImplementationCreated(interface_ + id + space + class_ + id);
+			assertImplementationCreated(INTERFACE + id + SPACE + CLASS + id);
 		}
 
 		@Test
@@ -625,8 +454,8 @@ public class ClassDiagramTest {
 
 			strategy.generate(informations);
 
-			assertImplementationCreated(interface_ + id1 + space + class_ + id1);
-			assertImplementationCreated(interface_ + id2 + space + class_ + id2);
+			assertImplementationCreated(INTERFACE + id1 + SPACE + CLASS + id1);
+			assertImplementationCreated(INTERFACE + id2 + SPACE + CLASS + id2);
 			assertNumberOfCreatedImplementations(2);
 		}
 	}
@@ -839,7 +668,7 @@ public class ClassDiagramTest {
 
 			strategy.generate(informations);
 
-			assertDependencyCreated(class1 + id + space + class2 + id);
+			assertDependencyCreated(CLASS1 + id + SPACE + CLASS2 + id);
 		}
 
 		@Test
@@ -851,8 +680,8 @@ public class ClassDiagramTest {
 
 			strategy.generate(informations);
 
-			assertDependencyCreated(class1 + id1 + space + class2 + id1);
-			assertDependencyCreated(class1 + id2 + space + class2 + id2);
+			assertDependencyCreated(CLASS1 + id1 + SPACE + CLASS2 + id1);
+			assertDependencyCreated(CLASS1 + id2 + SPACE + CLASS2 + id2);
 			assertNumberOfCreatedDependencies(2);
 		}
 
@@ -873,7 +702,7 @@ public class ClassDiagramTest {
 
 			strategy.generate(informations);
 
-			assertDependencyCreated(class1 + id + space + interface_ + id);
+			assertDependencyCreated(CLASS1 + id + SPACE + INTERFACE + id);
 			assertNumberOfCreatedDependencies(1);
 		}
 		@Test

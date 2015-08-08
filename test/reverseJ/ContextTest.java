@@ -12,9 +12,16 @@ public class ContextTest {
 		assertNotNull(c);
 	}
 	@Test
-	public void getInstance_returnsNewInstance(){
+	public void getInstance_returnsSameInstance(){
 		Context first  = Context.getInstance();
 		Context second = Context.getInstance();
+		
+		assertEquals(first, second);
+	}
+	@Test
+	public void resetInstance_returnsNewInstance(){
+		Context first  = Context.getInstance();
+		Context second = Context.resetInstance();
 		
 		assertNotEquals(first, second);
 	}
