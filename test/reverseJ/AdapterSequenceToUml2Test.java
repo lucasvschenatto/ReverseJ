@@ -2,6 +2,7 @@ package reverseJ;
 
 import static org.junit.Assert.*;
 
+import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Lifeline;
 import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.MessageOccurrenceSpecification;
@@ -102,18 +103,82 @@ public class AdapterSequenceToUml2Test {
 		}
 		@Test
 		public void sendEventIsCoveredBySender(){
-			fail("not yet implemented");
+			String sender = "aSender";
+			Lifeline expected = adapter.createLifeline(sender);
+			Message m = adapter.createMessage(sender, null, null);
+			Lifeline actual = ((MessageOccurrenceSpecification)m.getSendEvent()).getCovered();
+			assertEquals(expected,actual);
+		}
+		@Test
+		public void sendEventHasEnclosingInteraction(){
+			String sender = "aSender";
+			adapter.createLifeline(sender);
+			Message m = adapter.createMessage(sender, null, null);
+			Interaction expected = adapter.getInteraction();
+			Interaction actual = ((MessageOccurrenceSpecification)m.getSendEvent()).getEnclosingInteraction();
+			assertEquals(expected,actual);
+		}
+		@Test
+		public void sendEventHasMessageSet(){
+			String sender = "aSender";
+			adapter.createLifeline(sender);
+			Message expected = adapter.createMessage(sender, null, null);
+			Message actual = ((MessageOccurrenceSpecification)expected.getSendEvent()).getMessage();
+			assertEquals(expected,actual);
+		}
+		@Test
+		public void sendEventHasNameSet(){
+			String sender = "aSender";
+			String messageName = "Hello";
+			String expected = sender + AdapterSequenceToUml2.SEPARATOR + messageName;
+			
+			adapter.createLifeline(sender);
+			Message m = adapter.createMessage(sender, messageName, null);
+			
+			String actual = ((MessageOccurrenceSpecification)m.getSendEvent()).getName();
+			assertEquals(expected,actual);
 		}
 		@Test
 		public void messageHasReceiver(){
 			Message actual = adapter.createMessage(null, null, null);
 			assertNotNull(actual.getReceiveEvent());
 		}
-//		@Test
-//		public void callerIsSet(){
-//			String caller = "talker";
-//			MessageOccurrenceSpecification actual = adapter.createMessage(caller, null, null);
-//			assertNotNull(actual.e)
-//		}
+		@Test
+		public void receiveEventIsCoveredBySender(){
+			String receiver = "aReceiver";
+			Lifeline expected = adapter.createLifeline(receiver);
+			Message m = adapter.createMessage(null, null, receiver);
+			Lifeline actual = ((MessageOccurrenceSpecification)m.getReceiveEvent()).getCovered();
+			assertEquals(expected,actual);
+		}
+		@Test
+		public void receiveEventHasEnclosingInteraction(){
+			String receiver = "aReceiver";
+			adapter.createLifeline(receiver);
+			Message m = adapter.createMessage(null, null, receiver);
+			Interaction expected = adapter.getInteraction();
+			Interaction actual = ((MessageOccurrenceSpecification)m.getReceiveEvent()).getEnclosingInteraction();
+			assertEquals(expected,actual);
+		}
+		@Test
+		public void receiveEventHasMessageSet(){
+			String receiver = "aReceiver";
+			adapter.createLifeline(receiver);
+			Message expected = adapter.createMessage(null, null, receiver);
+			Message actual = ((MessageOccurrenceSpecification)expected.getReceiveEvent()).getMessage();
+			assertEquals(expected,actual);
+		}
+		@Test
+		public void receiveEventHasNameSet(){
+			String receiver = "aReceiver";
+			String messageName = "Hello";
+			String expected = receiver + AdapterSequenceToUml2.SEPARATOR + messageName;
+			
+			adapter.createLifeline(receiver);
+			Message m = adapter.createMessage(null, messageName, receiver);
+			
+			String actual = ((MessageOccurrenceSpecification)m.getReceiveEvent()).getName();
+			assertEquals(expected,actual);
+		}
 	}
 }

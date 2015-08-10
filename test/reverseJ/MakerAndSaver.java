@@ -13,6 +13,7 @@ import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 import org.eclipse.emf.common.util.URI;
 
 public class MakerAndSaver extends DiagramMaker {
+	private String fileName = "diagram";
 	public MakerAndSaver(InformationProvider infoProvider,
 			List<DiagramStrategy> diagrams) {
 		super(infoProvider, diagrams);
@@ -25,7 +26,7 @@ public class MakerAndSaver extends DiagramMaker {
 			packages.add(diagram.generate(infoProvider.getAll()));
 
 		ResourceSet resourceSet = new ResourceSetImpl();
-		URI outputURI = URI.createFileURI("../ReverseJ/files/diagramaDeClasse")
+		URI outputURI = URI.createFileURI("../ReverseJ/files/"+fileName)
 				.appendFileExtension(UMLResource.FILE_EXTENSION);
 		UMLResourcesUtil.init(resourceSet);
 
@@ -43,7 +44,8 @@ public class MakerAndSaver extends DiagramMaker {
 		} catch (IOException ioe) {
 			System.out.println(ioe.toString());
 		}
-
 	}
-
+	public void setFileName(String name){
+		fileName = name;
+	}
 }

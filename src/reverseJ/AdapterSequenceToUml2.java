@@ -8,6 +8,7 @@ import org.eclipse.uml2.uml.MessageOccurrenceSpecification;
 
 class AdapterSequenceToUml2 implements AdapterToUml2{
 	public static final String DIAGRAM_TYPE = "Sequence Diagram";
+	public static final String SEPARATOR = "::";
 	private Context context;
 	private Package rootPackage;
 	private Interaction interaction;
@@ -29,7 +30,7 @@ class AdapterSequenceToUml2 implements AdapterToUml2{
 	}
 
 	public static AdapterSequenceToUml2 make() {
-		return new AdapterSequenceToUml2("classDiagram");
+		return new AdapterSequenceToUml2("sequenceDiagram");
 	}
 
 	public Package getPackage() {
@@ -49,7 +50,7 @@ class AdapterSequenceToUml2 implements AdapterToUml2{
 	public Message createMessage(String sender, String messageContent, String receiver) {
 		Message m = interaction.createMessage(messageContent);
 		MessageOccurrenceSpecification send = createMessageOccurrenceSpecification(sender,m);
-		MessageOccurrenceSpecification receive = createMessageOccurrenceSpecification(sender,m);
+		MessageOccurrenceSpecification receive = createMessageOccurrenceSpecification(receiver,m);
 		m.setSendEvent(send);
 		m.setReceiveEvent(receive);
 		return m;
@@ -58,10 +59,12 @@ class AdapterSequenceToUml2 implements AdapterToUml2{
 	private MessageOccurrenceSpecification createMessageOccurrenceSpecification(
 			String covered, Message message) {
 		MessageOccurrenceSpecification mo = UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
-//		m.setEnclosingInteraction(interaction);
-//		m.setCovered(covered);
-//		m.setMessage(message);
-//		m.setName(name);
+		mo.setEnclosingInteraction(interaction);
+		mo.setCovered(interaction.getLifeline(covered));
+		mo.setMessage(message);
+		String name = message.isSetName()?
+				covered + SEPARATOR + message.getName() : covered + SEPARATOR; 
+		mo.setName(name);
 		return mo;
 	}
 
