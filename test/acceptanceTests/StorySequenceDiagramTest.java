@@ -1,4 +1,4 @@
-package integrationTests;
+package acceptanceTests;
 
 import java.util.LinkedList;
 import java.util.List;
