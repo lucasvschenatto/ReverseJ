@@ -22,7 +22,7 @@ public class StoryClassDiagramTest {
 		List<DiagramStrategy> lds = new LinkedList<DiagramStrategy>();
 		lds.add(dS);
 		DiagramMaker dM = new MakerAndSaver(p, lds);
-		
+		((MakerAndSaver)dM).setFileName("diagramaDeClasse");
 		Tracer.start(r);
 		
 		Story s = new Story();
