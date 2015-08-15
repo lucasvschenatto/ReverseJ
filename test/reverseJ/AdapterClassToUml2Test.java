@@ -10,7 +10,10 @@ import org.eclipse.uml2.uml.InterfaceRealization;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
+import org.eclipse.uml2.uml.Parameter;
+import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
+import org.eclipse.uml2.uml.Type;
 
 public class AdapterClassToUml2Test{
 	protected AdapterClassToUml2 adapter;
@@ -67,6 +70,12 @@ public class AdapterClassToUml2Test{
 			PrimitiveType p = adapter.createType(name);
 			assertEquals(p, adapter.getPackage().getOwnedType(name));
 		}
+		@Test
+		public void createType_setsTypeName() {
+			String name = "boolean";
+			PrimitiveType p = adapter.createType(name);
+			assertEquals(name, p.getName());
+		}
 	}
 	public static class CreateInterface extends AdapterClassToUml2Test{
 		@Test
@@ -83,7 +92,119 @@ public class AdapterClassToUml2Test{
 		}
 	}
 	public static class CreateMethod extends AdapterClassToUml2Test{
-		
+		@Test
+		public void CreateMethod_ReturnsOperation() {
+			Operation received = adapter.createMethod(null, null, null);
+			assertNotNull(received);
+		}
+		@Test
+		public void CreateMethod_boundToClass() {
+			String className = "Visiter";
+			adapter.createConcreteClass(className);
+			Operation received = adapter.createMethod(className, null, null);
+			assertEquals(className, received.getClass_().getName());
+		}
+		@Test
+		public void CreateMethod_setsMethodName() {
+			String methodName = "action";
+			Operation received = adapter.createMethod(null, methodName, null);
+			assertEquals(methodName, received.getName());
+		}
+		@Test
+		public void CreateMethod_setsOneParameters() {
+			String signature = "String name";
+			PrimitiveType s = adapter.createType("String");
+			
+			Operation received = adapter.createMethod(null, null, signature);
+			Parameter p = received.getOwnedParameter("name", s);
+			assertNotNull(p);
+			assertEquals(ParameterDirectionKind.IN_LITERAL, p.getDirection());
+		}
+		@Test
+		public void CreateMethod_setsFourParameters() {
+			String signature = "String name, int age, double money, boolean isBrazilian";
+			PrimitiveType s = adapter.createType("String");
+			PrimitiveType i = adapter.createType("int");
+			PrimitiveType d = adapter.createType("double");
+			PrimitiveType b = adapter.createType("boolean");
+			
+			Operation received = adapter.createMethod(null, null, signature);
+			
+			Parameter p = received.getOwnedParameter("name", s);
+			assertNotNull(p);
+			assertEquals(ParameterDirectionKind.IN_LITERAL, p.getDirection());
+			p = received.getOwnedParameter("age", i);
+			assertNotNull(p);
+			assertEquals(ParameterDirectionKind.IN_LITERAL, p.getDirection());			
+			p =received.getOwnedParameter("money", d);
+			assertNotNull(p);
+			assertEquals(ParameterDirectionKind.IN_LITERAL, p.getDirection());			
+			p = received.getOwnedParameter("isBrazilian", b);
+			assertNotNull(p);
+			assertEquals(ParameterDirectionKind.IN_LITERAL, p.getDirection());
+		}
+	}
+	public static class CreateMethodWithReturn extends AdapterClassToUml2Test{
+		@Test
+		public void CreateMethodWithReturn_ReturnsOperation() {
+			Operation received = adapter.createMethodWithReturn(null, null, null, null);
+			assertNotNull(received);
+		}
+		@Test
+		public void CreateMethodWithReturn_boundToClass() {
+			String className = "Visiter";
+			adapter.createConcreteClass(className);
+			Operation received = adapter.createMethodWithReturn(className, null, null, null);
+			assertEquals(className, received.getClass_().getName());
+		}
+		@Test
+		public void CreateMethodWithReturn_setsMethodName() {
+			String methodName = "action";
+			Operation received = adapter.createMethodWithReturn(null, methodName, null, null);
+			assertEquals(methodName, received.getName());
+		}
+		@Test
+		public void CreateMethodWithReturn_setsOneParameters() {
+			String signature = "String name";
+			PrimitiveType s = adapter.createType("String");
+			
+			Operation received = adapter.createMethodWithReturn(null, null, signature, null);
+			
+			assertNotNull(received.getOwnedParameter("name", s));
+		}
+		@Test
+		public void CreateMethodWithReturn_setsFourParameters() {
+			String signature = "String name, int age, double money, boolean isBrazilian";
+			PrimitiveType s = adapter.createType("String");
+			PrimitiveType i = adapter.createType("int");
+			PrimitiveType d = adapter.createType("double");
+			PrimitiveType b = adapter.createType("boolean");
+			
+			Operation received = adapter.createMethodWithReturn(null, null, signature, null);
+			
+			assertNotNull(received.getOwnedParameter("name", s));
+			assertNotNull(received.getOwnedParameter("age", i));
+			assertNotNull(received.getOwnedParameter("money", d));
+			assertNotNull(received.getOwnedParameter("isBrazilian", b));
+		}
+		@Test
+		public void CreateMethodWithReturn_setsReturn() {
+			String returnType = "int";
+			
+			Operation received = adapter.createMethodWithReturn(null, null, null, returnType);
+			Parameter p = received.getReturnResult();
+			assertNotNull(p);
+			assertEquals(ParameterDirectionKind.RETURN_LITERAL, p.getDirection());
+		}
+		@Test
+		public void returnTypeIsSet() {
+			String returnType = "int";
+			PrimitiveType t = adapter.createType(returnType);
+			
+			Operation received = adapter.createMethodWithReturn(null, null, null, returnType);
+			Parameter p = received.getReturnResult();
+			assertEquals(t,p.getType());
+		}
 	}
 	public static class CreateImplementation extends AdapterClassToUml2Test{
 		@Test
@@ -145,20 +266,6 @@ public class AdapterClassToUml2Test{
 			adapter.createConcreteClass(dependedUpon);
 			Dependency received = adapter.createDependency(depender, dependedUpon);
 			assertNotNull(received);
-		}
-	}
-	public static class ToDo extends AdapterClassToUml2Test{
-		@Test@Ignore
-		public void CreateMethod_ReturnsMethod() {
-			String className = "Visiter";
-			String signature = "String name, int age";
-			String methodName = "action";
-			Operation received = adapter.createMethod(className, methodName, signature);
-			assertNotNull(received);
-		}
-		@Test@Ignore
-		public void testCreateMethodWithReturn() {
-			fail("Not yet implemented");
 		}
 	}
 }

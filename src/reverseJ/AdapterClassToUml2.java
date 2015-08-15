@@ -1,5 +1,8 @@
 package reverseJ;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
@@ -7,10 +10,13 @@ import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.InterfaceRealization;
 import org.eclipse.uml2.uml.LiteralUnlimitedNatural;
+import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
+import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Type;
+import org.eclipse.uml2.uml.UMLFactory;
 
 class AdapterClassToUml2 implements AdapterToUml2{
 	private Context context;
@@ -79,20 +85,35 @@ class AdapterClassToUml2 implements AdapterToUml2{
 		return s.createDependency(t);
 	}
 	
-	public Operation createMethod(String className, String methodName,
-			String signature) {
-		// TODO
-		// org.eclipse.uml2.uml.Class c = (org.eclipse.uml2.uml.Class)
-		// rootPackage.getOwnedMember(className);
-		// EList<String> e;
-		// c.createOwnedOperation(methodName, ownedParameterNames,
-		// ownedParameterTypes);
-		return null;
-	}
-
 	public Operation createMethodWithReturn(String className, String methodName,
 			String signature, String returnType) {
-		// TODO
-		return null;
+		Type t = (Type)rootPackage.getOwnedMember(returnType);
+		Operation o = createMethod(className, methodName, signature);
+		o.createOwnedParameter("return", t).setDirection(ParameterDirectionKind.RETURN_LITERAL);
+		return o;
+	}
+	
+	public Operation createMethod(String className, String methodName,
+			String signature) {
+		Operation o = UMLFactory.eINSTANCE.createOperation();
+		o.setName(methodName);
+		if(signature != null && signature.length() > 0){
+			createParameters(o, signature);
+		}		
+		NamedElement ne = rootPackage.getOwnedMember(className);		
+		if(ne instanceof Class)
+			o.setClass_((org.eclipse.uml2.uml.Class)ne);	
+		return o;
+	}
+
+	private void createParameters(Operation method, String signature) {
+		List<String> listOfParameters = Arrays.asList(signature.split(","));
+		for (String s : listOfParameters) {
+			s = s.trim();
+			String parameter[] = s.split(" ");
+			String name = parameter[1];
+			Type t = (Type)rootPackage.getOwnedMember(parameter[0]);
+			method.createOwnedParameter(name, t).setDirection(ParameterDirectionKind.IN_LITERAL);
+		}
 	}
 }

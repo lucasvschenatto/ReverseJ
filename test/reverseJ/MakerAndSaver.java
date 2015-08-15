@@ -13,7 +13,7 @@ import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 import org.eclipse.emf.common.util.URI;
 
 public class MakerAndSaver extends DiagramMaker {
-	private String fileName = "diagram";
+	private String fileName = "classDiagram";
 	public MakerAndSaver(InformationProvider infoProvider,
 			List<DiagramStrategy> diagrams) {
 		super(infoProvider, diagrams);
