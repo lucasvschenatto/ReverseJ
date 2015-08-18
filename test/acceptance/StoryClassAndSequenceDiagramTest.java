@@ -20,19 +20,17 @@ public class StoryClassAndSequenceDiagramTest {
 		RecorderStorage r = i;
 		InformationProvider p = i;
 		List<DiagramStrategy> lds = new LinkedList<DiagramStrategy>();
-		lds.add(new SequenceDiagram());
 		lds.add(new ClassDiagram());
+		lds.add(new SequenceDiagram());
 		DiagramMaker dM = new MakerAndSaver(p, lds);
-		((MakerAndSaver)dM).setFileName("classeESequencia");
+		String fileName = Thread.currentThread().getStackTrace()[1].getFileName();
+		((MakerAndSaver)dM).setFileName(fileName);
 		Tracer.start(r);
 		
 		Story s = new Story();
 		s.tellStory();
 		
 		Tracer.stop();
-		for (String info : r.describeAll()) {
-			System.out.println(info);
-		}
 		dM.make();
 	}
 }

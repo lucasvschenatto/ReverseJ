@@ -18,7 +18,8 @@ public class bancoDiegoTest {
 		lds.add(new SequenceDiagram());
 		lds.add(new ClassDiagram());
 		DiagramMaker dM = new MakerAndSaver(p, lds);
-		((MakerAndSaver)dM).setFileName("classeESequencia");
+		String fileName = Thread.currentThread().getStackTrace()[1].getFileName();
+		((MakerAndSaver)dM).setFileName(fileName);
 		Tracer.start(r);
 		
 		Gerente gerente1 = new Gerente("Heitor", 31, "Seguro", 85695, 2200.00, "05/05/2015");

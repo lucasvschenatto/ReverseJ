@@ -22,16 +22,14 @@ public class StorySequenceDiagramTest {
 		List<DiagramStrategy> lds = new LinkedList<DiagramStrategy>();
 		lds.add(dS);
 		DiagramMaker dM = new MakerAndSaver(p, lds);
-		((MakerAndSaver)dM).setFileName("diagramaDeSequencia");
+		String fileName = Thread.currentThread().getStackTrace()[1].getFileName();
+		((MakerAndSaver)dM).setFileName(fileName);
 		Tracer.start(r);
 		
 		Story s = new Story();
 		s.tellStory();
 		
 		Tracer.stop();
-		for (String info : r.describeAll()) {
-			System.out.println(info);
-		}
 		dM.make();
 	}
 }

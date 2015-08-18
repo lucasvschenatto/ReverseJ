@@ -1,14 +1,17 @@
 package reverseJ;
 import org.eclipse.uml2.uml.Lifeline;
 import org.eclipse.uml2.uml.Message;
+import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Package;
-import org.eclipse.uml2.uml.PackageImport;
+import org.eclipse.uml2.uml.Property;
+import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.MessageOccurrenceSpecification;
 
 class AdapterSequenceToUml2 implements AdapterToUml2{
-	public static final String DIAGRAM_TYPE = "Sequence Diagram";
+	public static final String PACKAGE_NAME = "Sequence Diagram";
+	public static final String DIAGRAM_TYPE = PACKAGE_NAME;
 	public static final String SEPARATOR = "::";
 	private Context context;
 	private Package rootPackage;
@@ -21,11 +24,11 @@ class AdapterSequenceToUml2 implements AdapterToUml2{
 	private void setAttributes(String packageName) {
 		context = Context.getInstance();
 		rootPackage = context.getModel().createNestedPackage(packageName);
-		Package classPackage = (Package)context.getModel().getPackagedElement(AdapterClassToUml2.PACKAGE_NAME);
-		PackageImport imported = rootPackage.createPackageImport(classPackage);
 		interaction = UMLFactory.eINSTANCE.createInteraction();
 		interaction.setName(DIAGRAM_TYPE);
 		interaction.setPackage(rootPackage);
+		Package classPackage = (Package)context.getModel().getMember(AdapterClassToUml2.PACKAGE_NAME);
+		rootPackage.createPackageImport(classPackage);
 	}
 
 	public AdapterSequenceToUml2() {
@@ -33,7 +36,7 @@ class AdapterSequenceToUml2 implements AdapterToUml2{
 	}
 
 	public static AdapterSequenceToUml2 make() {
-		return new AdapterSequenceToUml2("sequenceDiagram");
+		return new AdapterSequenceToUml2(PACKAGE_NAME);
 	}
 
 	public Package getPackage() {
@@ -47,6 +50,11 @@ class AdapterSequenceToUml2 implements AdapterToUml2{
 		Lifeline newLifeline = UMLFactory.eINSTANCE.createLifeline();
 		newLifeline.setInteraction(interaction);
 		newLifeline.setName(name);
+		NamedElement pe = rootPackage.getImportedMember(name);
+		if(pe != null){
+			Property p = interaction.createOwnedAttribute(name, (Type)pe);
+			newLifeline.setRepresents(p);
+		}
 		return newLifeline;
 	}
 

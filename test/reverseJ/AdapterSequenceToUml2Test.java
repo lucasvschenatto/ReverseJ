@@ -6,11 +6,12 @@ import static reverseJ.TestUtilities.*;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.uml2.uml.Class;
+import org.eclipse.uml2.uml.ConnectableElement;
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Lifeline;
 import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.MessageOccurrenceSpecification;
-import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PackageImport;
@@ -20,6 +21,7 @@ public class AdapterSequenceToUml2Test {
 	protected AdapterSequenceToUml2 adapter;
 	@Before
 	public void setup(){
+		Context.resetInstance();
 		adapter = AdapterSequenceToUml2.make();
 	}
 	public static class General extends AdapterSequenceToUml2Test{
@@ -32,6 +34,12 @@ public class AdapterSequenceToUml2Test {
 		public void getPackage(){
 			Package p = adapter.getPackage();
 			assertNotNull(p);
+		}
+		@Test
+		public void packageNameIsSequenceDiagram(){
+			String actual = adapter.getPackage().getName();
+			String expected = AdapterSequenceToUml2.PACKAGE_NAME;
+			assertEquals(expected, actual);
 		}
 		@Test
 		public void getContext(){
@@ -58,28 +66,36 @@ public class AdapterSequenceToUml2Test {
 	}
 	public static class LinkToClassPackage extends AdapterSequenceToUml2Test{
 		AdapterClassToUml2 classAdapter;
-		Context context;
-		@Before
+		@Override@Before
 		public void setup(){
+			Context.resetInstance();
 			classAdapter = AdapterClassToUml2.make();
 			adapter = AdapterSequenceToUml2.make();
-			context = Context.getInstance();
 		}
 		@Test
-		public void importsClassPackageIfExists(){
-			Package classPackage = (Package)context.getModel().getPackagedElement(AdapterClassToUml2.PACKAGE_NAME);
+		public void importsClassPackage(){
+			Package classPackage = classAdapter.getPackage();
+//			Package classPackage = (Package)context.getModel().getPackagedElement(AdapterClassToUml2.PACKAGE_NAME);
 			List<Package> found = new LinkedList<Package>();
 			for(PackageImport p : adapter.getPackage().getPackageImports()){
 				found.add(p.getImportedPackage());
 			}
 			assertListContains(found, classPackage);
 		}
-		@Test@Ignore
-		public void Lifeline_LinksToCorrespondingClassInClassPackage(){
+		@Test
+		public void Lifeline_RepresentsCorrespondingClass(){
 			String name = "myClass";
+			Class expected = classAdapter.createConcreteClass(name);
 			Lifeline lifeline = adapter.createLifeline(name);
-			Model m = adapter.getContext().getModel();
-			name = null;
+			Class actual = (Class)lifeline.getRepresents().getType();
+			assertEquals(expected,actual);
+		}
+		@Test
+		public void whenThereIsNoClass_Represents_nothing(){
+			String name = "nothing";
+			Lifeline lifeline = adapter.createLifeline(name);
+			ConnectableElement actual = lifeline.getRepresents();
+			assertNull(actual);
 		}
 	}
 	public static class CreateLifeline extends AdapterSequenceToUml2Test{
@@ -218,18 +234,7 @@ public class AdapterSequenceToUml2Test {
 		}
 	}
 	public static class ToDo{
-		@Test@Ignore
-		public void createLifeline_LinksToCorrespondingClassInClassPackage(){
-			fail();
-		}
-		@Test@Ignore
-		public void createLifeline_IfThereIsNoClassCreatesOneInTheSequencePackage(){
-			fail();
-		}
-		@Test@Ignore
-		public void packageNameIsSequenceDiagram(){
-			fail();
-		}
+		
 		
 	}
 }
