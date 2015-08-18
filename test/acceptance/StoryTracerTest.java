@@ -1,13 +1,13 @@
-package acceptanceTests;
+package acceptance;
 
 import java.util.List;
 
-import StoryPackage.Story;
+import acceptance.story.Story;
 import reverseJ.InformationStorageProvider;
 import reverseJ.RecorderStorage;
 import reverseJ.Tracer;
 
-public class StoryTest {
+public class StoryTracerTest {
 
 	public static void main(String[] args) {
 		RecorderStorage r = new InformationStorageProvider();

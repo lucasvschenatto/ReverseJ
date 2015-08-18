@@ -1,4 +1,4 @@
-package StoryPackage;
+package acceptance.story;
 
 public class Hero {
 	private String name;

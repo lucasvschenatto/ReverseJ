@@ -1,5 +1,5 @@
 
-package banco_interface;
+package acceptance.bancoDiego;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 
 import reverseJ.*;
 
-public class program {
+public class bancoDiegoTest {
 
 	public static void main(String[] args) {
 		InformationStorageProvider i = new InformationStorageProvider();

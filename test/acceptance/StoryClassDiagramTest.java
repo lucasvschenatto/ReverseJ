@@ -1,8 +1,9 @@
-package acceptanceTests;
+package acceptance;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import acceptance.story.Story;
 import reverseJ.ClassDiagram;
 import reverseJ.DiagramMaker;
 import reverseJ.DiagramStrategy;
@@ -11,7 +12,6 @@ import reverseJ.InformationStorageProvider;
 import reverseJ.MakerAndSaver;
 import reverseJ.RecorderStorage;
 import reverseJ.Tracer;
-import StoryPackage.Story;
 
 public class StoryClassDiagramTest {
 	public static void main(String[] args) {

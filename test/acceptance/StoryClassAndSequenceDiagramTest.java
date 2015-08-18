@@ -1,8 +1,10 @@
-package acceptanceTests;
+package acceptance;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import acceptance.story.Story;
+import reverseJ.ClassDiagram;
 import reverseJ.DiagramMaker;
 import reverseJ.DiagramStrategy;
 import reverseJ.InformationProvider;
@@ -11,18 +13,17 @@ import reverseJ.MakerAndSaver;
 import reverseJ.RecorderStorage;
 import reverseJ.SequenceDiagram;
 import reverseJ.Tracer;
-import StoryPackage.Story;
 
-public class StorySequenceDiagramTest {
+public class StoryClassAndSequenceDiagramTest {
 	public static void main(String[] args) {
 		InformationStorageProvider i = new InformationStorageProvider();
 		RecorderStorage r = i;
 		InformationProvider p = i;
-		DiagramStrategy dS = new SequenceDiagram();
 		List<DiagramStrategy> lds = new LinkedList<DiagramStrategy>();
-		lds.add(dS);
+		lds.add(new SequenceDiagram());
+		lds.add(new ClassDiagram());
 		DiagramMaker dM = new MakerAndSaver(p, lds);
-		((MakerAndSaver)dM).setFileName("diagramaDeSequencia");
+		((MakerAndSaver)dM).setFileName("classeESequencia");
 		Tracer.start(r);
 		
 		Story s = new Story();

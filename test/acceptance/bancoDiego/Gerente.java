@@ -1,4 +1,4 @@
-package banco_interface;
+package acceptance.bancoDiego;
 
 import java.util.Date;
 
