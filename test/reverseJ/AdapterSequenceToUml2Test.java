@@ -233,8 +233,11 @@ public class AdapterSequenceToUml2Test {
 			assertEquals(expected,actual);
 		}
 	}
-	public static class ToDo{
-		
+	public static class ExecutionSpecification{
+		@Test
+		public void createExecutionSpecificationWhenReceiveAMessage(){
+			
+		}
 		
 	}
 }
