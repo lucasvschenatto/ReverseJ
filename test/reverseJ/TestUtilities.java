@@ -3,6 +3,8 @@ package reverseJ;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.junit.Assert;
+
 public class TestUtilities {
 
 	static final String SPACE = " ";
@@ -195,7 +197,14 @@ public class TestUtilities {
 		nesting.add(last);
 		return nesting;
 	}
-
+	public static void assertListContains(@SuppressWarnings("rawtypes") List list, Object object){
+		boolean inList = false;
+		for (Object o : list) {
+			if(o == object)
+				inList = true;
+		}
+		Assert.assertTrue("Object "+object.getClass().getName()+" not in list",inList);
+	}
 
 
 }

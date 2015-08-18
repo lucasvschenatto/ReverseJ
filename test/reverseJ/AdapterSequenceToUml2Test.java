@@ -1,13 +1,19 @@
 package reverseJ;
 
 import static org.junit.Assert.*;
+import static reverseJ.TestUtilities.*;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Lifeline;
 import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.MessageOccurrenceSpecification;
+import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Package;
+import org.eclipse.uml2.uml.PackageImport;
 import org.junit.*;
 
 public class AdapterSequenceToUml2Test {
@@ -28,6 +34,11 @@ public class AdapterSequenceToUml2Test {
 			assertNotNull(p);
 		}
 		@Test
+		public void getContext(){
+			Context c = adapter.getContext();
+			assertNotNull(c);
+		}
+		@Test
 		public void getInteraction(){
 			NamedElement i = adapter.getInteraction();
 			
@@ -45,7 +56,32 @@ public class AdapterSequenceToUml2Test {
 			assertTrue(actual instanceof org.eclipse.uml2.uml.Interaction);
 		}
 	}
-	
+	public static class LinkToClassPackage extends AdapterSequenceToUml2Test{
+		AdapterClassToUml2 classAdapter;
+		Context context;
+		@Before
+		public void setup(){
+			classAdapter = AdapterClassToUml2.make();
+			adapter = AdapterSequenceToUml2.make();
+			context = Context.getInstance();
+		}
+		@Test
+		public void importsClassPackageIfExists(){
+			Package classPackage = (Package)context.getModel().getPackagedElement(AdapterClassToUml2.PACKAGE_NAME);
+			List<Package> found = new LinkedList<Package>();
+			for(PackageImport p : adapter.getPackage().getPackageImports()){
+				found.add(p.getImportedPackage());
+			}
+			assertListContains(found, classPackage);
+		}
+		@Test@Ignore
+		public void Lifeline_LinksToCorrespondingClassInClassPackage(){
+			String name = "myClass";
+			Lifeline lifeline = adapter.createLifeline(name);
+			Model m = adapter.getContext().getModel();
+			name = null;
+		}
+	}
 	public static class CreateLifeline extends AdapterSequenceToUml2Test{
 		@Test
 		public void createLifeline_ReturnsLifeline(){
@@ -180,5 +216,20 @@ public class AdapterSequenceToUml2Test {
 			String actual = ((MessageOccurrenceSpecification)m.getReceiveEvent()).getName();
 			assertEquals(expected,actual);
 		}
+	}
+	public static class ToDo{
+		@Test@Ignore
+		public void createLifeline_LinksToCorrespondingClassInClassPackage(){
+			fail();
+		}
+		@Test@Ignore
+		public void createLifeline_IfThereIsNoClassCreatesOneInTheSequencePackage(){
+			fail();
+		}
+		@Test@Ignore
+		public void packageNameIsSequenceDiagram(){
+			fail();
+		}
+		
 	}
 }

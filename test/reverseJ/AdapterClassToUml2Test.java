@@ -32,6 +32,12 @@ public class AdapterClassToUml2Test{
 			Package p = adapter.getPackage();
 			assertNotNull(p);
 		}
+		@Test
+		public void packageNameIsClassDiagram(){
+			String actual = adapter.getPackage().getName();
+			String expected = AdapterClassToUml2.PACKAGE_NAME;
+			assertEquals(expected, actual);
+		}
 	}
 	public static class CreateClass extends AdapterClassToUml2Test{
 		@Test

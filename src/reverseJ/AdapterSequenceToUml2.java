@@ -2,6 +2,7 @@ package reverseJ;
 import org.eclipse.uml2.uml.Lifeline;
 import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.Package;
+import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.MessageOccurrenceSpecification;
@@ -20,6 +21,8 @@ class AdapterSequenceToUml2 implements AdapterToUml2{
 	private void setAttributes(String packageName) {
 		context = Context.getInstance();
 		rootPackage = context.getModel().createNestedPackage(packageName);
+		Package classPackage = (Package)context.getModel().getPackagedElement(AdapterClassToUml2.PACKAGE_NAME);
+		PackageImport imported = rootPackage.createPackageImport(classPackage);
 		interaction = UMLFactory.eINSTANCE.createInteraction();
 		interaction.setName(DIAGRAM_TYPE);
 		interaction.setPackage(rootPackage);
@@ -66,6 +69,10 @@ class AdapterSequenceToUml2 implements AdapterToUml2{
 				covered + SEPARATOR + message.getName() : covered + SEPARATOR; 
 		mo.setName(name);
 		return mo;
+	}
+
+	public Context getContext() {
+		return context;
 	}
 
 }

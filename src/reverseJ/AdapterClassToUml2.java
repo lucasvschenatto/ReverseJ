@@ -19,6 +19,7 @@ import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 
 class AdapterClassToUml2 implements AdapterToUml2{
+	public static final String PACKAGE_NAME = "Class Diagram";
 	private Context context;
 	private Package rootPackage;
 
@@ -27,13 +28,13 @@ class AdapterClassToUml2 implements AdapterToUml2{
 		rootPackage = this.context.getModel().createNestedPackage(packageName);
 	}
 
-	public AdapterClassToUml2() {
+	protected AdapterClassToUml2() {
 		context = Context.getInstance();
 		rootPackage = context.getModel().createNestedPackage("default");
 	}
 
 	public static AdapterClassToUml2 make() {
-		return new AdapterClassToUml2("classDiagram");
+		return new AdapterClassToUml2(PACKAGE_NAME);
 	}
 	@Override
 	public Package getPackage() {
