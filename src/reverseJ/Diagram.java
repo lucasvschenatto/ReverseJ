@@ -3,19 +3,19 @@ package reverseJ;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.UMLFactory;
 
-public class Context {
-	private static Context instance;
+public class Diagram {
+	private static Diagram instance;
 	protected Model model_;
-	public static Context getInstance(){
+	public static Diagram getInstance(){
 		if(instance == null)
-			instance = new Context("root");
+			instance = new Diagram("root");
 		return instance;
 	}
-	public static Context resetInstance(){
+	public static Diagram resetInstance(){
 		instance = null;
 		return getInstance();
 	}
-	private Context(String name) {
+	private Diagram(String name) {
 		model_ = UMLFactory.eINSTANCE.createModel();
 		model_.setName(name);
 	}

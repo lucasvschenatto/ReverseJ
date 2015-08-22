@@ -8,26 +8,26 @@ import org.junit.*;
 public class ContextTest {
 	@Test
 	public void getInstance_returnsInstance(){
-		Context c  = Context.getInstance();
+		Diagram c  = Diagram.getInstance();
 		assertNotNull(c);
 	}
 	@Test
 	public void getInstance_returnsSameInstance(){
-		Context first  = Context.getInstance();
-		Context second = Context.getInstance();
+		Diagram first  = Diagram.getInstance();
+		Diagram second = Diagram.getInstance();
 		
 		assertEquals(first, second);
 	}
 	@Test
 	public void resetInstance_returnsNewInstance(){
-		Context first  = Context.getInstance();
-		Context second = Context.resetInstance();
+		Diagram first  = Diagram.getInstance();
+		Diagram second = Diagram.resetInstance();
 		
 		assertNotEquals(first, second);
 	}
 	@Test
 	public void getModel(){
-		Context c = Context.getInstance();
+		Diagram c = Diagram.getInstance();
 		Model m = c.getModel();
 		
 		assertNotNull(m);

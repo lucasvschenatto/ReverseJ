@@ -20,23 +20,19 @@ public class MakerAndSaver extends DiagramMaker {
 	}
 
 	@Override
-	public void make() {
-		List<Package> packages = new LinkedList<Package>();
-		for (DiagramStrategy diagram : diagrams)
-			packages.add(diagram.generate(infoProvider.getAll()));
+	public Diagram make() {
+		for (DiagramStrategy diagram : strategies)
+			diagram.generate(infoProvider.getAll());
 
 		ResourceSet resourceSet = new ResourceSetImpl();
 		URI outputURI = URI.createFileURI("../ReverseJ/files/"+fileName)
 				.appendFileExtension(UMLResource.FILE_EXTENSION);
 		UMLResourcesUtil.init(resourceSet);
-
 		// Create the output resource and add our model package to it.
 
 		Resource resource = resourceSet.createResource(outputURI);
-		for (Package package_ : packages) {
-			resource.getContents().add(package_);
-		}
-
+		resource.getContents().add(Diagram.getInstance().getModel());
+		
 		// And save
 		try {
 			resource.save(null); // no save options needed
@@ -44,6 +40,7 @@ public class MakerAndSaver extends DiagramMaker {
 		} catch (IOException ioe) {
 			System.out.println(ioe.toString());
 		}
+		return null;
 	}
 	public void setFileName(String name){
 		fileName = name;

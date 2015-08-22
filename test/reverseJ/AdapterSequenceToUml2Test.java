@@ -21,7 +21,7 @@ public class AdapterSequenceToUml2Test {
 	protected AdapterSequenceToUml2 adapter;
 	@Before
 	public void setup(){
-		Context.resetInstance();
+		Diagram.resetInstance();
 		adapter = AdapterSequenceToUml2.make();
 	}
 	public static class General extends AdapterSequenceToUml2Test{
@@ -43,7 +43,7 @@ public class AdapterSequenceToUml2Test {
 		}
 		@Test
 		public void getContext(){
-			Context c = adapter.getContext();
+			Diagram c = adapter.getContext();
 			assertNotNull(c);
 		}
 		@Test
@@ -68,7 +68,7 @@ public class AdapterSequenceToUml2Test {
 		AdapterClassToUml2 classAdapter;
 		@Override@Before
 		public void setup(){
-			Context.resetInstance();
+			Diagram.resetInstance();
 			classAdapter = AdapterClassToUml2.make();
 			adapter = AdapterSequenceToUml2.make();
 		}

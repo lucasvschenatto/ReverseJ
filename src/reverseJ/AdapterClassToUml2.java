@@ -20,17 +20,17 @@ import org.eclipse.uml2.uml.UMLFactory;
 
 class AdapterClassToUml2 implements AdapterToUml2{
 	public static final String PACKAGE_NAME = "Class Diagram";
-	private Context context;
+	private Diagram diagram;
 	private Package rootPackage;
 
 	protected AdapterClassToUml2(String packageName) {
-		this.context = Context.getInstance();
-		rootPackage = this.context.getModel().createNestedPackage(packageName);
+		this.diagram = Diagram.getInstance();
+		rootPackage = this.diagram.getModel().createNestedPackage(packageName);
 	}
 
 	protected AdapterClassToUml2() {
-		context = Context.getInstance();
-		rootPackage = context.getModel().createNestedPackage("default");
+		diagram = Diagram.getInstance();
+		rootPackage = diagram.getModel().createNestedPackage("default");
 	}
 
 	public static AdapterClassToUml2 make() {

@@ -1,24 +1,20 @@
 package reverseJ;
 
-import java.util.LinkedList;
 import java.util.List;
-
-import org.eclipse.uml2.uml.Package;
 
 public class DiagramMaker {
 	protected InformationProvider infoProvider;
-	protected List<DiagramStrategy> diagrams;
+	protected List<DiagramStrategy> strategies;
 	
 	public DiagramMaker(InformationProvider infoProvider, List<DiagramStrategy> diagrams) {
 		this.infoProvider = infoProvider;
-		this.diagrams = diagrams;
+		this.strategies = diagrams;
 	}
 
-	public void make() {
-		List<Package> packages = new LinkedList<Package>();
-		for (DiagramStrategy diagram : diagrams)
-			packages.add(diagram.generate(infoProvider.getAll()));
-		return;
+	public Diagram make() {
+		for (DiagramStrategy diagram : strategies)
+			diagram.generate(infoProvider.getAll());
+		return Diagram.getInstance();
 	}
 
 	public InformationProvider getProvider() {
@@ -26,6 +22,6 @@ public class DiagramMaker {
 	}
 
 	public List<DiagramStrategy> getDiagramStrategies() {
-		return diagrams;
+		return strategies;
 	}
 }

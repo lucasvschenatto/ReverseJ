@@ -59,7 +59,12 @@ public class DiagramMakerTest{
 		
 		assertEquals(expected, actualPassedInformations);
 	}
-	
+	@Test
+	public void make_returnsDiagram(){
+		diagramMaker = createDiagramMaker();
+		Diagram diagram = diagramMaker.make();
+		assertNotNull(diagram);
+	}
 	
 	
 	
@@ -86,29 +91,7 @@ public class DiagramMakerTest{
 		strategy.add(createStubDiagramStrategy());
 		return new DiagramMaker(provider,strategy);
 	}
-	private DiagramMaker createDiagramMaker(DiagramObject diagram) {
-		provider = createStubProvider();
-		strategy.clear();
-		strategy.add(createStubDiagramStrategy(diagram));
-		return new DiagramMaker(provider,strategy);
-	}
 	private DiagramStrategy createStubDiagramStrategy() {
-		DiagramStrategy expected = new DiagramStrategy() {
-			@Override
-			public Package generate(List<Information> informations) {
-				DiagramMakerTest.createMethodWasCalled();
-				DiagramMakerTest.PassedInformations(informations);
-				return null;
-			}
-
-			@Override
-			public AdapterClassToUml2 getAdapter() {
-				return null;
-			}
-		};
-		return expected;
-	}
-	private DiagramStrategy createStubDiagramStrategy(DiagramObject diag) {
 		DiagramStrategy expected = new DiagramStrategy() {
 			@Override
 			public Package generate(List<Information> informations) {

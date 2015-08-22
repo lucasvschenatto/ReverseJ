@@ -13,7 +13,7 @@ class AdapterSequenceToUml2 implements AdapterToUml2{
 	public static final String PACKAGE_NAME = "Sequence Diagram";
 	public static final String DIAGRAM_TYPE = PACKAGE_NAME;
 	public static final String SEPARATOR = "::";
-	private Context context;
+	private Diagram diagram;
 	private Package rootPackage;
 	private Interaction interaction;
 
@@ -22,12 +22,12 @@ class AdapterSequenceToUml2 implements AdapterToUml2{
 	}
 
 	private void setAttributes(String packageName) {
-		context = Context.getInstance();
-		rootPackage = context.getModel().createNestedPackage(packageName);
+		diagram = Diagram.getInstance();
+		rootPackage = diagram.getModel().createNestedPackage(packageName);
 		interaction = UMLFactory.eINSTANCE.createInteraction();
 		interaction.setName(DIAGRAM_TYPE);
 		interaction.setPackage(rootPackage);
-		Package classPackage = (Package)context.getModel().getMember(AdapterClassToUml2.PACKAGE_NAME);
+		Package classPackage = (Package)diagram.getModel().getMember(AdapterClassToUml2.PACKAGE_NAME);
 		rootPackage.createPackageImport(classPackage);
 	}
 
@@ -79,8 +79,8 @@ class AdapterSequenceToUml2 implements AdapterToUml2{
 		return mo;
 	}
 
-	public Context getContext() {
-		return context;
+	public Diagram getContext() {
+		return diagram;
 	}
 
 }
