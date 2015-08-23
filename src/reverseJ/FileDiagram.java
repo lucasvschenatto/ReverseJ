@@ -1,13 +1,17 @@
 package reverseJ;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
+
 public class FileDiagram {
 	private Diagram diagram;
 	private String path;
-	private String name;
-	public FileDiagram(Diagram diagram, String path, String name) {
+	public FileDiagram(Diagram diagram, String path) {
 		this.diagram = diagram;
 		this.path = path;
-		this.name = name;
 	}
 	public Diagram getDiagram() {
 		return diagram;
@@ -15,11 +19,17 @@ public class FileDiagram {
 	public String getPath(){
 		return path;
 	}
-	public String getName(){
-		return name;
-	}
 	public void save() {
-		// TODO Auto-generated method stub
-		
+		ResourceSet resourceSet = new ResourceSetImpl();
+		URI outputURI = URI.createFileURI(path);
+		UMLResourcesUtil.init(resourceSet);
+
+		Resource resource = resourceSet.createResource(outputURI);
+		resource.getContents().add(diagram.getModel());
+		try {
+			resource.save(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
