@@ -7,5 +7,23 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.ajdt.core.ASPECTJRT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/UMLeEMFessentials"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.emf.common_2.10.1.v20150123-0348.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.emf.common.source_2.10.1.v20150123-0348.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.emf.ecore_2.10.2.v20150123-0348.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.emf.ecore.source_2.10.2.v20150123-0348.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.emf.ecore.xmi_2.10.2.v20150123-0348.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.emf.ecore.xmi.source_2.10.2.v20150123-0348.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.emf.mapping.ecore2xml_2.8.0.v20150123-0452.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.emf.mapping.ecore2xml.source_2.8.0.v20150123-0452.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.uml2.common_2.0.1.v20150202-0947.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.uml2.common.source_2.0.1.v20150202-0947.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.uml2.types_2.0.0.v20150202-0947.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.uml2.types.source_2.0.0.v20150202-0947.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.uml2.uml_5.0.2.v20150202-0947.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.uml2.uml.profile.standard_1.0.0.v20150202-0947.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.uml2.uml.profile.standard.source_1.0.0.v20150202-0947.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.uml2.uml.resources_5.0.2.v20150202-0947.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.uml2.uml.resources.source_5.0.2.v20150202-0947.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.uml2.uml.source_5.0.2.v20150202-0947.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
