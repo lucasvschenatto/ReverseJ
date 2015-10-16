@@ -45,20 +45,4 @@ public class TreeNode{
 		}
     	return allInfo;
     }
-//    public TreeNode(List<Information> list){
-//    	this.method = list;
-//    	this.childrenMethods = new LinkedList<TreeNode>();
-//    }
-//    public TreeNode addChild(List<Information> info) {
-//        TreeNode childNode = new TreeNode(info);
-//        childNode.parent = this;
-//        this.childrenMethods.add(childNode);
-//        return childNode;
-//    }
-//    public List<Information> getNodeInfo(){
-//    	return method;
-//    }
-//    public List<TreeNode> getChildren(){
-//    	return childrenMethods;
-//    }
 }
