@@ -2,6 +2,13 @@ package reverseJ;
 
 import static org.junit.Assert.*;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,22 +17,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
 
 public class FileDiagramTest{
 	private FileDiagram fileDiagram;
+	private static String EXTENSION = ".uml";
 	private static java.io.File folder;
-	private static String path;
+	private static String name;
+	private static String nameWithExtension;
 	@BeforeClass
 	public static void setUpClass(){
-		folder = new java.io.File("UnitTestingFolder");
-		folder.mkdir();
-		path = folder.getAbsolutePath()+"\\diagram.uml";
+		folder = new java.io.File(System.getProperty("user.dir")+"\\files\\");
+		name = "diagram";
+		nameWithExtension = name+EXTENSION;
 	}
 	
 	@Before
@@ -34,13 +37,15 @@ public class FileDiagramTest{
 		Diagram.resetInstance();
 	}
 	@After
-	public void tearDown(){
+	public void tearDown(){		
 		if(folder.exists())
 			for(File file : folder.listFiles())
-				file.delete();
-	}@AfterClass
+				if(file.getName().equals(nameWithExtension))
+					file.delete();
+	}
+	@AfterClass
 	public static void tearDownClass(){
-		if(folder.exists())
+		if(folder.exists() && folder.list() == null)
 			folder.delete();
 	}
 
@@ -51,29 +56,33 @@ public class FileDiagramTest{
 		assertEquals(d,fileDiagram.getDiagram());
 	}
 	@Test
-	public void setsPath(){
-		String p = "myPath";
+	public void setsfileName(){
+		String p = "myName";
 		fileDiagram = createFileDiagram(null,p);
-		assertEquals(p,fileDiagram.getPath());
+		assertEquals(p,fileDiagram.getFileName());
 	}
 	@Test
-	public void saveInPath(){
-		fileDiagram = createFileDiagram(Diagram.getInstance(),path);
+	public void savingFolderIsFilesUnderProject(){
+		assertEquals(folder.getAbsoluteFile(),new File(fileDiagram.getSavingFolderPath()));
+	}
+	@Test
+	public void saveInFolderFilesUnderProjectLocation(){
+		fileDiagram = createFileDiagram(Diagram.getInstance(),name);
 		fileDiagram.save();
-		java.io.File file = new File(path);
+		java.io.File file = new File(folder, nameWithExtension);
 	    assertTrue(file.exists());
 	    assertTrue(file.isFile());
 	}
 	@Test
 	public void savesModelInFile(){
-		fileDiagram = createFileDiagram(Diagram.getInstance(),path);
+		fileDiagram = createFileDiagram(Diagram.getInstance(),name);
 		fileDiagram.save();
 	    assertFileHasModel();
 	}
 
 	private void assertFileHasModel() {
-		try {		
-			BufferedReader br = new BufferedReader(new FileReader(path));
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(new File(folder, nameWithExtension)));
 	        String line = br.readLine();
 	        boolean hasModel = false;
 	        while (line != null && !hasModel){
@@ -86,8 +95,8 @@ public class FileDiagramTest{
 			fail(e.getMessage());
 		}
 	}
-	public FileDiagram createFileDiagram(Diagram diagram, String path){
-		return new FileDiagram(diagram, path);
+	public FileDiagram createFileDiagram(Diagram diagram, String fileName){
+		return new FileDiagram(diagram, fileName);
 	}
 	public static class ToDoInGeneralConfig{
 		@Test@Ignore

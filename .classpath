@@ -9,7 +9,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/UMLeEMFessentials"/>
 	<classpathentry kind="lib" path="libraries/org.eclipse.emf.common_2.10.1.v20150123-0348.jar"/>
 	<classpathentry kind="lib" path="libraries/org.eclipse.emf.common.source_2.10.1.v20150123-0348.jar"/>
-	<classpathentry kind="lib" path="libraries/org.eclipse.emf.ecore_2.10.2.v20150123-0348.jar"/>
+	<classpathentry kind="lib" path="libraries/org.eclipse.emf.ecore_2.10.2.v20150123-0348.jar" sourcepath="libraries/org.eclipse.emf.ecore.source_2.10.2.v20150123-0348.jar"/>
 	<classpathentry kind="lib" path="libraries/org.eclipse.emf.ecore.source_2.10.2.v20150123-0348.jar"/>
 	<classpathentry kind="lib" path="libraries/org.eclipse.emf.ecore.xmi_2.10.2.v20150123-0348.jar"/>
 	<classpathentry kind="lib" path="libraries/org.eclipse.emf.ecore.xmi.source_2.10.2.v20150123-0348.jar"/>
