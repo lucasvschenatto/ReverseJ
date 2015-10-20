@@ -48,7 +48,7 @@ public class FileDiagramTest{
 		if(folder.exists() && folder.list() == null)
 			folder.delete();
 	}
-
+	
 	@Test
 	public void setsDiagram(){
 		Diagram d = Diagram.resetInstance();
@@ -66,7 +66,7 @@ public class FileDiagramTest{
 		assertEquals(folder.getAbsoluteFile(),new File(fileDiagram.getSavingFolderPath()));
 	}
 	@Test
-	public void saveInFolderFilesUnderProjectLocation(){
+	public void saveInFolderFilesUnderProjectLocationWithUMLExtension(){
 		fileDiagram = createFileDiagram(Diagram.getInstance(),name);
 		fileDiagram.save();
 		java.io.File file = new File(folder, nameWithExtension);
@@ -97,32 +97,5 @@ public class FileDiagramTest{
 	}
 	public FileDiagram createFileDiagram(Diagram diagram, String fileName){
 		return new FileDiagram(diagram, fileName);
-	}
-	public static class ToDoInGeneralConfig{
-		@Test@Ignore
-		public void nullDiagram(){
-		}
-		@Test@Ignore
-		public void fileExtension(){
-			
-		}
-		@Test@Ignore
-		public void doesntSaveIfPathIsntDirectory(){
-//			String path = "incorrect";
-		}
-		@Test@Ignore
-		public void doesntSaveIfNameIsInvalid(){
-//			String name = "invalid";
-		}
-		@Test@Ignore
-		public void nullPath(){
-//			fileDiagram = createFileDiagram(null,null);
-//			fileDiagram.save();
-		}
-		@Test@Ignore
-		public void EmptyPath(){
-//			fileDiagram = createFileDiagram(null,null);
-//			fileDiagram.save();
-		}
 	}
 }
