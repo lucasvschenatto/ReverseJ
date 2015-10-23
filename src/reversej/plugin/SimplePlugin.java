@@ -4,13 +4,13 @@ import reversej.controller.SimpleController;
 import reversej.tracer.TracerImmunity;
 
 public abstract class SimplePlugin implements TracerImmunity{	
-	public boolean start(){
+	public static boolean start(){
 		return SimpleController.start("diagram");
 	}
-	public boolean stop(){
+	public static boolean stop(){
 		return SimpleController.stop();
 	}
-	public boolean reset(){
+	public static boolean reset(){
 		return SimpleController.reset();
 	}
 }
