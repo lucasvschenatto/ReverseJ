@@ -1,6 +1,5 @@
 package acceptance.bancoDiego;
 
-import java.util.Date;
 
 public class Gerente extends Funcionario implements Autentica {
 
