@@ -4,25 +4,25 @@ import java.util.LinkedList;
 import java.util.List;
 
 import acceptance.story.Story;
-import reverseJ.ClassDiagram;
-import reverseJ.DiagramMaker;
-import reverseJ.DiagramStrategy;
-import reverseJ.InformationProvider;
-import reverseJ.InformationStorageProvider;
-import reverseJ.MakerAndSaver;
-import reverseJ.RecorderStorage;
-import reverseJ.SequenceDiagram;
-import reverseJ.Tracer;
+import reversej.MakerAndSaver;
+import reversej.diagram.DiagramHandler;
+import reversej.diagram.DiagramStrategy;
+import reversej.diagram.RepositoryProvider;
+import reversej.diagram.strategies.ClassDiagram;
+import reversej.diagram.strategies.SequenceDiagram;
+import reversej.repository.RepositoryInformation;
+import reversej.tracer.RepositoryRecorder;
+import reversej.tracer.Tracer;
 
 public class StoryClassAndSequenceDiagramTest {
 	public static void main(String[] args) {
-		InformationStorageProvider i = new InformationStorageProvider();
-		RecorderStorage r = i;
-		InformationProvider p = i;
+		RepositoryInformation i = new RepositoryInformation();
+		RepositoryRecorder r = i;
+		RepositoryProvider p = i;
 		List<DiagramStrategy> lds = new LinkedList<DiagramStrategy>();
 		lds.add(new ClassDiagram());
 		lds.add(new SequenceDiagram());
-		DiagramMaker dM = new MakerAndSaver(p, lds);
+		DiagramHandler dM = new MakerAndSaver(p, lds);
 		String fileName = Thread.currentThread().getStackTrace()[1].getFileName();
 		((MakerAndSaver)dM).setFileName(fileName);
 		Tracer.start(r);

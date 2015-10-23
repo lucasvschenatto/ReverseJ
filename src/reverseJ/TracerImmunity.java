@@ -1,5 +1,0 @@
-package reverseJ;
-
-interface TracerImmunity{
-
-}

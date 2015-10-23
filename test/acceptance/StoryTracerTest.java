@@ -3,14 +3,14 @@ package acceptance;
 import java.util.List;
 
 import acceptance.story.Story;
-import reverseJ.InformationStorageProvider;
-import reverseJ.RecorderStorage;
-import reverseJ.Tracer;
+import reversej.repository.RepositoryInformation;
+import reversej.tracer.RepositoryRecorder;
+import reversej.tracer.Tracer;
 
 public class StoryTracerTest {
 
 	public static void main(String[] args) {
-		RecorderStorage r = new InformationStorageProvider();
+		RepositoryRecorder r = new RepositoryInformation();
 		Tracer.start(r);
 		
 		Story s = new Story();		
