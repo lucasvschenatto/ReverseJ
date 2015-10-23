@@ -1,5 +1,6 @@
 package reversej;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.*;
@@ -22,7 +23,7 @@ public class TracerTest extends org.junit.Assert{
 	static final String iThrow = "IThrow";
 	static final String iHandler = "IHandler";
 	static final String separator = " : ";
-	static final String classPrefix = "reverseJ.TracerTest.";
+	static final String classPrefix = "reversej.TracerTest.";
 	public static class SetupTracer implements TracerImmunity{
 		@After
 		public void cleanUp(){
@@ -185,42 +186,42 @@ public class TracerTest extends org.junit.Assert{
 			new Actor();
 			expected =iClass + separator + classPrefix + "Actor";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void method() throws Exception{
 			new Actor();
 			expected =iMethod + separator + "<init>";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_NoParameter() throws Exception{
 			new Actor();
 			expected =iParameters + separator ;
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
 			new Actor(true);
 			expected =iParameters + separator + "boolean bPublic";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_TwoParameter() throws Exception{
 			new Actor(1, "a");
 			expected =iParameters + separator + "int i, java.lang.String s";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void returnInstanceType() throws Exception{
 			new Actor();
 			expected =iReturn + separator + "" + classPrefix + "Actor";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 	}
 	public static class ConstructorPrivate implements TracerImmunity{
@@ -242,28 +243,28 @@ public class TracerTest extends org.junit.Assert{
 			new Actor(1.5);
 			expected =iClass + separator + classPrefix + "Actor";
 			List<String> actual = repositoryInformation.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void method() throws Exception{
 			new Actor(1.5);
 			expected =iMethod + separator + "<init>";
 			List<String> actual = repositoryInformation.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
 			new Actor(1.5);
 			expected =iParameters + separator + "double dPrivate";
 			List<String> actual = repositoryInformation.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void returnInstanceType() throws Exception{
 			new Actor(1.5);
 			expected =iReturn + separator + "" + classPrefix + "Actor";
 			List<String> actual = repositoryInformation.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 	}
 	public static class InstanceMethodPublic implements TracerImmunity{
@@ -286,42 +287,42 @@ public class TracerTest extends org.junit.Assert{
 			actor.playInstancePublic();
 			expected =iClass + separator + classPrefix + "Actor";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void method() throws Exception{
 			actor.playInstancePublic();
 			expected =iMethod + separator + "playInstancePublic";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_NoParameter() throws Exception{
 			actor.playInstancePublic();
 			expected =iParameters + separator;
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
 			actor.playInstancePublic(true);
 			expected =iParameters + separator + "boolean b";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_TwoParameter() throws Exception{
 			actor.playInstancePublic(1, "a");
 			expected =iParameters + separator + "int i, java.lang.String s";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void returnType() throws Exception{
 			actor.playInstancePublic(1, "a");
 			expected =iReturn + separator + "java.lang.Boolean";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 	}
 	public static class InstanceMethodPrivate implements TracerImmunity{
@@ -344,42 +345,42 @@ public class TracerTest extends org.junit.Assert{
 			actor.playInstancePrivate();
 			expected =iClass + separator + classPrefix + "Actor";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void method() throws Exception{
 			actor.playInstancePrivate();
 			expected =iMethod + separator + "playInstancePrivate";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_NoParameter() throws Exception{
 			actor.playInstancePrivate();
 			expected =iParameters + separator;
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
 			actor.playInstancePrivate(true);
 			expected =iParameters + separator + "boolean b";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_TwoParameters() throws Exception{
 			actor.playInstancePrivate(1, "a");
 			expected =iParameters + separator + "int i, java.lang.String s";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void returnType() throws Exception{
 			actor.playInstancePrivate(1, "a");
 			expected =iReturn + separator + "java.lang.Boolean";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 	}
 	public static class StaticMethodPublic implements TracerImmunity{
@@ -402,42 +403,42 @@ public class TracerTest extends org.junit.Assert{
 			Actor.playStaticPublic();
 			expected =iClass + separator + classPrefix + "Actor";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void method() throws Exception{
 			Actor.playStaticPublic();
 			expected =iMethod + separator + "playStaticPublic";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_NoParameter() throws Exception{
 			Actor.playStaticPublic();
 			expected =iParameters + separator;
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
 			Actor.playStaticPublic(true);
 			expected =iParameters + separator + "boolean b";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_TwoParameter() throws Exception{
 			Actor.playStaticPublic(1, "a");
 			expected =iParameters + separator + "int i, java.lang.String s";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void returnType() throws Exception{
 			Actor.playStaticPublic(1, "a");
 			expected =iReturn + separator + "java.lang.Boolean";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 	}
 	public static class StaticMethodPrivate implements TracerImmunity{
@@ -460,42 +461,42 @@ public class TracerTest extends org.junit.Assert{
 			Actor.playStaticPrivate();
 			expected =iClass + separator + classPrefix + "Actor";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void method() throws Exception{
 			Actor.playStaticPrivate();
 			expected =iMethod + separator + "playStaticPrivate";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_NoParameter() throws Exception{
 			Actor.playStaticPrivate();
 			expected =iParameters + separator;
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
 			Actor.playStaticPrivate(true);
 			expected =iParameters + separator + "boolean b";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_TwoParameters() throws Exception{
 			Actor.playStaticPrivate(1, "a");
 			expected =iParameters + separator + "int i, java.lang.String s";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void returnType() throws Exception{
 			Actor.playStaticPrivate(1, "a");
 			expected =iReturn + separator + "java.lang.Boolean";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 	}
 	public static class InterfaceMethodPublic implements TracerImmunity{
@@ -518,49 +519,49 @@ public class TracerTest extends org.junit.Assert{
 			iActor.playInstancePublic();
 			expected =iInterface + separator + classPrefix + "InterfaceActor";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void target() throws Exception{
 			iActor.playInstancePublic();
 			expected =iClass + separator + classPrefix + "Actor";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void method() throws Exception{
 			iActor.playInstancePublic();
 			expected =iMethod + separator + "playInstancePublic";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_NoParameter() throws Exception{
 			iActor.playInstancePublic();
 			expected =iParameters + separator;
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
 			iActor.playInstancePublic(true);
 			expected =iParameters + separator + "boolean b";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_TwoParameter() throws Exception{
 			iActor.playInstancePublic(1, "a");
 			expected =iParameters + separator + "int i, java.lang.String s";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void returnType() throws Exception{
 			iActor.playInstancePublic(1, "a");
 			expected =iReturn + separator + "java.lang.Boolean";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 	}
 	public static class AccessControlModifiers implements TracerImmunity{
@@ -581,56 +582,56 @@ public class TracerTest extends org.junit.Assert{
 			new Actor('a');
 			expected =iModifiers + separator + "package level";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void modifierConstructorPublic() throws Exception{
 			new Actor(true);
 			expected =iModifiers + separator + "public";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void modifierConstructorPrivate() throws Exception{
 			new Actor(1.5);
 			expected =iModifiers + separator + "private";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void modifierConstructorProtected() throws Exception{
 			new Actor("");
 			expected =iModifiers + separator + "protected";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void modifierMethodDefault() throws Exception{
 			mActor.playInstanceDefault();
 			expected =iModifiers + separator + "package level";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void modifierMethodPublic() throws Exception{
 			mActor.playInstancePublic();
 			expected =iModifiers + separator + "public";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void modifierMethodPrivate() throws Exception{
 			mActor.playInstancePrivate();
 			expected =iModifiers + separator + "private";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void modifierMethodProtected() throws Exception{
 			mActor.playInstanceProtected();
 			expected =iModifiers + separator + "protected";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 	}
 	public static class NonAccessModifiers implements TracerImmunity{
@@ -652,21 +653,21 @@ public class TracerTest extends org.junit.Assert{
 			mActor.playInstancePublicFinal();
 			expected =iModifiers + separator + "public final";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void modifierMethodPublicSynchronized() throws Exception{
 			mActor.playInstancePublicSynchronized();
 			expected =iModifiers + separator + "public synchronized";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void modifierMethodPublicNative() throws Exception{
 			mActor.playInstancePublicStrictFP();;
 			expected =iModifiers + separator + "public strictfp";
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 	}
 	public static class ExceptionThrowAndHandle implements TracerImmunity{
@@ -691,7 +692,7 @@ public class TracerTest extends org.junit.Assert{
 			catch (Exception e) 
 			{}
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void HandlerException() throws Exception{
@@ -702,7 +703,7 @@ public class TracerTest extends org.junit.Assert{
 			catch (Exception e) 
 			{}
 			List<String> actual = log.describeAll();
-			assertTrue(actual.contains(expected));
+			assertTrue(lookInList(actual,expected));
 		}
 	}
 	static interface InterfaceActor{
@@ -767,5 +768,12 @@ public class TracerTest extends org.junit.Assert{
 		{}
 		void playInstanceDefault()
 		{}
+	}
+	static boolean lookInList(List<String> list, String name){
+		boolean result = false;
+		for (String item : list) {
+			result = item.equals(name)? true:result;
+		}
+		return result;
 	}
 }

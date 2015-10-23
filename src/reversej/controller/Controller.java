@@ -11,39 +11,66 @@ import reversej.diagram.strategies.ClassDiagram;
 import reversej.diagram.strategies.SequenceDiagram;
 import reversej.file.FileDiagram;
 import reversej.repository.RepositoryInformation;
+import reversej.tracer.RepositoryRecorder;
 import reversej.tracer.Tracer;
 import reversej.tracer.TracerImmunity;
 
-public abstract class Controller implements TracerImmunity {
-	private static String fileName;
+import java.io.File;
+
+public class Controller implements TracerImmunity {
+	private ControllerState state;
 	private static RepositoryProvider provider;
-	public static void reset(){
-		fileName = null;
-		provider = null;
-		if(Tracer.isRunning())
-			Tracer.stop();
+	private static RepositoryRecorder recorder;
+	public Controller(){
+		state = ControllerState.INITIAL;
+		RepositoryInformation i = new RepositoryInformation();
+		recorder = i;
+		provider = i;
 	}
-	public static boolean start(String fileName){
-		if(!Tracer.isRunning()){
-			Controller.fileName = fileName;
-			RepositoryInformation i = new RepositoryInformation();
-			provider = i;		
-			Tracer.start(i);
-			return true;
-		}
-		return false;
+
+	public boolean start(){
+		return state.start(this);
 	}
-	public static boolean stop(){
-		if(Tracer.isRunning()){
-			Tracer.stop();			
-			Diagram diagram = makeDiagrams();
-			saveDiagramInFile(diagram);
-			return true;
-		}
-		return false;
+	public boolean stop(){
+		return state.stop(this);
 	}
-	private static void saveDiagramInFile(Diagram diagram) {
-		FileDiagram file = new FileDiagram(diagram, fileName);
+	public boolean save(java.io.File fileToSave){
+		return state.save(this, fileToSave);
+	}
+	public boolean reset(){
+		return state.reset(this);
+	}
+	
+	
+	
+	void setState(ControllerState state){
+		this.state = state;
+	}
+	void startTracer(){
+		Tracer.start(recorder);
+	}
+	void stopTracer(){
+		Tracer.stop();
+	}
+	void saveDiagram(File fileToSave){
+		Diagram diagram = makeDiagrams();
+		saveDiagramInFile(diagram, fileToSave);
+	}
+	void resetRepository(){
+		RepositoryInformation i = new RepositoryInformation();
+		recorder = i;
+		provider = i;
+	}
+	void resetDiagram(){
+		Diagram.resetInstance();
+	}
+	
+	
+	
+	
+	
+	private static void saveDiagramInFile(Diagram diagram, File fileToSave) {
+		FileDiagram file = new FileDiagram(diagram, fileToSave);
 		file.save();
 	}
 	private static Diagram makeDiagrams() {
@@ -52,5 +79,14 @@ public abstract class Controller implements TracerImmunity {
 		diagramStrategies.add(new SequenceDiagram());			
 		Diagram diagram = new DiagramHandler(provider, diagramStrategies).make();
 		return diagram;
+	}
+	public ControllerState getState() {
+		return state;
+	}
+	public RepositoryRecorder getRecorder() {
+		return recorder;
+	}
+	public RepositoryProvider getProvider() {
+		return provider;
 	}
 }

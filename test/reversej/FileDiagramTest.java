@@ -10,7 +10,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import reversej.diagram.Diagram;
-import reversej.file.FileDiagram;
+import reversej.file.FileDiagramInPackage;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,7 +22,7 @@ import java.nio.file.Path;
 
 
 public class FileDiagramTest{
-	private FileDiagram fileDiagram;
+	private FileDiagramInPackage fileDiagramInPackage;
 	private static String EXTENSION = ".uml";
 	private static java.io.File folder;
 	private static String name;
@@ -36,7 +36,7 @@ public class FileDiagramTest{
 	
 	@Before
 	public void setUp() throws Exception {
-		fileDiagram = createFileDiagram(null,null);
+		fileDiagramInPackage = createFileDiagram(null,null);
 		Diagram.resetInstance();
 	}
 	@After
@@ -55,31 +55,31 @@ public class FileDiagramTest{
 	@Test
 	public void setsDiagram(){
 		Diagram d = Diagram.resetInstance();
-		fileDiagram = createFileDiagram(d,null);
-		assertEquals(d,fileDiagram.getDiagram());
+		fileDiagramInPackage = createFileDiagram(d,null);
+		assertEquals(d,fileDiagramInPackage.getDiagram());
 	}
 	@Test
 	public void setsfileName(){
 		String p = "myName";
-		fileDiagram = createFileDiagram(null,p);
-		assertEquals(p,fileDiagram.getFileName());
+		fileDiagramInPackage = createFileDiagram(null,p);
+		assertEquals(p,fileDiagramInPackage.getFileName());
 	}
 	@Test
 	public void savingFolderIsFilesUnderProject(){
-		assertEquals(folder.getAbsoluteFile(),new File(fileDiagram.getSavingFolderPath()));
+		assertEquals(folder.getAbsoluteFile(),new File(fileDiagramInPackage.getSavingFolderPath()));
 	}
 	@Test
 	public void saveInFolderFilesUnderProjectLocationWithUMLExtension(){
-		fileDiagram = createFileDiagram(Diagram.getInstance(),name);
-		fileDiagram.save();
+		fileDiagramInPackage = createFileDiagram(Diagram.getInstance(),name);
+		fileDiagramInPackage.save();
 		java.io.File file = new File(folder, nameWithExtension);
 	    assertTrue(file.exists());
 	    assertTrue(file.isFile());
 	}
 	@Test
 	public void savesModelInFile(){
-		fileDiagram = createFileDiagram(Diagram.getInstance(),name);
-		fileDiagram.save();
+		fileDiagramInPackage = createFileDiagram(Diagram.getInstance(),name);
+		fileDiagramInPackage.save();
 	    assertFileHasModel();
 	}
 
@@ -98,7 +98,7 @@ public class FileDiagramTest{
 			fail(e.getMessage());
 		}
 	}
-	public FileDiagram createFileDiagram(Diagram diagram, String fileName){
-		return new FileDiagram(diagram, fileName);
+	public FileDiagramInPackage createFileDiagram(Diagram diagram, String fileName){
+		return new FileDiagramInPackage(diagram, fileName);
 	}
 }
