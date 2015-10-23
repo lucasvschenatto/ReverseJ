@@ -27,7 +27,7 @@ public abstract class SimpleController implements TracerImmunity {
 		}
 		return false;
 	}
-	public boolean stop(){
+	public static boolean stop(){
 		if(Tracer.isRunning()){
 			Tracer.stop();			
 			Diagram diagram = makeDiagrams();
@@ -36,7 +36,7 @@ public abstract class SimpleController implements TracerImmunity {
 		}
 		return false;
 	}
-	public boolean reset(){
+	public static boolean reset(){
 		fileName = null;
 		provider = null;
 		if(Tracer.isRunning())
