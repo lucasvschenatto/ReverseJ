@@ -9,11 +9,11 @@ class TreeNode{
 
     private List<Information> nodeInformations;
     private TreeNode parent;
-    private List<TreeNode> childrenMethods;
+    private List<TreeNode> children;
     
     public TreeNode() {
     	this.nodeInformations = new LinkedList<Information>();
-        this.childrenMethods = new LinkedList<TreeNode>();
+        this.children = new LinkedList<TreeNode>();
     }
     public TreeNode getRoot() {
 		if(parent != null)
@@ -23,13 +23,13 @@ class TreeNode{
 	public TreeNode(Information info) {
     	this.nodeInformations = new LinkedList<Information>();
         this.nodeInformations.add(info);
-        this.childrenMethods = new LinkedList<TreeNode>();
+        this.children = new LinkedList<TreeNode>();
     }
     
     public TreeNode addChild(Information info) {
         TreeNode childNode = new TreeNode(info);
         childNode.parent = this;
-        this.childrenMethods.add(childNode);
+        this.children.add(childNode);
         return childNode;
     }
     
@@ -41,10 +41,24 @@ class TreeNode{
     }
     public List<Information> getAllInfoInTree(){
     	List<Information> allInfo = nodeInformations;
-    	for (TreeNode child : childrenMethods) {
+    	for (TreeNode child : children) {
 			List<Information> childInfo = child.getAllInfoInTree();
 			allInfo.addAll(childInfo);
 		}
     	return allInfo;
+    }
+    public List<Information> getNodeInfo(){
+    	return nodeInformations;
+    }
+    public List<TreeNode> getChildren(){
+    	return children;
+    }
+    public void printAll(){
+    	for (Information information : nodeInformations) {
+    		System.out.println(information.describe());
+		}
+    	for (TreeNode treeNode : children) {
+			treeNode.printAll();
+		}    	
     }
 }

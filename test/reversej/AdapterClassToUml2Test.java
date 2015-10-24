@@ -99,7 +99,7 @@ public class AdapterClassToUml2Test{
 			assertEquals(received, adapter.getPackage().getOwnedMember(name));
 		}
 	}
-	public static class CreateMethod extends AdapterClassToUml2Test{
+	public static class CreateClassMethod extends AdapterClassToUml2Test{
 		@Test
 		public void CreateMethod_ReturnsOperation() {
 			Operation received = adapter.createMethod(null, null, null);
@@ -111,6 +111,13 @@ public class AdapterClassToUml2Test{
 			adapter.createConcreteClass(className);
 			Operation received = adapter.createMethod(className, null, null);
 			assertEquals(className, received.getClass_().getName());
+		}
+		@Test
+		public void CreateMethod_boundToInterface() {
+			String interfaceName = "Visiter";
+			adapter.createInterface(interfaceName);
+			Operation received = adapter.createMethod(interfaceName, null, null);
+			assertEquals(interfaceName, received.getInterface().getName());
 		}
 		@Test
 		public void CreateMethod_setsMethodName() {
@@ -164,6 +171,13 @@ public class AdapterClassToUml2Test{
 			adapter.createConcreteClass(className);
 			Operation received = adapter.createMethodWithReturn(className, null, null, null);
 			assertEquals(className, received.getClass_().getName());
+		}
+		@Test
+		public void CreateMethod_boundToInterface() {
+			String interfaceName = "Visiter";
+			adapter.createInterface(interfaceName);
+			Operation received = adapter.createMethodWithReturn(interfaceName, null, null,null);
+			assertEquals(interfaceName, received.getInterface().getName());
 		}
 		@Test
 		public void CreateMethodWithReturn_setsMethodName() {

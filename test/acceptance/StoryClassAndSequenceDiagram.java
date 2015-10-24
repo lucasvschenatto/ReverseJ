@@ -16,15 +16,15 @@ import reversej.repository.RepositoryInMemory;
 import reversej.tracer.RepositoryRecorder;
 import reversej.tracer.Tracer;
 
-public class StoryClassAndSequenceDiagramTest {
+public class StoryClassAndSequenceDiagram {
 	public static void main(String[] args) {
 		RepositoryInMemory i = new RepositoryInMemory();
 		RepositoryRecorder r = i;
 		RepositoryProvider p = i;
 		InformationFactory f = new InformationFactoryImpl();
 		List<DiagramStrategy> lds = new LinkedList<DiagramStrategy>();
-		lds.add(new SequenceDiagram());
 		lds.add(new ClassDiagram());
+		lds.add(new SequenceDiagram());		
 		DiagramEngine dM = new MakerAndSaver(p, f, lds);
 		String fileName = Thread.currentThread().getStackTrace()[1].getFileName();
 		((MakerAndSaver)dM).setFileName(fileName);

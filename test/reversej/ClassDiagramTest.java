@@ -6,12 +6,19 @@ import static reversej.TestUtilities.*;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
+import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.InterfaceRealization;
+import org.eclipse.uml2.uml.LiteralUnlimitedNatural;
+import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
+import org.eclipse.uml2.uml.Type;
+import org.eclipse.uml2.uml.UMLFactory;
 import org.junit.*;
 
 import reversej.diagram.DiagramStrategy;
@@ -22,9 +29,92 @@ import reversej.diagram.strategies.uml2adapter.AdapterClassToUml2;
 import reversej.diagram.strategies.uml2adapter.AdapterToUml2;
 
 public class ClassDiagramTest {
-	public static class GeneralTests extends AdapterClassToUml2 {
-		private DiagramStrategy strategy;
-
+	private static List<String> createdDependencies;
+	private static List<String> createdUnidirectionalAssociations;
+	private static List<String> createdBiDirectionalAssociations;
+	private static List<String> createdAssociations;
+	private static List<String> createdImplementations;
+	private static String lastMethod;
+	private static List<String> createdMethods;
+	private static List<String> createdClasses;
+	private static List<String> createdTypes;
+	private static DiagramStrategy strategy;
+	private static List<String> createdInterfaces;
+	static AdapterClassToUml2 adapter;
+	@Before
+	public void setup(){
+		createdDependencies = new LinkedList<String>();
+		createdUnidirectionalAssociations = new LinkedList<String>();
+		createdBiDirectionalAssociations = new LinkedList<String>();
+		createdAssociations = new LinkedList<String>();
+		createdImplementations = new LinkedList<String>();
+		createdTypes = new LinkedList<String>();
+		createdMethods = new LinkedList<String>();
+		lastMethod = "";
+		createdInterfaces = new LinkedList<String>();
+		createdClasses = new LinkedList<String>();
+		adapter = new AdapterClassToUml2(){
+			@Override
+			public Interface createInterface(String name) {
+				createdInterfaces.add(name);
+				return null;
+			}
+			@Override
+			public Class createConcreteClass(String name) {
+				createdClasses.add(name);
+				return null;
+			}
+			@Override
+			public PrimitiveType createType(String name) {
+				createdTypes.add(name);
+				return null;
+			}
+			@Override
+			public InterfaceRealization createImplementation(String interface_,
+					String implementer) {
+				createdImplementations.add(interface_ + " " + implementer);
+				return null;
+			}
+			@Override
+			public Association createUnidirectionalAssociation(String source,
+					String target) {
+				createdAssociations.add(source + " " + target);
+				return null;
+			}
+			@Override
+			public Association createBidirectionalAssociation(String class1,
+					String class2) {
+				createdBiDirectionalAssociations.add(class1 + " " + class2);
+				return null;
+			}
+			@Override
+			public Dependency createDependency(String source, String target) {
+				createdDependencies.add(source + " " + target);
+				return null;
+			}
+			@Override
+			public Operation createMethodWithReturn(String className, String methodName,
+					String signature, String returnType) {
+				String createdMethod = (className + " " + methodName + " "
+						+ signature + " " + returnType).trim();
+				createdMethods.add(createdMethod);
+				lastMethod = createdMethod;
+				return null;
+				
+			}
+			@Override
+			public Operation createMethod(String className, String methodName,
+					String signature) {
+				String createdMethod = (className + " " + methodName + " " + signature)
+						.trim();
+				createdMethods.add(createdMethod);
+				lastMethod = createdMethod;
+				return null;
+			}
+		};
+		strategy = new ClassDiagram(adapter);
+	}
+	public static class GeneralTests{
 		@Test
 		public void constructorSetsAdapter() {
 			AdapterClassToUml2 expected = AdapterClassToUml2.make();
@@ -42,28 +132,12 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateClass extends AdapterClassToUml2 {
-		private DiagramStrategy strategy;
-		private List<String> createdClasses;
-
+	public static class CreateClass extends ClassDiagramTest{
 		private void assertClassCreated(String className) {
 			assertTrue(createdClasses.contains(className));
 		}
-
 		private void assertNumberOfCreatedClasses(int number) {
 			assertEquals(number, createdClasses.size());
-		}
-
-		@Override
-		public org.eclipse.uml2.uml.Class createConcreteClass(String name) {
-			createdClasses.add(name);
-			return null;
-		}
-
-		@Before
-		public void setup() {
-			strategy = new ClassDiagram(this);
-			createdClasses = new LinkedList<String>();
 		}
 
 		@Test
@@ -77,23 +151,22 @@ public class ClassDiagramTest {
 
 		@Test
 		public void CreateConcreteClass() {
-			String className = "myTestClass";
-			Information info = InformationFactoryImpl.createClass(className);
+			String id = "123";
 			List<Information> informations = new LinkedList<Information>();
-			informations.add(info);
+			informations.addAll(completeMethodTrace(id));
 
 			strategy.generate(informations);
 
-			assertClassCreated(className);
+			assertClassCreated(CLASS+id);
 		}
 
-		@Test
+		@Test@Ignore("There is no handler implementation in tracer")
 		public void CreateConcreteClassForHandler() {
 			String className = "myTestClassTarget";
 			Information info = InformationFactoryImpl.createHandler(className);
 			List<Information> informations = new LinkedList<Information>();
 			informations.add(info);
-
+			
 			strategy.generate(informations);
 
 			assertClassCreated(className);
@@ -124,11 +197,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateMethod extends AdapterClassToUml2 {
-		private DiagramStrategy strategy;
-		private String lastMethod;
-		private List<String> createdMethods;
-
+	public static class CreateMethod extends ClassDiagramTest{
 		private void assertMethodContains(String content) {
 			assertTrue(lastMethod.contains(content));
 		}
@@ -140,34 +209,6 @@ public class ClassDiagramTest {
 		private void assertNumberOfCreatedMethods(int number) {
 			assertEquals(number, createdMethods.size());
 		}
-
-		@Override
-		public Operation createMethod(String className, String methodName,
-				String signature) {
-			String createdMethod = (className + " " + methodName + " " + signature)
-					.trim();
-			createdMethods.add(createdMethod);
-			lastMethod = createdMethod;
-			return null;
-		}
-
-		@Override
-		public Operation createMethodWithReturn(String className, String methodName,
-				String signature, String returnType) {
-			String createdMethod = (className + " " + methodName + " "
-					+ signature + " " + returnType).trim();
-			createdMethods.add(createdMethod);
-			lastMethod = createdMethod;
-			return null;
-		}
-
-		@Before
-		public void setup() {
-			strategy = new ClassDiagram(this);
-			createdMethods = new LinkedList<String>();
-			lastMethod = "";
-		}
-
 		@Test
 		public void ifHasNoMethods_DoNotCreate() {
 			List<Information> informations = new LinkedList<Information>();
@@ -234,30 +275,45 @@ public class ClassDiagramTest {
 			assertMethodCreated(method1);
 			assertMethodCreated(method2);
 		}
+		@Test
+		public void CreateInterfaceMethod() {
+			String id = "001";
+			String methodInInterface = INTERFACE+id + SPACE + METHOD+id + SPACE
+					+ PARAMETERS + id + SPACE + RETURN_TYPE + id;
+			List<Information> informations = new LinkedList<Information>();
+					informations.addAll(completeInterfaceTrace(id));
+
+			strategy.generate(informations);
+
+			assertMethodCreated(methodInInterface);
+		}
+		@Test
+		public void CreateOneInterfaceAndTwoClassMethodsNested() {
+			String id = "001";
+			String method1 = CLASS1+id + SPACE + METHOD_R + SPACE
+					+ PARAMETERS + id + SPACE + RETURN_TYPE + id;
+			String methodInInterface = INTERFACE+id + SPACE + METHOD_R + SPACE
+					+ PARAMETERS + id + SPACE + RETURN_TYPE + id;
+			String method2 = CLASS2 + id + SPACE + METHOD_R + SPACE
+					+ PARAMETERS + id + SPACE + RETURN_TYPE + id;
+
+			List<Information> informations = completeNestedInterfaceTrace(id);
+
+			strategy.generate(informations);
+
+			assertMethodCreated(method1);
+			assertMethodCreated(method2);
+			assertMethodCreated(methodInInterface);
+		}
 	}
 
-	public static class CreateInterface extends AdapterClassToUml2 {
-		private DiagramStrategy strategy;
-		private List<String> createdInterfaces;
-
+	public static class CreateInterface extends ClassDiagramTest {
 		private void assertInterfaceCreated(String interfaceName) {
 			assertTrue(createdInterfaces.contains(interfaceName));
 		}
 
 		private void assertNumberOfCreatedInterfaces(int number) {
 			assertEquals(number, createdInterfaces.size());
-		}
-
-		@Override
-		public Interface createInterface(String name) {
-			createdInterfaces.add(name);
-			return null;
-		}
-
-		@Before
-		public void setup() {
-			strategy = new ClassDiagram(this);
-			createdInterfaces = new LinkedList<String>();
 		}
 
 		@Test
@@ -271,54 +327,44 @@ public class ClassDiagramTest {
 
 		@Test
 		public void CreateInterfaceFromInterfaceInformation() {
-			String interfaceName = "myInterface";
-			Information info = InformationFactoryImpl
-					.createInterface(interfaceName);
+			String id = "987";
 			List<Information> informations = new LinkedList<Information>();
-			informations.add(info);
+			informations.addAll(completeInterfaceTrace(id));
 
 			strategy.generate(informations);
 
-			assertInterfaceCreated(interfaceName);
+			assertInterfaceCreated(INTERFACE+id);
 		}
 
 		@Test
 		public void doesntDuplicateInterfaces() {
-			String interfaceName = "myTestClassTarget";
+			String id = "56";
 			List<Information> informations = new LinkedList<Information>();
-
-			Information info = InformationFactoryImpl
-					.createInterface(interfaceName);
-			informations.add(info);
-			info = InformationFactoryImpl.createInterface(interfaceName);
-			informations.add(info);
-
+			informations.addAll(completeNestedInterfaceTrace(id));
+			informations.addAll(completeNestedInterfaceTrace(id));
+			
 			strategy.generate(informations);
 
-			assertInterfaceCreated(interfaceName);
+			assertInterfaceCreated(INTERFACE+id);
 			assertNumberOfCreatedInterfaces(1);
 		}
 
 		@Test
 		public void doesntDeleteNotDuplicatedInterfaces() {
+			String id1 = "01";
+			String id2 = "02";
 			List<Information> informations = new LinkedList<Information>();
-			Information info = InformationFactoryImpl
-					.createInterface("myTestInterface");
-			informations.add(info);
-			info = InformationFactoryImpl.createInterface("myTestInterface2");
-			informations.add(info);
+			informations.addAll(completeNestedInterfaceTrace(id1));
+			informations.addAll(completeNestedInterfaceTrace(id2));
 
 			strategy.generate(informations);
 
-			assertInterfaceCreated("myTestInterface");
-			assertInterfaceCreated("myTestInterface2");
+			assertInterfaceCreated(INTERFACE+id1);
+			assertInterfaceCreated(INTERFACE+id2);
 		}
 	}
 
-	public static class CreateTypes extends AdapterClassToUml2 {
-		private DiagramStrategy strategy;
-		private List<String> createdTypes;
-
+	public static class CreateTypes extends ClassDiagramTest {
 		private void assertTypeCreated(String typeName) {
 			assertTrue(createdTypes.contains(typeName));
 		}
@@ -326,19 +372,6 @@ public class ClassDiagramTest {
 		private void assertNumberOfCreatedTypes(int number) {
 			assertEquals(number, createdTypes.size());
 		}
-
-		@Override
-		public PrimitiveType createType(String name) {
-			createdTypes.add(name);
-			return null;
-		}
-
-		@Before
-		public void setup() {
-			strategy = new ClassDiagram(this);
-			createdTypes = new LinkedList<String>();
-		}
-
 		@Test
 		public void CreateTypeFromReturn() {
 			List<Information> informations = completeMethodTrace("5");
@@ -352,7 +385,11 @@ public class ClassDiagramTest {
 		public void CreateTypeFromSignature() {
 			String signature = "int i";
 			List<Information> informations = new LinkedList<Information>();
+			informations.add(InformationFactoryImpl.createClass("aaa"));
+			informations.add(InformationFactoryImpl.createModifiers("public"));
+			informations.add(InformationFactoryImpl.createMethod("do"));
 			informations.add(InformationFactoryImpl.createParameters(signature));
+			informations.add(InformationFactoryImpl.createReturn("void"));
 
 			strategy.generate(informations);
 
@@ -363,7 +400,11 @@ public class ClassDiagramTest {
 		public void CreateTwoTypesFromSignature() {
 			String signature = "int i, double d";
 			List<Information> informations = new LinkedList<Information>();
+			informations.add(InformationFactoryImpl.createClass("aaa"));
+			informations.add(InformationFactoryImpl.createModifiers("public"));
+			informations.add(InformationFactoryImpl.createMethod("do"));
 			informations.add(InformationFactoryImpl.createParameters(signature));
+			informations.add(InformationFactoryImpl.createReturn("void"));
 
 			strategy.generate(informations);
 
@@ -375,7 +416,11 @@ public class ClassDiagramTest {
 		public void DoesntRepeatTypes() {
 			String parameters = "int i, int d";
 			List<Information> informations = new LinkedList<Information>();
+			informations.add(InformationFactoryImpl.createClass("aaa"));
+			informations.add(InformationFactoryImpl.createModifiers("public"));
+			informations.add(InformationFactoryImpl.createMethod("do"));
 			informations.add(InformationFactoryImpl.createParameters(parameters));
+			informations.add(InformationFactoryImpl.createReturn("void"));
 
 			strategy.generate(informations);
 
@@ -397,7 +442,11 @@ public class ClassDiagramTest {
 			String parameters = className+" c, int i";
 			List<Information> informations = new LinkedList<Information>();
 			informations.add(InformationFactoryImpl.createClass(className));
+			informations.add(InformationFactoryImpl.createModifiers("public"));
+			informations.add(InformationFactoryImpl.createMethod("do"));
 			informations.add(InformationFactoryImpl.createParameters(parameters));
+			informations.add(InformationFactoryImpl.createReturn("void"));
+			
 			strategy.generate(informations);
 			
 			assertTypeCreated("int");
@@ -409,7 +458,11 @@ public class ClassDiagramTest {
 			String parameters = interfaceName+" c, boolean b";
 			List<Information> informations = new LinkedList<Information>();
 			informations.add(InformationFactoryImpl.createInterface(interfaceName));
+			informations.add(InformationFactoryImpl.createClass("aaa"));
+			informations.add(InformationFactoryImpl.createModifiers("public"));
+			informations.add(InformationFactoryImpl.createMethod("do"));
 			informations.add(InformationFactoryImpl.createParameters(parameters));
+			informations.add(InformationFactoryImpl.createReturn("void"));
 			strategy.generate(informations);
 			
 			assertTypeCreated("boolean");
@@ -417,11 +470,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateImplementation extends
-			AdapterClassToUml2 {
-		private DiagramStrategy strategy;
-		private List<String> createdImplementations;
-
+	public static class CreateImplementation extends ClassDiagramTest {
 		private void assertImplementationCreated(String implementationName) {
 			assertTrue(createdImplementations.contains(implementationName));
 		}
@@ -429,19 +478,7 @@ public class ClassDiagramTest {
 		private void assertNumberOfCreatedImplementations(int number) {
 			assertEquals(number, createdImplementations.size());
 		}
-
-		@Override
-		public InterfaceRealization createImplementation(String interface_, String implementer) {
-			createdImplementations.add(interface_ + " " + implementer);
-			return null;
-		}
-
-		@Before
-		public void setup() {
-			strategy = new ClassDiagram(this);
-			createdImplementations = new LinkedList<String>();
-		}
-
+		
 		@Test
 		public void CreateOneImplementation() {
 			String id = "A1";
@@ -467,11 +504,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateUnidirectionalAssociation extends
-			AdapterClassToUml2 {
-		private DiagramStrategy strategy;
-		private List<String> createdAssociations;
-
+	public static class CreateUnidirectionalAssociation extends ClassDiagramTest {
 		private void assertAssociationCreated(String associationName) {
 			assertTrue(createdAssociations.contains(associationName));
 		}
@@ -479,19 +512,6 @@ public class ClassDiagramTest {
 		private void assertNumberOfCreatedAssociations(int number) {
 			assertEquals(number, createdAssociations.size());
 		}
-
-		@Override
-		public Association createUnidirectionalAssociation(String caller, String target) {
-			createdAssociations.add(caller + " " + target);
-			return null;
-		}
-
-		@Before
-		public void setup() {
-			strategy = new ClassDiagram(this);
-			createdAssociations = new LinkedList<String>();
-		}
-
 		@Test
 		public void CreateOneUnidirectional() {
 			List<Information> informations = completeNestedConstructorTrace("123");
@@ -524,11 +544,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateBidirectionalAssociation extends
-			AdapterClassToUml2 {
-		private DiagramStrategy strategy;
-		private List<String> createdBiDirectionalAssociations;
-
+	public static class CreateBidirectionalAssociation extends ClassDiagramTest {
 		private void assertBiDirectionalAssociationCreated(
 				String associationName) {
 			assertTrue(createdBiDirectionalAssociations
@@ -537,18 +553,6 @@ public class ClassDiagramTest {
 
 		private void assertNumberOfCreatedBiDirectionalAssociations(int number) {
 			assertEquals(number, createdBiDirectionalAssociations.size());
-		}
-
-		@Override
-		public Association createBidirectionalAssociation(String class1, String class2) {
-			createdBiDirectionalAssociations.add(class1 + " " + class2);
-			return null;
-		}
-
-		@Before
-		public void setup() {
-			strategy = new ClassDiagram(this);
-			createdBiDirectionalAssociations = new LinkedList<String>();
 		}
 
 		@Test
@@ -592,11 +596,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class UniBiDirectionalAssociationTests extends
-			AdapterClassToUml2 {
-		private DiagramStrategy strategy;
-		private List<String> createdUnidirectionalAssociations;
-		private List<String> createdBiDirectionalAssociations;
+	public static class UniBiDirectionalAssociation extends ClassDiagramTest {
 
 		private void assertNumberOfCreatedUnidirectionals(int number) {
 			assertEquals(number, createdUnidirectionalAssociations.size());
@@ -604,25 +604,6 @@ public class ClassDiagramTest {
 
 		private void assertNumberOfCreatedBiDirectionals(int number) {
 			assertEquals(number, createdBiDirectionalAssociations.size());
-		}
-
-		@Override
-		public Association createUnidirectionalAssociation(String caller, String target) {
-			createdUnidirectionalAssociations.add(caller + " " + target);
-			return null;
-		}
-
-		@Override
-		public Association createBidirectionalAssociation(String class1, String class2) {
-			createdBiDirectionalAssociations.add(class1 + " " + class2);
-			return null;
-		}
-
-		@Before
-		public void setup() {
-			strategy = new ClassDiagram(this);
-			createdUnidirectionalAssociations = new LinkedList<String>();
-			createdBiDirectionalAssociations = new LinkedList<String>();
 		}
 
 		@Test
@@ -644,10 +625,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class CreateDependency extends AdapterClassToUml2 {
-		private DiagramStrategy strategy;
-		private List<String> createdDependencies;
-
+	public static class CreateDependency extends ClassDiagramTest {
 		private void assertDependencyCreated(String dependencyName) {
 			assertTrue(createdDependencies.contains(dependencyName));
 		}
@@ -656,18 +634,7 @@ public class ClassDiagramTest {
 			assertEquals(number, createdDependencies.size());
 		}
 
-		@Override
-		public Dependency createDependency(String caller, String target) {
-			createdDependencies.add(caller + " " + target);
-			return null;
-		}
-
-		@Before
-		public void setup() {
-			strategy = new ClassDiagram(this);
-			createdDependencies = new LinkedList<String>();
-		}
-
+		
 		@Test
 		public void CreateOneDependency() {
 			String id = "123";
@@ -758,13 +725,7 @@ public class ClassDiagramTest {
 		}
 	}
 
-	public static class AssociationDependenciyTests extends
-			AdapterClassToUml2 {
-		private DiagramStrategy strategy;
-		private List<String> createdUnidirectionalAssociations;
-		private List<String> createdBiDirectionalAssociations;
-		private List<String> createdDependencies;
-
+	public static class AssociationDependenciy extends ClassDiagramTest {
 		private void assertNumberOfCreatedUnidirectionals(int number) {
 			assertEquals(number, createdUnidirectionalAssociations.size());
 		}
@@ -775,32 +736,6 @@ public class ClassDiagramTest {
 
 		private void assertNumberOfCreatedDependencies(int number) {
 			assertEquals(number, createdDependencies.size());
-		}
-
-		@Override
-		public Association createUnidirectionalAssociation(String caller, String target) {
-			createdUnidirectionalAssociations.add(caller + " " + target);
-			return null;
-		}
-
-		@Override
-		public Association createBidirectionalAssociation(String class1, String class2) {
-			createdBiDirectionalAssociations.add(class1 + " " + class2);
-			return null;
-		}
-
-		@Override
-		public Dependency createDependency(String caller, String target) {
-			createdDependencies.add(caller + " " + target);
-			return null;
-		}
-
-		@Before
-		public void setup() {
-			strategy = new ClassDiagram(this);
-			createdUnidirectionalAssociations = new LinkedList<String>();
-			createdBiDirectionalAssociations = new LinkedList<String>();
-			createdDependencies = new LinkedList<String>();
 		}
 
 		@Test

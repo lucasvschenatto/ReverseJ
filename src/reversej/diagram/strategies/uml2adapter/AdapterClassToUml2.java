@@ -105,7 +105,9 @@ public class AdapterClassToUml2 implements AdapterToUml2{
 		}		
 		NamedElement ne = rootPackage.getOwnedMember(className);		
 		if(ne instanceof Class)
-			o.setClass_((org.eclipse.uml2.uml.Class)ne);	
+			o.setClass_((org.eclipse.uml2.uml.Class)ne);
+		if(ne instanceof Interface)
+			o.setInterface((org.eclipse.uml2.uml.Interface)ne);
 		return o;
 	}
 

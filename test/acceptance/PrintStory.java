@@ -7,7 +7,7 @@ import reversej.repository.RepositoryInMemory;
 import reversej.tracer.RepositoryRecorder;
 import reversej.tracer.Tracer;
 
-public class StoryTracerTest {
+public class PrintStory {
 
 	public static void main(String[] args) {
 		RepositoryRecorder r = new RepositoryInMemory();

@@ -16,7 +16,7 @@ import reversej.repository.RepositoryInMemory;
 import reversej.tracer.RepositoryRecorder;
 import reversej.tracer.Tracer;
 
-public class StorySequenceDiagramTest {
+public class StorySequenceDiagram {
 	public static void main(String[] args) {
 		RepositoryInMemory i = new RepositoryInMemory();
 		RepositoryRecorder r = i;

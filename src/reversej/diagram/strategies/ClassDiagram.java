@@ -113,7 +113,7 @@ public class ClassDiagram implements DiagramStrategy {
 		List<Pair> dependencies = new LinkedList<Pair>();
 		Stack<String> stack = new Stack<String>();
 		boolean isMethod = false;
-		Information last = InformationFactoryImpl.createGeneric(null);
+		Information last = InformationFactoryImpl.createEmpty();
 		
 		for (Information information : informations) {
 			if(information instanceof IInterface)
@@ -269,35 +269,24 @@ public class ClassDiagram implements DiagramStrategy {
 	}
 
 	private void generateMethods(List<Information> informations) {
-		informations = moveNestedMethodsToFirstLayer(informations);
-		List<String> methodNames       = new LinkedList<String>();
-		List<String> containingClasses = new LinkedList<String>();
-		List<String> signatures        = new LinkedList<String>();
-		List<String> returnTypes       = new LinkedList<String>();
-		for (Information information : informations) {
-			if(information instanceof IClass)
-				containingClasses.add(information.getValue());
-			else if(information instanceof IMethod)
-				methodNames.add(information.getValue());
-			else if(information instanceof IParameters)
-				signatures.add(information.getValue());
-			else if(information instanceof IReturn)
-				returnTypes.add(information.getValue());
-		}
-		Iterator<String> cIterator = containingClasses.iterator();
-		Iterator<String> mIterator = methodNames.iterator();
-		Iterator<String> sIterator = signatures.iterator();
-		Iterator<String> rIterator = returnTypes.iterator();
-		while (cIterator.hasNext() && mIterator.hasNext() && sIterator.hasNext() && rIterator.hasNext()) {
-			String returnType = rIterator.next();
-			if(returnType.equals(void_))
-				adapter.createMethod(cIterator.next(),mIterator.next(),sIterator.next());
-			else
-				adapter.createMethodWithReturn(cIterator.next(),mIterator.next(),sIterator.next(), returnType);
-		}
+		TreeNode tree = createMethodTree(informations);
+		generateMethodsFromTree(tree);
 	}
 
-	private List<Information> moveNestedMethodsToFirstLayer(
+	private void generateMethodsFromTree(TreeNode tree) {
+		List<Information> methodInformation = tree.getNodeInfo();
+		if(!tree.getNodeInfo().isEmpty()){
+			if (methodInformation.get(4).getValue()==void_)
+				adapter.createMethod(methodInformation.get(0).getValue(), methodInformation.get(2).getValue(), methodInformation.get(3).getValue());
+			else
+				adapter.createMethodWithReturn(methodInformation.get(0).getValue(), methodInformation.get(2).getValue(), methodInformation.get(3).getValue(),methodInformation.get(4).getValue());
+		}				
+			
+		for (TreeNode child : tree.getChildren()) {
+			generateMethodsFromTree(child);
+		}
+	}
+	private TreeNode createMethodTree(
 			List<Information> informations) {
 		TreeNode tree = new TreeNode();
 		Information last = null;
@@ -306,10 +295,10 @@ public class ClassDiagram implements DiagramStrategy {
 				if(last == null || last instanceof IInterface){
 					tree.addInfo(information);
 				}else
-					tree.addChild(information);
+					tree = tree.addChild(information);
 			}
 			else if(information instanceof IInterface)
-				tree.addChild(information);
+				tree = tree.addChild(information);
 			else if(information instanceof IReturn){
 				tree.addInfo(information);
 				tree = (tree.getParent() == null)? tree:tree.getParent();
@@ -318,9 +307,23 @@ public class ClassDiagram implements DiagramStrategy {
 				tree.addInfo(information);
 			last = information;
 		}
-		return tree.getAllInfoInTree();
+		tree = inferInterfaceMethods(tree);
+		return tree;
 	}
 
+	private TreeNode inferInterfaceMethods(TreeNode tree) {
+		for (TreeNode node : tree.getChildren()){
+			List<Information> nodeInfo = node.getNodeInfo();
+			if(nodeInfo.get(0) instanceof IInterface){
+				TreeNode child = node.addChild(nodeInfo.get(1));
+				for (int i = 2; i < nodeInfo.size(); i++)
+					child.addInfo(nodeInfo.get(i));
+				nodeInfo.remove(1);
+			}
+			inferInterfaceMethods(node);
+		}		
+		return tree;
+	}
 	private void generateInterfaces(List<Information> informations) {
 		List<String> interfaceNames = new LinkedList<String>();
 		for (Information information : informations) {
