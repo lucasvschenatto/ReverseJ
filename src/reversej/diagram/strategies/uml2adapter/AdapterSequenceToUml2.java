@@ -10,8 +10,9 @@ import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.MessageOccurrenceSpecification;
 
 import reversej.diagram.Diagram;
+import reversej.diagram.ModelAdapter;
 
-public class AdapterSequenceToUml2 implements AdapterToUml2{
+public class AdapterSequenceToUml2 implements ModelAdapter{
 	public static final String PACKAGE_NAME = "Sequence Diagram";
 	public static final String DIAGRAM_TYPE = PACKAGE_NAME;
 	public static final String SEPARATOR = "::";

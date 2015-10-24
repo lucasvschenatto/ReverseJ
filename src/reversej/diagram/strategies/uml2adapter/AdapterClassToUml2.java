@@ -19,8 +19,9 @@ import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 
 import reversej.diagram.Diagram;
+import reversej.diagram.ModelAdapter;
 
-public class AdapterClassToUml2 implements AdapterToUml2{
+public class AdapterClassToUml2 implements ModelAdapter{
 	public static final String PACKAGE_NAME = "Class Diagram";
 	private Diagram diagram;
 	private Package rootPackage;

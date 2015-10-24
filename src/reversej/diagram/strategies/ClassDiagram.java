@@ -10,6 +10,7 @@ import org.eclipse.uml2.uml.Package;
 
 import reversej.diagram.DiagramStrategy;
 import reversej.diagram.Information;
+import reversej.diagram.ModelAdapter;
 import reversej.diagram.informationmodel.IClass;
 import reversej.diagram.informationmodel.IHandler;
 import reversej.diagram.informationmodel.IInterface;
@@ -18,7 +19,6 @@ import reversej.diagram.informationmodel.IParameters;
 import reversej.diagram.informationmodel.IReturn;
 import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.diagram.strategies.uml2adapter.AdapterClassToUml2;
-import reversej.diagram.strategies.uml2adapter.AdapterToUml2;
 
 public class ClassDiagram implements DiagramStrategy {
 	private final String constructorCall = "<init>";
@@ -397,7 +397,7 @@ public class ClassDiagram implements DiagramStrategy {
 	}
 
 	@Override
-	public AdapterToUml2 getAdapter() {
+	public ModelAdapter getAdapter() {
 		return adapter;
 	}
 	protected class Pair{

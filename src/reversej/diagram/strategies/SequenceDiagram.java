@@ -8,12 +8,12 @@ import org.eclipse.uml2.uml.Package;
 
 import reversej.diagram.DiagramStrategy;
 import reversej.diagram.Information;
+import reversej.diagram.ModelAdapter;
 import reversej.diagram.informationmodel.IClass;
 import reversej.diagram.informationmodel.IMethod;
 import reversej.diagram.informationmodel.IParameters;
 import reversej.diagram.informationmodel.IReturn;
 import reversej.diagram.strategies.uml2adapter.AdapterSequenceToUml2;
-import reversej.diagram.strategies.uml2adapter.AdapterToUml2;
 
 public class SequenceDiagram implements DiagramStrategy {
 	private final String void_ = "void";
@@ -45,7 +45,7 @@ public class SequenceDiagram implements DiagramStrategy {
 		return adapter.getPackage();
 	}
 	@Override
-	public AdapterToUml2 getAdapter() {
+	public ModelAdapter getAdapter() {
 		return adapter;
 	}
 	

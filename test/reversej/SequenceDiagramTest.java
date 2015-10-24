@@ -10,10 +10,10 @@ import org.junit.*;
 
 import reversej.diagram.DiagramStrategy;
 import reversej.diagram.Information;
+import reversej.diagram.ModelAdapter;
 import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.diagram.strategies.SequenceDiagram;
 import reversej.diagram.strategies.uml2adapter.AdapterSequenceToUml2;
-import reversej.diagram.strategies.uml2adapter.AdapterToUml2;
 public class SequenceDiagramTest {
 	public static class GeneralTests{
 		private DiagramStrategy strategy;
@@ -22,13 +22,13 @@ public class SequenceDiagramTest {
 		public void constructorSetsAdapter() {
 			AdapterSequenceToUml2 expected = AdapterSequenceToUml2.make();
 			strategy = new SequenceDiagram(expected);
-			AdapterToUml2 actual = strategy.getAdapter();
+			ModelAdapter actual = strategy.getAdapter();
 
 			assertEquals(expected, actual);
 		}
 		@Test
 		public void returnsPackageFromAdapter(){
-			AdapterToUml2 adapter = AdapterSequenceToUml2.make();
+			ModelAdapter adapter = AdapterSequenceToUml2.make();
 			strategy = new SequenceDiagram((AdapterSequenceToUml2)adapter);
 			org.eclipse.uml2.uml.Package p = strategy.generate(null);
 			assertNotNull(p);

@@ -23,10 +23,10 @@ import org.junit.*;
 
 import reversej.diagram.DiagramStrategy;
 import reversej.diagram.Information;
+import reversej.diagram.ModelAdapter;
 import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.diagram.strategies.ClassDiagram;
 import reversej.diagram.strategies.uml2adapter.AdapterClassToUml2;
-import reversej.diagram.strategies.uml2adapter.AdapterToUml2;
 
 public class ClassDiagramTest {
 	private static List<String> createdDependencies;
@@ -119,7 +119,7 @@ public class ClassDiagramTest {
 		public void constructorSetsAdapter() {
 			AdapterClassToUml2 expected = AdapterClassToUml2.make();
 			strategy = new ClassDiagram(expected);
-			AdapterToUml2 actual = strategy.getAdapter();
+			ModelAdapter actual = strategy.getAdapter();
 			assertEquals(expected, actual);
 		}
 		@Test
