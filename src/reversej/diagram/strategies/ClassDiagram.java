@@ -113,7 +113,7 @@ public class ClassDiagram implements DiagramStrategy {
 		List<Pair> dependencies = new LinkedList<Pair>();
 		Stack<String> stack = new Stack<String>();
 		boolean isMethod = false;
-		Information last = InformationFactoryImpl.createEmpty(null);
+		Information last = InformationFactoryImpl.createGeneric(null);
 		
 		for (Information information : informations) {
 			if(information instanceof IInterface)

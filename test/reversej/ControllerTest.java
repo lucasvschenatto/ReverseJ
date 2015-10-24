@@ -15,15 +15,19 @@ import org.junit.Before;
 import static org.junit.Assert.*;
 import reversej.controller.Controller;
 import reversej.diagram.Diagram;
+import reversej.information.InformationFactory;
+import reversej.information.impl.InformationFactoryImpl;
 import reversej.tracer.Tracer;
 import static reversej.controller.ControllerState.*;
 
 public class ControllerTest {
 	Controller c;
+	InformationFactory factory;
 	boolean successfull;
 	@Before
 	public void setup(){
 		c = new Controller();
+		factory = new InformationFactoryImpl();
 	}
 	@After
 	public void tearDown(){
@@ -94,7 +98,7 @@ public class ControllerTest {
 			assertEquals(INITIAL, c.getState());
 			assertFalse(Tracer.isRunning());
 			assertTrue(c.getRecorder().isEmpty());
-			assertTrue(c.getProvider().getAll().isEmpty());
+			assertTrue(c.getProvider().getAll(factory).isEmpty());
 		}
 	}
 	public static class TracedState extends ControllerTest{
@@ -138,7 +142,7 @@ public class ControllerTest {
 			assertEquals(INITIAL, c.getState());
 			assertFalse(Tracer.isRunning());
 			assertTrue(c.getRecorder().isEmpty());
-			assertTrue(c.getProvider().getAll().isEmpty());
+			assertTrue(c.getProvider().getAll(factory).isEmpty());
 		}
 	}
 	public static class SavedState extends ControllerTest{
@@ -191,7 +195,7 @@ public class ControllerTest {
 			assertEquals(INITIAL, c.getState());
 			assertFalse(Tracer.isRunning());
 			assertTrue(c.getRecorder().isEmpty());
-			assertTrue(c.getProvider().getAll().isEmpty());
+			assertTrue(c.getProvider().getAll(factory).isEmpty());
 			assertTrue(first.exists());
 			assertFalse(second.exists());
 		}

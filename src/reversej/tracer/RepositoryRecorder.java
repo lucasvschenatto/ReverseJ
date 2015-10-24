@@ -10,10 +10,8 @@ public interface RepositoryRecorder {
 	public abstract List<String> describeAll();
 
 	public abstract int size();
-
-	public abstract void addInformation(Information info);
 	
 	public abstract void addInformation(String type, String content);
 
-	public abstract Information getInfo(String string);
+	public abstract String describeInfo(String string);
 }

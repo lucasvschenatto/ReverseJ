@@ -5,22 +5,26 @@ import static org.junit.Assert.*;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.aspectj.runtime.reflect.Factory;
 import org.eclipse.uml2.uml.Package;
 import org.junit.*;
 
 import reversej.diagram.Diagram;
-import reversej.diagram.DiagramHandler;
+import reversej.diagram.DiagramEngine;
 import reversej.diagram.DiagramStrategy;
 import reversej.diagram.RepositoryProvider;
 import reversej.diagram.strategies.uml2adapter.AdapterClassToUml2;
 import reversej.information.Information;
+import reversej.information.InformationFactory;
+import reversej.information.impl.InformationFactoryImpl;
 
 public class DiagramMakerTest{
 	private static boolean strategyCreateMethodWasCalled;
 	private static List<Information> actualPassedInformations; 
-	private DiagramHandler diagramHandler;
+	private DiagramEngine diagramEngine;
 	private RepositoryProvider provider;
 	private List<DiagramStrategy> strategy;
+	private InformationFactory factory;
 	@Before
 	public void setup(){
 		actualPassedInformations = null;
@@ -32,9 +36,9 @@ public class DiagramMakerTest{
 	@Test
 	public void constructorSetsProvider(){
 		RepositoryProvider expected = createStubProvider();
-		diagramHandler = new DiagramHandler(expected,null);
+		diagramEngine = new DiagramEngine(expected,null, null);
 		
-		RepositoryProvider actual = diagramHandler.getProvider();
+		RepositoryProvider actual = diagramEngine.getProvider();
 		
 		assertEquals(expected, actual);
 	}
@@ -43,33 +47,41 @@ public class DiagramMakerTest{
 	public void constructorSetsDiagramType(){
 		List<DiagramStrategy> expected = new LinkedList<DiagramStrategy>(); 
 		expected.add(createStubDiagramStrategy());
-		diagramHandler = new DiagramHandler(null,expected);
+		diagramEngine = new DiagramEngine(null,null, expected);
 		
-		List<DiagramStrategy> actual = diagramHandler.getDiagramStrategies();
+		List<DiagramStrategy> actual = diagramEngine.getDiagramStrategies();
 		
 		assertEquals(expected.get(0), actual.get(0));
 	}
 
-	
+	@Test
+	public void constructorSetsInformationFactory(){
+		InformationFactory expected = new InformationFactoryImpl();
+		diagramEngine = new DiagramEngine(null,expected, null);
+		
+		InformationFactory actual = diagramEngine.getInformationFactory();
+		
+		assertEquals(expected, actual);
+	}
 	@Test
 	public void whenMake_CallsCreateMethodInDiagramStrategy(){
-		diagramHandler = createDiagramMaker();
-		diagramHandler.make();
+		diagramEngine = createDiagramMaker();
+		diagramEngine.make();
 		assertTrue(strategyCreateMethodWasCalled);
 	}
 	@Test
 	public void whenMake_PassesInformationsFromProviderToDiagram_ThruCreateMethod(){
 		List<Information> expected = new LinkedList<Information>();
-		diagramHandler = createDiagramMaker(expected);
+		diagramEngine = createDiagramMaker(expected);
 		
-		diagramHandler.make();
+		diagramEngine.make();
 		
 		assertEquals(expected, actualPassedInformations);
 	}
 	@Test
 	public void make_returnsDiagram(){
-		diagramHandler = createDiagramMaker();
-		Diagram diagram = diagramHandler.make();
+		diagramEngine = createDiagramMaker();
+		Diagram diagram = diagramEngine.make();
 		assertNotNull(diagram);
 	}
 	
@@ -86,20 +98,22 @@ public class DiagramMakerTest{
 	protected static void createMethodWasCalled(){
 		strategyCreateMethodWasCalled = true;
 	}
-	private DiagramHandler createDiagramMaker(){
+	private DiagramEngine createDiagramMaker(){
 		provider = createStubProvider();
 		strategy.clear();
 		strategy.add(createStubDiagramStrategy());
-		return new DiagramHandler(provider,strategy);
+		factory = createStubFactory();
+		return new DiagramEngine(provider, factory, strategy);
 	}
-	private DiagramHandler createDiagramMaker(List<Information> informations){
+	private DiagramEngine createDiagramMaker(List<Information> informations){
 		provider = createStrubProvider(informations);
 		strategy.clear();
 		strategy.add(createStubDiagramStrategy());
-		return new DiagramHandler(provider,strategy);
+		factory = createStubFactory();
+		return new DiagramEngine(provider,factory, strategy);
 	}
 	private DiagramStrategy createStubDiagramStrategy() {
-		DiagramStrategy expected = new DiagramStrategy() {
+		return new DiagramStrategy() {
 			@Override
 			public Package generate(List<Information> informations) {
 				DiagramMakerTest.createMethodWasCalled();
@@ -112,33 +126,40 @@ public class DiagramMakerTest{
 				return null;
 			}
 		};
-		return expected;
 	}
 	private RepositoryProvider createStubProvider() {
-		RepositoryProvider expected = new RepositoryProvider() {
+		return new RepositoryProvider() {
 			@Override
-			public List<Information> getAll() {
+			public List<Information> getAll(InformationFactory factory) {
 				return null;
 			}
 			@Override
-			public Information getNext() {
+			public Information getNext(InformationFactory factory) {
 				return null;
 			}
 		};
-		return expected;
 	}
 	private RepositoryProvider createStrubProvider(List<Information> list) {
-		RepositoryProvider provider = new RepositoryProvider() {
+		return new RepositoryProvider() {
 			@Override
-			public Information getNext() {
+			public Information getNext(InformationFactory factory) {
 				return null;
 			}
 			@Override
-			public List<Information> getAll() {
+			public List<Information> getAll(InformationFactory factory) {
 				List<Information> local = list;
 				return local;
 			}
 		};
-		return provider;
+	}
+	private InformationFactory createStubFactory(){
+		return new InformationFactory() {
+			
+			@Override
+			public Information create(String type, String value) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
 	}
 }

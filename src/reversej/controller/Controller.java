@@ -4,13 +4,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 import reversej.diagram.Diagram;
-import reversej.diagram.DiagramHandler;
+import reversej.diagram.DiagramEngine;
 import reversej.diagram.DiagramStrategy;
 import reversej.diagram.RepositoryProvider;
 import reversej.diagram.strategies.ClassDiagram;
 import reversej.diagram.strategies.SequenceDiagram;
 import reversej.file.FileDiagram;
-import reversej.repository.RepositoryInformation;
+import reversej.information.InformationFactory;
+import reversej.information.impl.InformationFactoryImpl;
+import reversej.repository.RepositoryInMemory;
 import reversej.tracer.RepositoryRecorder;
 import reversej.tracer.Tracer;
 import reversej.tracer.TracerImmunity;
@@ -23,7 +25,7 @@ public class Controller implements TracerImmunity {
 	private static RepositoryRecorder recorder;
 	public Controller(){
 		state = ControllerState.INITIAL;
-		RepositoryInformation i = new RepositoryInformation();
+		RepositoryInMemory i = new RepositoryInMemory();
 		recorder = i;
 		provider = i;
 	}
@@ -57,7 +59,7 @@ public class Controller implements TracerImmunity {
 		saveDiagramInFile(diagram, fileToSave);
 	}
 	void resetRepository(){
-		RepositoryInformation i = new RepositoryInformation();
+		RepositoryInMemory i = new RepositoryInMemory();
 		recorder = i;
 		provider = i;
 	}
@@ -76,8 +78,9 @@ public class Controller implements TracerImmunity {
 	private static Diagram makeDiagrams() {
 		List<DiagramStrategy> diagramStrategies = new LinkedList<DiagramStrategy>();
 		diagramStrategies.add(new ClassDiagram());
-		diagramStrategies.add(new SequenceDiagram());			
-		Diagram diagram = new DiagramHandler(provider, diagramStrategies).make();
+		diagramStrategies.add(new SequenceDiagram());
+		InformationFactory factory = new InformationFactoryImpl();
+		Diagram diagram = new DiagramEngine(provider,factory, diagramStrategies).make();
 		return diagram;
 	}
 	public ControllerState getState() {

@@ -6,6 +6,11 @@ import reversej.information.InformationFactory;
 public class InformationFactoryImpl implements InformationFactory {
 	@Override
 	public Information create(String type, String value){
+		if(type==null)
+			return createError();
+		
+		value = value==null?"":value;
+		
 		switch (type) {
 		case "Class":
 			return createClass(value);
@@ -27,12 +32,15 @@ public class InformationFactoryImpl implements InformationFactory {
 			return createThrow(value);
 		case "Handler":
 			return createHandler(value);
-		case "Dummy":
-			return createEmpty(value);
+		case "Generic":
+			return createGeneric(value);
+		case "Empty":
+			return createEmpty();
 		default:
-			return null;
+			return createError();
 		}
 	}
+	
 	public static Information createClass(String value){
 		return new IClass(value);
 	}
@@ -63,7 +71,13 @@ public class InformationFactoryImpl implements InformationFactory {
 	public static Information createHandler(String value) {
 		return new IHandler(value);
 	}
-	public static Information createEmpty(String value) {
-		return new IEmpty(value);
+	public static Information createGeneric(String value) {
+		return new IGeneric(value);
+	}
+	public static Information createEmpty() {
+		return new IEmpty();
+	}
+	public static Information createError() {
+		return new IError();
 	}
 }

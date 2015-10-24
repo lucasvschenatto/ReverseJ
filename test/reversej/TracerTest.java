@@ -7,7 +7,7 @@ import org.junit.*;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
-import reversej.repository.RepositoryInformation;
+import reversej.repository.RepositoryInMemory;
 import reversej.tracer.RepositoryRecorder;
 import reversej.tracer.Tracer;
 import reversej.tracer.TracerImmunity;
@@ -31,8 +31,8 @@ public class TracerTest extends org.junit.Assert{
 		}
 		@Test
 		public void determineStorage() throws Exception{
-			RepositoryInformation exp1 = new RepositoryInformation();
-			RepositoryInformation exp2 = new RepositoryInformation();
+			RepositoryInMemory exp1 = new RepositoryInMemory();
+			RepositoryInMemory exp2 = new RepositoryInMemory();
 			Tracer.determineStorage(exp1);
 			RepositoryRecorder act1 = Tracer.getStorage();
 			Tracer.determineStorage(exp2);
@@ -42,25 +42,25 @@ public class TracerTest extends org.junit.Assert{
 		}
 		@Test
 		public void start_SetsUpStorage() throws Exception{
-			RepositoryInformation expected = new RepositoryInformation();
+			RepositoryInMemory expected = new RepositoryInMemory();
 			Tracer.start(expected);
 			assertEquals(expected,Tracer.getStorage());
 		}
 		@Test
 		public void isRunning() throws Exception{
-			Tracer.start(new RepositoryInformation());
+			Tracer.start(new RepositoryInMemory());
 			assertTrue(Tracer.isRunning());
 		}
 		@Test
 		public void isNotRunning() throws Exception{
 			assertFalse(Tracer.isRunning());
-			Tracer.start(new RepositoryInformation());
+			Tracer.start(new RepositoryInMemory());
 			Tracer.stop();
 			assertFalse(Tracer.isRunning());
 		}
 		@Test
 		public void afterStart_Records(){
-			RepositoryInformation l = new RepositoryInformation();
+			RepositoryInMemory l = new RepositoryInMemory();
 			Tracer.start(l);
 			new Actor();
 			List<String> actual = l.describeAll();
@@ -68,7 +68,7 @@ public class TracerTest extends org.junit.Assert{
 		}
 		@Test
 		public void beforeStart_DoesntRecord() throws Exception{
-			RepositoryInformation l = new RepositoryInformation();
+			RepositoryInMemory l = new RepositoryInMemory();
 			Tracer.determineStorage(l);
 			new Actor();
 			List<String> actual = l.describeAll();
@@ -76,7 +76,7 @@ public class TracerTest extends org.junit.Assert{
 		}
 		@Test
 		public void afterStop_DoesntRecord() throws Exception{
-			RepositoryInformation l = new RepositoryInformation();
+			RepositoryInMemory l = new RepositoryInMemory();
 			Tracer.start(l);
 			Tracer.stop();
 			new Actor();
@@ -89,7 +89,7 @@ public class TracerTest extends org.junit.Assert{
 		Actor actor;
 		@Before
 		public void setup(){
-			storate = new RepositoryInformation();
+			storate = new RepositoryInMemory();
 			actor = new Actor();			
 			Tracer.start(storate);	
 		}
@@ -147,7 +147,7 @@ public class TracerTest extends org.junit.Assert{
 		}
 		@Test
 		public void countLinesInterface(){
-			RepositoryInformation localLog = new RepositoryInformation();
+			RepositoryInMemory localLog = new RepositoryInMemory();
 			InterfaceActor iActor = new Actor('a');
 			Tracer.start(localLog);
 			iActor.playInstancePublic();
@@ -156,7 +156,7 @@ public class TracerTest extends org.junit.Assert{
 		}
 		@Test
 		public void countLinesExceptionThrowAndHandle() throws Exception{
-			RepositoryInformation localLog = new RepositoryInformation();
+			RepositoryInMemory localLog = new RepositoryInMemory();
 			Actor mActor = new Actor('a');
 			Tracer.start(localLog);
 			try {
@@ -169,11 +169,11 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class ConstructorPublic implements TracerImmunity{
-		private RepositoryInformation log;
+		private RepositoryInMemory log;
 		private String expected;
 		@Before
 		public void setUp(){
-			log = new RepositoryInformation();
+			log = new RepositoryInMemory();
 			Tracer.start(log);
 		}
 		@After
@@ -225,13 +225,13 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class ConstructorPrivate implements TracerImmunity{
-		private RepositoryInformation repositoryInformation;
+		private RepositoryInMemory repositoryInMemory;
 		private String expected;
 		@Before
 		public void setup(){
-			repositoryInformation = new RepositoryInformation();
+			repositoryInMemory = new RepositoryInMemory();
 			expected = null;
-			Tracer.start(repositoryInformation);
+			Tracer.start(repositoryInMemory);
 		}
 		@After
 		public void cleanUp(){
@@ -242,38 +242,38 @@ public class TracerTest extends org.junit.Assert{
 		public void target() throws Exception{
 			new Actor(1.5);
 			expected =iClass + separator + classPrefix + "Actor";
-			List<String> actual = repositoryInformation.describeAll();
+			List<String> actual = repositoryInMemory.describeAll();
 			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void method() throws Exception{
 			new Actor(1.5);
 			expected =iMethod + separator + "<init>";
-			List<String> actual = repositoryInformation.describeAll();
+			List<String> actual = repositoryInMemory.describeAll();
 			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void signature_OneParameter() throws Exception{
 			new Actor(1.5);
 			expected =iParameters + separator + "double dPrivate";
-			List<String> actual = repositoryInformation.describeAll();
+			List<String> actual = repositoryInMemory.describeAll();
 			assertTrue(lookInList(actual,expected));
 		}
 		@Test
 		public void returnInstanceType() throws Exception{
 			new Actor(1.5);
 			expected =iReturn + separator + "" + classPrefix + "Actor";
-			List<String> actual = repositoryInformation.describeAll();
+			List<String> actual = repositoryInMemory.describeAll();
 			assertTrue(lookInList(actual,expected));
 		}
 	}
 	public static class InstanceMethodPublic implements TracerImmunity{
-		private RepositoryInformation log;
+		private RepositoryInMemory log;
 		Actor actor;
 		String expected;
 		@Before
 		public void setup(){
-			log = new RepositoryInformation();
+			log = new RepositoryInMemory();
 			actor = new Actor();
 			Tracer.start(log);
 		}
@@ -326,12 +326,12 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class InstanceMethodPrivate implements TracerImmunity{
-		private RepositoryInformation log;
+		private RepositoryInMemory log;
 		Actor actor;
 		String expected;
 		@Before
 		public void setup(){
-			log = new RepositoryInformation();
+			log = new RepositoryInMemory();
 			actor = new Actor();
 			Tracer.start(log);
 		}
@@ -384,12 +384,12 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class StaticMethodPublic implements TracerImmunity{
-		private RepositoryInformation log;
+		private RepositoryInMemory log;
 		Actor actor;
 		String expected;
 		@Before
 		public void setup(){
-			log = new RepositoryInformation();
+			log = new RepositoryInMemory();
 			actor = new Actor();
 			Tracer.start(log);
 		}
@@ -442,13 +442,13 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class StaticMethodPrivate implements TracerImmunity{
-		private RepositoryInformation log;
+		private RepositoryInMemory log;
 		Actor actor;
 		String expected;
 		@Before
 		public void setup(){
 			actor = new Actor();
-			log = new RepositoryInformation();
+			log = new RepositoryInMemory();
 			Tracer.start(log);
 		}
 		@After
@@ -500,12 +500,12 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class InterfaceMethodPublic implements TracerImmunity{
-		private RepositoryInformation log;
+		private RepositoryInMemory log;
 		InterfaceActor iActor;
 		String expected;
 		@Before
 		public void setup(){
-			log = new RepositoryInformation();
+			log = new RepositoryInMemory();
 			iActor = new Actor();
 			Tracer.start(log);
 		}
@@ -565,12 +565,12 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class AccessControlModifiers implements TracerImmunity{
-		private RepositoryInformation log;
+		private RepositoryInMemory log;
 		private Actor mActor = new Actor();
 		private String expected;
 		@Before
 		public void setUp(){
-			log = new RepositoryInformation();
+			log = new RepositoryInMemory();
 			Tracer.start(log);
 		}
 		@After
@@ -635,12 +635,12 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class NonAccessModifiers implements TracerImmunity{
-		private RepositoryInformation log;
+		private RepositoryInMemory log;
 		private Actor mActor = new Actor();
 		private String expected;
 		@Before
 		public void setUp(){
-			log = new RepositoryInformation();
+			log = new RepositoryInMemory();
 			Tracer.start(log);
 		}
 		@After
@@ -671,12 +671,12 @@ public class TracerTest extends org.junit.Assert{
 		}
 	}
 	public static class ExceptionThrowAndHandle implements TracerImmunity{
-		private RepositoryInformation log;
+		private RepositoryInMemory log;
 		private Actor mActor = new Actor();
 		private String expected;
 		@Before
 		public void setUp(){
-			log = new RepositoryInformation();
+			log = new RepositoryInMemory();
 			Tracer.start(log);
 		}
 		@After

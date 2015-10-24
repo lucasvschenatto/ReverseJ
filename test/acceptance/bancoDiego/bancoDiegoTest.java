@@ -7,25 +7,28 @@ import java.util.List;
 import javax.swing.JFrame;
 
 import reversej.*;
-import reversej.diagram.DiagramHandler;
+import reversej.diagram.DiagramEngine;
 import reversej.diagram.DiagramStrategy;
 import reversej.diagram.RepositoryProvider;
 import reversej.diagram.strategies.ClassDiagram;
 import reversej.diagram.strategies.SequenceDiagram;
-import reversej.repository.RepositoryInformation;
+import reversej.information.InformationFactory;
+import reversej.information.impl.InformationFactoryImpl;
+import reversej.repository.RepositoryInMemory;
 import reversej.tracer.RepositoryRecorder;
 import reversej.tracer.Tracer;
 
 public class bancoDiegoTest {
 
 	public static void main(String[] args) {
-		RepositoryInformation i = new RepositoryInformation();
+		RepositoryInMemory i = new RepositoryInMemory();
 		RepositoryRecorder r = i;
 		RepositoryProvider p = i;
+		InformationFactory f = new InformationFactoryImpl();
 		List<DiagramStrategy> lds = new LinkedList<DiagramStrategy>();
 		lds.add(new SequenceDiagram());
 		lds.add(new ClassDiagram());
-		DiagramHandler dM = new MakerAndSaver(p, lds);
+		DiagramEngine dM = new MakerAndSaver(p, f, lds);
 		String fileName = Thread.currentThread().getStackTrace()[1].getFileName();
 		((MakerAndSaver)dM).setFileName(fileName);
 		Tracer.start(r);

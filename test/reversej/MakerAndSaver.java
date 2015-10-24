@@ -11,21 +11,22 @@ import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 import reversej.diagram.Diagram;
-import reversej.diagram.DiagramHandler;
+import reversej.diagram.DiagramEngine;
 import reversej.diagram.DiagramStrategy;
 import reversej.diagram.RepositoryProvider;
+import reversej.information.InformationFactory;
 
-public class MakerAndSaver extends DiagramHandler {
+public class MakerAndSaver extends DiagramEngine {
 	private String fileName = "diagrama";
-	public MakerAndSaver(RepositoryProvider infoProvider,
+	public MakerAndSaver(RepositoryProvider infoProvider,InformationFactory factory,
 			List<DiagramStrategy> diagrams) {
-		super(infoProvider, diagrams);
+		super(infoProvider, factory, diagrams);
 	}
 
 	@Override
 	public Diagram make() {
 		for (DiagramStrategy diagram : strategies)
-			diagram.generate(infoProvider.getAll());
+			diagram.generate(infoProvider.getAll(factory));
 
 		ResourceSet resourceSet = new ResourceSetImpl();
 		URI outputURI = URI.createFileURI("../ReverseJ/files/"+fileName)

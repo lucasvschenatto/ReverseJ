@@ -3,14 +3,15 @@ package reversej.information.impl;
 import reversej.information.Information;
 
 public class IEmpty implements Information {
-	private String value;
-	IEmpty(String value){
-		this.value = value;
-	}
+	IEmpty(){}
+	@Override
 	public String getValue() {
-		return value;
+		return "";
 	}
+
+	@Override
 	public String describe() {
-		return this.getClass().getSimpleName() + " : " + getValue();
+		return this.getClass().getSimpleName();
 	}
+
 }

@@ -4,13 +4,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 import reversej.diagram.Diagram;
-import reversej.diagram.DiagramHandler;
+import reversej.diagram.DiagramEngine;
 import reversej.diagram.DiagramStrategy;
 import reversej.diagram.RepositoryProvider;
 import reversej.diagram.strategies.ClassDiagram;
 import reversej.diagram.strategies.SequenceDiagram;
 import reversej.file.FileDiagramInPackage;
-import reversej.repository.RepositoryInformation;
+import reversej.information.InformationFactory;
+import reversej.information.impl.InformationFactoryImpl;
+import reversej.repository.RepositoryInMemory;
 import reversej.tracer.Tracer;
 import reversej.tracer.TracerImmunity;
 
@@ -20,7 +22,7 @@ public abstract class SimpleController implements TracerImmunity {
 	public static boolean start(String fileName){
 		if(!Tracer.isRunning()){
 			SimpleController.fileName = fileName;
-			RepositoryInformation i = new RepositoryInformation();
+			RepositoryInMemory i = new RepositoryInMemory();
 			provider = i;		
 			Tracer.start(i);
 			return true;
@@ -51,8 +53,9 @@ public abstract class SimpleController implements TracerImmunity {
 	private static Diagram makeDiagrams() {
 		List<DiagramStrategy> diagramStrategies = new LinkedList<DiagramStrategy>();
 		diagramStrategies.add(new ClassDiagram());
-		diagramStrategies.add(new SequenceDiagram());			
-		Diagram diagram = new DiagramHandler(provider, diagramStrategies).make();
+		diagramStrategies.add(new SequenceDiagram());	
+		InformationFactory factory = new InformationFactoryImpl();
+		Diagram diagram = new DiagramEngine(provider, factory, diagramStrategies).make();
 		return diagram;
 	}
 }
