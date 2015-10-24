@@ -6,19 +6,13 @@ import static reversej.TestUtilities.*;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.InterfaceRealization;
-import org.eclipse.uml2.uml.LiteralUnlimitedNatural;
-import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Operation;
-import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
-import org.eclipse.uml2.uml.Type;
-import org.eclipse.uml2.uml.UMLFactory;
 import org.junit.*;
 
 import reversej.diagram.DiagramStrategy;

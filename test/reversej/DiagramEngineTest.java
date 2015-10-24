@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.aspectj.runtime.reflect.Factory;
 import org.eclipse.uml2.uml.Package;
 import org.junit.*;
 
@@ -18,7 +17,7 @@ import reversej.diagram.RepositoryProvider;
 import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.diagram.strategies.uml2adapter.AdapterClassToUml2;
 
-public class DiagramMakerTest{
+public class DiagramEngineTest{
 	private static boolean strategyCreateMethodWasCalled;
 	private static List<Information> actualPassedInformations; 
 	private DiagramEngine diagramEngine;
@@ -116,8 +115,8 @@ public class DiagramMakerTest{
 		return new DiagramStrategy() {
 			@Override
 			public Package generate(List<Information> informations) {
-				DiagramMakerTest.createMethodWasCalled();
-				DiagramMakerTest.PassedInformations(informations);
+				DiagramEngineTest.createMethodWasCalled();
+				DiagramEngineTest.PassedInformations(informations);
 				return null;
 			}
 

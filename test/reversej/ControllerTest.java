@@ -2,19 +2,12 @@ package reversej;
 
 import java.io.File;
 
-import org.eclipse.uml2.uml.UMLFactory;
-import org.eclipse.uml2.uml.UMLPlugin;
-import org.eclipse.uml2.uml.internal.impl.UMLFactoryImpl;
-import org.eclipse.uml2.uml.internal.resource.UMLHandler;
-import org.eclipse.uml2.uml.util.UMLSwitch;
-import org.eclipse.uml2.uml.util.UMLValidator;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.Before;
 
 import static org.junit.Assert.*;
 import reversej.controller.Controller;
-import reversej.diagram.Diagram;
 import reversej.diagram.InformationFactory;
 import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.tracer.Tracer;
