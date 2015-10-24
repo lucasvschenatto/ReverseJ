@@ -12,11 +12,11 @@ import org.junit.*;
 import reversej.diagram.Diagram;
 import reversej.diagram.DiagramEngine;
 import reversej.diagram.DiagramStrategy;
+import reversej.diagram.Information;
+import reversej.diagram.InformationFactory;
 import reversej.diagram.RepositoryProvider;
+import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.diagram.strategies.uml2adapter.AdapterClassToUml2;
-import reversej.information.Information;
-import reversej.information.InformationFactory;
-import reversej.information.impl.InformationFactoryImpl;
 
 public class DiagramMakerTest{
 	private static boolean strategyCreateMethodWasCalled;

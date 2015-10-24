@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.junit.Assert;
 
-import reversej.information.Information;
-import reversej.information.impl.InformationFactoryImpl;
+import reversej.diagram.Information;
+import reversej.diagram.informationmodel.InformationFactoryImpl;
 
 public class TestUtilities {
 

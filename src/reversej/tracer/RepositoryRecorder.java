@@ -2,8 +2,6 @@ package reversej.tracer;
 
 import java.util.List;
 
-import reversej.information.Information;
-
 public interface RepositoryRecorder {
 	public abstract boolean isEmpty();
 

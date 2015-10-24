@@ -1,10 +1,10 @@
-package reversej.information.impl;
+package reversej.diagram.informationmodel;
 
-import reversej.information.Information;
+import reversej.diagram.Information;
 
-public class IThrow implements Information {
+public class ICaller implements Information{
 	private String value;
-	IThrow(String value){
+	ICaller(String value){
 		this.value = value;
 	}
 	public String getValue() {

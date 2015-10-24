@@ -2,8 +2,6 @@ package reversej.diagram;
 
 import java.util.List;
 
-import reversej.information.InformationFactory;
-
 public class DiagramEngine {
 	protected RepositoryProvider infoProvider;
 	protected List<DiagramStrategy> strategies;

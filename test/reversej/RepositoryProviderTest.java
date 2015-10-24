@@ -8,10 +8,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import reversej.diagram.Information;
+import reversej.diagram.InformationFactory;
 import reversej.diagram.RepositoryProvider;
-import reversej.information.Information;
-import reversej.information.InformationFactory;
-import reversej.information.impl.InformationFactoryImpl;
+import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.repository.RepositoryInMemory;
 import reversej.tracer.RepositoryRecorder;
 

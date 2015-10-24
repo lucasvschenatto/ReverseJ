@@ -1,10 +1,10 @@
-package reversej.information.impl;
+package reversej.diagram.informationmodel;
 
-import reversej.information.Information;
+import reversej.diagram.Information;
 
-public class IHandler implements Information {
+public class IGeneric implements Information {
 	private String value;
-	IHandler(String value){
+	IGeneric(String value){
 		this.value = value;
 	}
 	public String getValue() {

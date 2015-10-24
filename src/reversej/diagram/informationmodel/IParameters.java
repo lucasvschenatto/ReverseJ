@@ -1,10 +1,10 @@
-package reversej.information.impl;
+package reversej.diagram.informationmodel;
 
-import reversej.information.Information;
+import reversej.diagram.Information;
 
-public class ICaller implements Information{
+public class IParameters implements Information {
 	private String value;
-	ICaller(String value){
+	IParameters(String value){
 		this.value = value;
 	}
 	public String getValue() {

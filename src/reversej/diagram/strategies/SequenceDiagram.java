@@ -7,13 +7,13 @@ import java.util.Stack;
 import org.eclipse.uml2.uml.Package;
 
 import reversej.diagram.DiagramStrategy;
+import reversej.diagram.Information;
+import reversej.diagram.informationmodel.IClass;
+import reversej.diagram.informationmodel.IMethod;
+import reversej.diagram.informationmodel.IParameters;
+import reversej.diagram.informationmodel.IReturn;
 import reversej.diagram.strategies.uml2adapter.AdapterSequenceToUml2;
 import reversej.diagram.strategies.uml2adapter.AdapterToUml2;
-import reversej.information.Information;
-import reversej.information.impl.IClass;
-import reversej.information.impl.IMethod;
-import reversej.information.impl.IParameters;
-import reversej.information.impl.IReturn;
 
 public class SequenceDiagram implements DiagramStrategy {
 	private final String void_ = "void";

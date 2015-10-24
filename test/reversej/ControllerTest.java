@@ -15,8 +15,8 @@ import org.junit.Before;
 import static org.junit.Assert.*;
 import reversej.controller.Controller;
 import reversej.diagram.Diagram;
-import reversej.information.InformationFactory;
-import reversej.information.impl.InformationFactoryImpl;
+import reversej.diagram.InformationFactory;
+import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.tracer.Tracer;
 import static reversej.controller.ControllerState.*;
 

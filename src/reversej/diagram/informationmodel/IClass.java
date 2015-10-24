@@ -1,6 +1,6 @@
-package reversej.information.impl;
+package reversej.diagram.informationmodel;
 
-import reversej.information.Information;
+import reversej.diagram.Information;
 
 public class IClass implements Information{
 	private String value;

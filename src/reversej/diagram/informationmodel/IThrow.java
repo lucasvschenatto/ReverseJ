@@ -1,10 +1,10 @@
-package reversej.information.impl;
+package reversej.diagram.informationmodel;
 
-import reversej.information.Information;
+import reversej.diagram.Information;
 
-public class IInterface implements Information {
+public class IThrow implements Information {
 	private String value;
-	IInterface(String value){
+	IThrow(String value){
 		this.value = value;
 	}
 	public String getValue() {

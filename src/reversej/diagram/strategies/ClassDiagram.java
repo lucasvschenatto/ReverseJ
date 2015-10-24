@@ -9,16 +9,16 @@ import java.util.Stack;
 import org.eclipse.uml2.uml.Package;
 
 import reversej.diagram.DiagramStrategy;
+import reversej.diagram.Information;
+import reversej.diagram.informationmodel.IClass;
+import reversej.diagram.informationmodel.IHandler;
+import reversej.diagram.informationmodel.IInterface;
+import reversej.diagram.informationmodel.IMethod;
+import reversej.diagram.informationmodel.IParameters;
+import reversej.diagram.informationmodel.IReturn;
+import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.diagram.strategies.uml2adapter.AdapterClassToUml2;
 import reversej.diagram.strategies.uml2adapter.AdapterToUml2;
-import reversej.information.Information;
-import reversej.information.impl.IClass;
-import reversej.information.impl.IHandler;
-import reversej.information.impl.IInterface;
-import reversej.information.impl.IMethod;
-import reversej.information.impl.IParameters;
-import reversej.information.impl.IReturn;
-import reversej.information.impl.InformationFactoryImpl;
 
 public class ClassDiagram implements DiagramStrategy {
 	private final String constructorCall = "<init>";

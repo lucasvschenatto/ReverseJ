@@ -9,11 +9,11 @@ import org.eclipse.uml2.uml.Message;
 import org.junit.*;
 
 import reversej.diagram.DiagramStrategy;
+import reversej.diagram.Information;
+import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.diagram.strategies.SequenceDiagram;
 import reversej.diagram.strategies.uml2adapter.AdapterSequenceToUml2;
 import reversej.diagram.strategies.uml2adapter.AdapterToUml2;
-import reversej.information.Information;
-import reversej.information.impl.InformationFactoryImpl;
 public class SequenceDiagramTest {
 	public static class GeneralTests{
 		private DiagramStrategy strategy;

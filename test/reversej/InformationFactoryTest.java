@@ -4,22 +4,22 @@ import static org.junit.Assert.*;
 
 import org.junit.*;
 
-import reversej.information.Information;
-import reversej.information.InformationFactory;
-import reversej.information.impl.ICaller;
-import reversej.information.impl.IClass;
-import reversej.information.impl.IEmpty;
-import reversej.information.impl.IError;
-import reversej.information.impl.IGeneric;
-import reversej.information.impl.IHandler;
-import reversej.information.impl.IInterface;
-import reversej.information.impl.IMethod;
-import reversej.information.impl.IModifiers;
-import reversej.information.impl.IParameters;
-import reversej.information.impl.IReturn;
-import reversej.information.impl.ITarget;
-import reversej.information.impl.IThrow;
-import reversej.information.impl.InformationFactoryImpl;
+import reversej.diagram.Information;
+import reversej.diagram.InformationFactory;
+import reversej.diagram.informationmodel.ICaller;
+import reversej.diagram.informationmodel.IClass;
+import reversej.diagram.informationmodel.IEmpty;
+import reversej.diagram.informationmodel.IError;
+import reversej.diagram.informationmodel.IGeneric;
+import reversej.diagram.informationmodel.IHandler;
+import reversej.diagram.informationmodel.IInterface;
+import reversej.diagram.informationmodel.IMethod;
+import reversej.diagram.informationmodel.IModifiers;
+import reversej.diagram.informationmodel.IParameters;
+import reversej.diagram.informationmodel.IReturn;
+import reversej.diagram.informationmodel.ITarget;
+import reversej.diagram.informationmodel.IThrow;
+import reversej.diagram.informationmodel.InformationFactoryImpl;
 
 public class InformationFactoryTest {
 	private static InformationFactory factory;

@@ -1,6 +1,6 @@
-package reversej.information.impl;
+package reversej.diagram.informationmodel;
 
-import reversej.information.Information;
+import reversej.diagram.Information;
 
 public class IError implements Information {
 	private static String VALUE = "information_type_not_found";

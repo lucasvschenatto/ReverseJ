@@ -1,7 +1,7 @@
-package reversej.information.impl;
+package reversej.diagram.informationmodel;
 
-import reversej.information.Information;
-import reversej.information.InformationFactory;
+import reversej.diagram.Information;
+import reversej.diagram.InformationFactory;
 
 public class InformationFactoryImpl implements InformationFactory {
 	@Override

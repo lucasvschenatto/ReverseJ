@@ -13,8 +13,8 @@ import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 import reversej.diagram.Diagram;
 import reversej.diagram.DiagramEngine;
 import reversej.diagram.DiagramStrategy;
+import reversej.diagram.InformationFactory;
 import reversej.diagram.RepositoryProvider;
-import reversej.information.InformationFactory;
 
 public class MakerAndSaver extends DiagramEngine {
 	private String fileName = "diagrama";

@@ -1,10 +1,10 @@
-package reversej.information.impl;
+package reversej.diagram.informationmodel;
 
-import reversej.information.Information;
+import reversej.diagram.Information;
 
-public class IModifiers implements Information {
+public class ITarget implements Information {
 	private String value;
-	IModifiers(String value){
+	ITarget(String value){
 		this.value = value;
 	}
 	public String getValue() {

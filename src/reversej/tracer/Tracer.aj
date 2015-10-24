@@ -15,10 +15,10 @@ public aspect Tracer {
 		&&!execution(* TracerImmunity+.*(..))
 		&&(!call(* RepositoryRecorder+.*(..)))
 		&&(!call(RepositoryRecorder+.new(..)))
-		&&(!within(reversej.information.Information+))
-		&&(!within(reversej.information.InformationFactory+))
+		&&(!within(reversej.diagram.Information+))
+		&&(!within(reversej.diagram.InformationFactory+))
 		&& !within(Tracer+)
-		&&!call(* Tracer+.*(..))
+//		&&!call(* Tracer+.*(..))
 		;
 	pointcut withinClass():within(*)&&immune();
 	pointcut methodCall():

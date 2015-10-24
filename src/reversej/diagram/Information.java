@@ -1,4 +1,4 @@
-package reversej.information;
+package reversej.diagram;
 
 public interface Information {
 	public String getValue();

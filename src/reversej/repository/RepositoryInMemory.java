@@ -4,10 +4,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import reversej.diagram.Information;
+import reversej.diagram.InformationFactory;
 import reversej.diagram.RepositoryProvider;
-import reversej.information.Information;
-import reversej.information.InformationFactory;
-import reversej.information.impl.InformationFactoryImpl;
+import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.tracer.RepositoryRecorder;
 
 public class RepositoryInMemory implements RepositoryRecorder, RepositoryProvider {

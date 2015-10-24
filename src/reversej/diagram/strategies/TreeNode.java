@@ -3,7 +3,7 @@ package reversej.diagram.strategies;
 import java.util.LinkedList;
 import java.util.List;
 
-import reversej.information.Information;
+import reversej.diagram.Information;
 
 class TreeNode{
 

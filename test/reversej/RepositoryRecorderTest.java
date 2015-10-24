@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.junit.*;
 
-import reversej.information.Information;
-import reversej.information.impl.InformationFactoryImpl;
+import reversej.diagram.Information;
+import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.repository.RepositoryInMemory;
 import reversej.tracer.RepositoryRecorder;
 

@@ -1,10 +1,10 @@
-package reversej.information.impl;
+package reversej.diagram.informationmodel;
 
-import reversej.information.Information;
+import reversej.diagram.Information;
 
-public class ITarget implements Information {
+public class IMethod implements Information {
 	private String value;
-	ITarget(String value){
+	IMethod(String value){
 		this.value = value;
 	}
 	public String getValue() {

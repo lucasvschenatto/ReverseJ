@@ -15,11 +15,11 @@ import org.eclipse.uml2.uml.PrimitiveType;
 import org.junit.*;
 
 import reversej.diagram.DiagramStrategy;
+import reversej.diagram.Information;
+import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.diagram.strategies.ClassDiagram;
 import reversej.diagram.strategies.uml2adapter.AdapterClassToUml2;
 import reversej.diagram.strategies.uml2adapter.AdapterToUml2;
-import reversej.information.Information;
-import reversej.information.impl.InformationFactoryImpl;
 
 public class ClassDiagramTest {
 	public static class GeneralTests extends AdapterClassToUml2 {
