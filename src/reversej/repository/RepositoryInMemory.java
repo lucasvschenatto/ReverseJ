@@ -24,12 +24,16 @@ public class RepositoryInMemory implements RepositoryRecorder, RepositoryProvide
 	}
 	@Override
 	public List<Information> getAll(InformationFactory factory) {
+//		fixAspectJIssues();
+		turnSubSuperReturnsIntoReturns();
 		List<Information> informations = new LinkedList<Information>();
 		for (TypeValue typeValue : list) {
 			informations.add(factory.create(typeValue.type, typeValue.value));
 		}
 		return informations;
 	}
+	
+	
 	@Override
 	public List<String> describeAll(){
 		List<String> allInformations = new LinkedList<String>();
@@ -60,7 +64,18 @@ public class RepositoryInMemory implements RepositoryRecorder, RepositoryProvide
 				return typeValue.type+" : "+typeValue.value;
 		}
 		return null;
-	}	
+	}
+	
+	private void turnSubSuperReturnsIntoReturns() {
+		turnIntoReturn("SubReturn");
+		turnIntoReturn("SuperReturn");
+	}
+	private void turnIntoReturn(String type) {
+		for (TypeValue t : list)
+			if (t.type == type)
+				t.type = "Return";
+	}
+	
 	private class TypeValue{
 		private String type;
 		private String value;

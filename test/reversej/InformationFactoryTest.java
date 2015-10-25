@@ -17,6 +17,8 @@ import reversej.diagram.informationmodel.IMethod;
 import reversej.diagram.informationmodel.IModifiers;
 import reversej.diagram.informationmodel.IParameters;
 import reversej.diagram.informationmodel.IReturn;
+import reversej.diagram.informationmodel.ISubReturn;
+import reversej.diagram.informationmodel.ISuperReturn;
 import reversej.diagram.informationmodel.ITarget;
 import reversej.diagram.informationmodel.IThrow;
 import reversej.diagram.informationmodel.InformationFactoryImpl;
@@ -66,6 +68,14 @@ public class InformationFactoryTest {
 		assertCreateRegular("Return","", IReturn.class);
 		assertCreateRegular("Return",null, IReturn.class);
 		
+		assertCreateRegular("SuperReturn","myInfo", ISuperReturn.class);
+		assertCreateRegular("SuperReturn","", ISuperReturn.class);
+		assertCreateRegular("SuperReturn",null, ISuperReturn.class);
+		
+		assertCreateRegular("SubReturn","myInfo", ISubReturn.class);
+		assertCreateRegular("SubReturn","", ISubReturn.class);
+		assertCreateRegular("SubReturn",null, ISubReturn.class);
+		
 		assertCreateRegular("Target","myInfo", ITarget.class);
 		assertCreateRegular("Target","", ITarget.class);
 		assertCreateRegular("Target",null, ITarget.class);
@@ -99,7 +109,7 @@ public class InformationFactoryTest {
 	private void assertCreateError(String className, String value, @SuppressWarnings("rawtypes") Class type){
 		Information actual = factory.create(className, value);
 		assertClassType(type, actual);
-		assertEquals( "information_type_not_found", actual.getValue());
+		assertEquals( "information_error", actual.getValue());
 		assertEquals("IError : "+actual.getValue(),actual.describe());
 	}
 	private void assertCreateRegular(String className, String value, @SuppressWarnings("rawtypes") Class type){

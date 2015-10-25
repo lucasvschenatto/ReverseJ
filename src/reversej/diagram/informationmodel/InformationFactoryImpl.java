@@ -28,6 +28,10 @@ public class InformationFactoryImpl implements InformationFactory {
 			return createParameters(value);
 		case "Return":
 			return createReturn(value);
+		case "SuperReturn":
+			return createSuperReturn(value);
+		case "SubReturn":
+			return createSubReturn(value);
 		case "Throw":
 			return createThrow(value);
 		case "Handler":
@@ -64,6 +68,12 @@ public class InformationFactoryImpl implements InformationFactory {
 	}
 	public static Information createReturn(String value) {
 		return new IReturn(value);
+	}
+	public static Information createSuperReturn(String value) {
+		return new ISuperReturn(value);
+	}
+	public static Information createSubReturn(String value) {
+		return new ISubReturn(value);
 	}
 	public static Information createThrow(String value) {
 		return new IThrow(value);

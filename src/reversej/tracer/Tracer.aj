@@ -7,18 +7,19 @@ import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.CodeSignature;
 
 public aspect Tracer {
+	private static List<SubSuper> subSupers;
 	private static RepositoryRecorder repositoryRecorder;
 	private static boolean running;
 	
 	pointcut immune():if(running)
 		&&(!within(RepositoryRecorder+))
 		&&!execution(* TracerImmunity+.*(..))
+		&&!call(java..new(..))
 		&&(!call(* RepositoryRecorder+.*(..)))
 		&&(!call(RepositoryRecorder+.new(..)))
 		&&(!within(reversej.diagram.Information+))
 		&&(!within(reversej.diagram.InformationFactory+))
 		&& !within(Tracer+)
-//		&&!call(* Tracer+.*(..))
 		;
 	pointcut withinClass():within(*)&&immune();
 	pointcut methodCall():
@@ -30,6 +31,9 @@ public aspect Tracer {
 		call(*.new(..))&& immune();
 	pointcut constructorExecution():
 		execution(*.new(..))&&immune();
+	
+	pointcut initialization_():
+		initialization(*.new(..))&&immune();
 	
 	pointcut exceptionHandle():
 		handler(Exception)&&immune();
@@ -60,16 +64,29 @@ public aspect Tracer {
 	}
 	
 	after() returning (Object r):constructorCall()||methodExecution(){
-		if(r != null)
+		if(r != null){
+			if(isSubSuper(r.getClass()))
+				repositoryRecorder.addInformation("SubReturn",r.getClass().getCanonicalName());
+			else
 			repositoryRecorder.addInformation("Return",r.getClass().getCanonicalName());
+		}	
 		else
 			repositoryRecorder.addInformation("Return","void");
 	}
+	
 	after() throwing (Exception e):methodExecution(){
 		String exceptionName = e.getClass().getCanonicalName();
 		repositoryRecorder.addInformation("Throw",exceptionName);
 	}
 
+	after(Object currentObject):initialization_()&& this(currentObject){
+		Class<?> constructorClass = thisJoinPointStaticPart.getSignature().getDeclaringType();
+		Class<?> currentClass = currentObject.getClass();
+		if(!constructorClass.isInterface() && constructorClass != currentClass){
+			subSupers.add(new SubSuper(currentClass,constructorClass));
+			repositoryRecorder.addInformation("SuperReturn", constructorClass.getCanonicalName());
+		}		
+	}
 
 	private String generateParameters(Signature sig) {
 		String parameters = "";
@@ -109,12 +126,22 @@ public aspect Tracer {
 		if(java.lang.reflect.Modifier.isStrict(mod))
 			nonAccessModifiers.add("strictfp");
 		return nonAccessModifiers;
-	}	
+	}
+	private boolean isSubSuper(Class<?> sub) {
+		boolean result = false;
+		for(SubSuper s : subSupers)
+			if(s.sub == sub){
+				result = true;	
+			}
+		return result;
+	}
+	
 	public static void determineStorage(RepositoryRecorder newStorage){
 		repositoryRecorder = newStorage;
 	}
 	public static void start(RepositoryRecorder newStorage){
 		determineStorage(newStorage);
+		subSupers = new LinkedList<SubSuper>();
 		running = true;
 	}
 	public static void stop(){
@@ -125,5 +152,13 @@ public aspect Tracer {
 	}
 	public static boolean isRunning(){
 		return running;
+	}
+	private class SubSuper{
+		private Class<?> sub;
+		private Class<?> super_;
+		private SubSuper(Class<?> sub,Class<?> super_){
+			this.sub = sub;
+			this.super_ = super_;
+		}
 	}
 }

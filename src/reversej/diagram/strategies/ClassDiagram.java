@@ -15,6 +15,7 @@ import reversej.diagram.informationmodel.IClass;
 import reversej.diagram.informationmodel.IHandler;
 import reversej.diagram.informationmodel.IInterface;
 import reversej.diagram.informationmodel.IMethod;
+import reversej.diagram.informationmodel.IModifiers;
 import reversej.diagram.informationmodel.IParameters;
 import reversej.diagram.informationmodel.IReturn;
 import reversej.diagram.informationmodel.InformationFactoryImpl;
@@ -276,11 +277,27 @@ public class ClassDiagram implements DiagramStrategy {
 	private void generateMethodsFromTree(TreeNode tree) {
 		List<Information> methodInformation = tree.getNodeInfo();
 		if(!tree.getNodeInfo().isEmpty()){
+			if (!(methodInformation.get(methodInformation.size()-1) instanceof IReturn)){
+				/*AspectJ does not capture super calls to non-static methods.
+				 It is necessary to add a return aftertime*/
+				methodInformation.add(InformationFactoryImpl.createError());
+			}
+//			if ((!(methodInformation.get(0) instanceof IInterface)&&!(methodInformation.get(0) instanceof IClass))
+//					||!(methodInformation.get(1) instanceof IModifiers)
+//					||!(methodInformation.get(2) instanceof IMethod)
+//					||!(methodInformation.get(3) instanceof IParameters)
+//					||!(methodInformation.get(4) instanceof IReturn)){
+//				System.out.println("wrong------------start");
+//				for(Information info : methodInformation)
+//					System.out.println(info.describe());
+//				System.out.println("wrong------------end");
+//			}
 			if (methodInformation.get(4).getValue()==void_)
 				adapter.createMethod(methodInformation.get(0).getValue(), methodInformation.get(2).getValue(), methodInformation.get(3).getValue());
 			else
 				adapter.createMethodWithReturn(methodInformation.get(0).getValue(), methodInformation.get(2).getValue(), methodInformation.get(3).getValue(),methodInformation.get(4).getValue());
-		}				
+		}
+						
 			
 		for (TreeNode child : tree.getChildren()) {
 			generateMethodsFromTree(child);
