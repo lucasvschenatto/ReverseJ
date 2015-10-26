@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import org.eclipse.uml2.uml.Package;
 
+import reversej.TestUtilities;
 import reversej.diagram.DiagramStrategy;
 import reversej.diagram.Information;
 import reversej.diagram.ModelAdapter;
@@ -13,6 +14,7 @@ import reversej.diagram.informationmodel.IClass;
 import reversej.diagram.informationmodel.IMethod;
 import reversej.diagram.informationmodel.IParameters;
 import reversej.diagram.informationmodel.IReturn;
+import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.diagram.strategies.uml2adapter.AdapterSequenceToUml2;
 
 public class SequenceDiagram implements DiagramStrategy {
@@ -37,12 +39,27 @@ public class SequenceDiagram implements DiagramStrategy {
 	@Override
 	public Package generate(List<Information> informations) {
 		if(informations != null && !informations.isEmpty()){
+			informations = addFooterAndHeader(informations);
 			listLifelines(informations);
 			arrangeMessages(informations);
 			generateLifelines();
 			generateMessages();
 		}			
 		return adapter.getPackage();
+	}
+	private List<Information> addFooterAndHeader(List<Information> informations) {
+		List<Information> header = new LinkedList<Information>();
+		List<Information> footer = new LinkedList<Information>();
+		header.add(InformationFactoryImpl.createClass("StartOfFeature"));
+//		header.add(InformationFactoryImpl.createModifiers(""));
+//		header.add(InformationFactoryImpl.createMethod("StartOfAplication"));
+//		header.add(InformationFactoryImpl.createParameters(""));
+//		footer.add(InformationFactoryImpl.createReturn("void"));
+		List<Information> newInformations = new LinkedList<Information>();
+		newInformations.addAll(header);
+		newInformations.addAll(informations);
+		newInformations.addAll(footer);
+		return newInformations;
 	}
 	@Override
 	public ModelAdapter getAdapter() {

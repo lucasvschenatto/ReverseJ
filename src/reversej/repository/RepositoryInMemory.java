@@ -71,9 +71,13 @@ public class RepositoryInMemory implements RepositoryRecorder, RepositoryProvide
 		turnIntoReturn("SuperReturn");
 	}
 	private void turnIntoReturn(String type) {
-		for (TypeValue t : list)
-			if (t.type == type)
+		List<TypeValue> newList = new LinkedList<TypeValue>();
+		for (TypeValue t : list){
+			if (t.type.equals(type))
 				t.type = "Return";
+			newList.add(t);
+		}
+		list = newList;
 	}
 	
 	private class TypeValue{

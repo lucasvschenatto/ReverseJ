@@ -26,7 +26,12 @@ class TreeNode{
         this.children = new LinkedList<TreeNode>();
     }
     
-    public TreeNode addChild(Information info) {
+    public TreeNode(List<Information> nodeInformations) {
+    	this.nodeInformations = new LinkedList<Information>();
+        this.nodeInformations.addAll(nodeInformations);
+        this.children = new LinkedList<TreeNode>();
+	}
+	public TreeNode addChild(Information info) {
         TreeNode childNode = new TreeNode(info);
         childNode.parent = this;
         this.children.add(childNode);
@@ -61,4 +66,15 @@ class TreeNode{
 			treeNode.printAll();
 		}    	
     }
+	public List<TreeNode> removeChildren() {
+		List<TreeNode> toReturn = children;
+		children = new LinkedList<TreeNode>();
+		return toReturn;
+	}
+	public void addChildren(List<TreeNode> newChildren) {
+		children.addAll(newChildren);
+	}
+	public void addChild(List<Information> nodeInformations) {
+		children.add(new TreeNode(nodeInformations));		
+	}
 }

@@ -15,7 +15,6 @@ import reversej.diagram.informationmodel.IClass;
 import reversej.diagram.informationmodel.IHandler;
 import reversej.diagram.informationmodel.IInterface;
 import reversej.diagram.informationmodel.IMethod;
-import reversej.diagram.informationmodel.IModifiers;
 import reversej.diagram.informationmodel.IParameters;
 import reversej.diagram.informationmodel.IReturn;
 import reversej.diagram.informationmodel.InformationFactoryImpl;
@@ -271,9 +270,45 @@ public class ClassDiagram implements DiagramStrategy {
 
 	private void generateMethods(List<Information> informations) {
 		TreeNode tree = createMethodTree(informations);
+		tree = cleanDuplicates(tree);
 		generateMethodsFromTree(tree);
 	}
 
+	private TreeNode cleanDuplicates(TreeNode tree) {
+		tree = moveToFirstLayer(tree);
+		TreeNode newTree = new TreeNode();
+		if(!tree.getNodeInfo().isEmpty())
+			newTree.addChild(tree.getNodeInfo());
+		for (TreeNode old : tree.getChildren()) {
+			List<Information> o = old.getNodeInfo();
+			boolean isNew = false;
+			for (TreeNode new_ : newTree.getChildren()) {
+				List<Information> n = new_.getNodeInfo();
+				if(!informationEquivalent(o.get(0),n.get(0))
+					&&!informationEquivalent(o.get(1), n.get(1))
+					&&!informationEquivalent(o.get(2), n.get(2))
+					&&!informationEquivalent(o.get(3), n.get(3))
+					&&!informationEquivalent(o.get(4), n.get(4)))
+						isNew = true;
+			}
+			if(isNew)
+				newTree.addChild(o);
+		}
+		return tree;
+	}
+	private boolean informationEquivalent(Information info1,	Information info2) {
+		if(info1.getClass() == info2.getClass())
+			if(info1.getValue() == info2.getValue())
+				return true;
+		return false;
+	}
+	private TreeNode moveToFirstLayer(TreeNode tree) {
+		for(TreeNode child : tree.getChildren()) {
+			tree = moveToFirstLayer(child);
+			tree.getRoot().addChildren(tree.removeChildren());
+		}
+		return tree;
+	}
 	private void generateMethodsFromTree(TreeNode tree) {
 		List<Information> methodInformation = tree.getNodeInfo();
 		if(!tree.getNodeInfo().isEmpty()){
