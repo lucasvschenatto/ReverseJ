@@ -22,9 +22,10 @@ public aspect Tracer {
 		&&(!call(RepositoryRecorder+.new(..)))
 		&&(!within(reversej.diagram.Information+))
 		&&(!within(reversej.diagram.InformationFactory+))
-		&& !within(Tracer+)
-		;
+		&& !within(Tracer+);
+	
 	pointcut withinClass():within(*)&&immune();
+	
 	pointcut methodCall():
 		call(* *.*(..))&&immune();
 	pointcut methodExecution():

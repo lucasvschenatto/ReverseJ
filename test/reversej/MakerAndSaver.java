@@ -26,7 +26,7 @@ public class MakerAndSaver extends DiagramEngine {
 	@Override
 	public Diagram make() {
 		for (DiagramStrategy diagram : strategies)
-			diagram.generate(infoProvider.getAll(factory));
+			diagram.generate(repository.getAll(factory));
 
 		ResourceSet resourceSet = new ResourceSetImpl();
 		URI outputURI = URI.createFileURI("../ReverseJ/files/"+fileName)
