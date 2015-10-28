@@ -16,6 +16,8 @@ public aspect Tracer {
 		&&!execution(* TracerImmunity+.*(..))
 		&&!call(java*..new(..))
 		&&!execution(java*..new(..))
+		&&!initialization(java*..new(..))
+		&&!preinitialization(java*..new(..))
 		&&!call(* java*..*(..))
 		&&!execution(* java*..*(..))
 		&&(!call(* RepositoryRecorder+.*(..)))

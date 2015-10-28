@@ -1,8 +1,8 @@
 package reversej.plugin;
 
 import reversej.controller.Controller;
+import reversej.controller.UserView;
 import reversej.tracer.TracerImmunity;
-import reversej.view.UserView;
 
 public abstract class ApplicationPlugin implements TracerImmunity {
 	private static boolean firstRun = true;

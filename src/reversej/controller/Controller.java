@@ -29,7 +29,6 @@ public class Controller implements TracerImmunity {
 		recorder = i;
 		provider = i;
 	}
-
 	public boolean start(){
 		return state.start(this);
 	}
