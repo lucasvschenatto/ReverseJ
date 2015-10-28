@@ -55,7 +55,7 @@ public class ScreenControl {
 		panel.add(buttonSave);
 		
 		JFrame janela = new JFrame("ReverseJ");
-		janela.setMinimumSize(new Dimension(400,250));
+		janela.setMinimumSize(new Dimension(200,250));
 //		SwingUtilities.updateComponentTreeUI(janela);
 		
 		janela.add(panel);
