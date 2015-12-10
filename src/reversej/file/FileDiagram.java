@@ -6,6 +6,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 import reversej.diagram.Diagram;
@@ -25,7 +26,7 @@ public class FileDiagram{
 	}
 	public void save() {
 		ResourceSet resourceSet = new ResourceSetImpl();
-		URI outputURI = URI.createFileURI(fileToSave.getAbsolutePath());
+		URI outputURI = URI.createFileURI(fileToSave.getAbsolutePath()).appendFileExtension(UMLResource.FILE_EXTENSION);
 		UMLResourcesUtil.init(resourceSet);
 
 		Resource resource = resourceSet.createResource(outputURI);

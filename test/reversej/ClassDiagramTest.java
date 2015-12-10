@@ -197,7 +197,7 @@ public class ClassDiagramTest {
 		}
 
 		private void assertMethodCreated(String methodName) {
-			assertTrue(createdMethods.contains(methodName));
+			assertTrue("Expected: \""+methodName+"\" but not found",createdMethods.contains(methodName));
 		}
 
 		private void assertNumberOfCreatedMethods(int number) {

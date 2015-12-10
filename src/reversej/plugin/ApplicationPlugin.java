@@ -11,7 +11,7 @@ public abstract class ApplicationPlugin implements TracerImmunity {
 		if (firstRun){
 			firstRun = false;
 			Controller controller = new Controller();
-			controller.start();
+//			controller.start();
 			new UserView(controller).run();
 		}
 	}

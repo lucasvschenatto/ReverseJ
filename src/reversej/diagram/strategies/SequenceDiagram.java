@@ -6,7 +6,6 @@ import java.util.Stack;
 
 import org.eclipse.uml2.uml.Package;
 
-import reversej.TestUtilities;
 import reversej.diagram.DiagramStrategy;
 import reversej.diagram.Information;
 import reversej.diagram.ModelAdapter;

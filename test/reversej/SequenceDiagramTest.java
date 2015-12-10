@@ -46,6 +46,9 @@ public class SequenceDiagramTest {
 		private void assertNumberOfCreatedLifelines(int number) {
 			assertEquals(number, createdLifelines.size());
 		}
+		private void assertNumberOfCreatedLifelinesOtherThanFeatureStart(int i) {
+			assertNumberOfCreatedLifelines(i+1);
+		}
 		@Override
 		public org.eclipse.uml2.uml.Lifeline createLifeline(String name) {
 			createdLifelines.add(name);
@@ -98,9 +101,10 @@ public class SequenceDiagramTest {
 			informations.addAll(completeMethodTrace("001"));
 
 			strategy.generate(informations);
-
-			assertNumberOfCreatedLifelines(1);
+			assertNumberOfCreatedLifelinesOtherThanFeatureStart(1);
+			
 		}
+		
 	}
 	public static class CreateMessageTests extends AdapterSequenceToUml2 {
 		private DiagramStrategy strategy;

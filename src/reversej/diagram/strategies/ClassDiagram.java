@@ -270,10 +270,32 @@ public class ClassDiagram implements DiagramStrategy {
 
 	private void generateMethods(List<Information> informations) {
 		TreeNode tree = createMethodTree(informations);
-		tree = cleanDuplicates(tree);
-		generateMethodsFromTree(tree);
+		tree = tree.getRoot();
+		List<TreeNode> nodeList = convertTreeToList(tree);
+		generateMethodsFromNodeList(nodeList);
+//		tree = cleanDuplicates(tree);
+//		generateMethodsFromTree(tree);
 	}
 
+	private void generateMethodsFromNodeList(List<TreeNode> nodeList) {
+		for(TreeNode node : nodeList){
+			List<Information> methodInformation = node.getNodeInfo();
+			if(!methodInformation.isEmpty()){
+				if (methodInformation.get(4).getValue()==void_)
+					adapter.createMethod(methodInformation.get(0).getValue(), methodInformation.get(2).getValue(), methodInformation.get(3).getValue());
+				else
+					adapter.createMethodWithReturn(methodInformation.get(0).getValue(), methodInformation.get(2).getValue(), methodInformation.get(3).getValue(),methodInformation.get(4).getValue());
+			}				
+		}
+	}
+	private List<TreeNode> convertTreeToList(TreeNode tree) {
+		List<TreeNode> buildingList = new LinkedList<TreeNode>();
+		buildingList.add(tree);
+		for(TreeNode child: tree.getChildren()){
+			buildingList.addAll(convertTreeToList(child));
+		}			
+		return buildingList;
+	}
 	private TreeNode cleanDuplicates(TreeNode tree) {
 		tree = moveToFirstLayer(tree);
 		TreeNode newTree = new TreeNode();
@@ -304,9 +326,9 @@ public class ClassDiagram implements DiagramStrategy {
 	}
 	private TreeNode moveToFirstLayer(TreeNode tree) {
 		for(TreeNode child : tree.getChildren()) {
-			tree = moveToFirstLayer(child);
-			tree.getRoot().addChildren(tree.removeChildren());
+			moveToFirstLayer(child);
 		}
+		tree.getRoot().addChildren(tree.removeChildren());
 		return tree;
 	}
 	private void generateMethodsFromTree(TreeNode tree) {

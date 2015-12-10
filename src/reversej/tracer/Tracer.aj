@@ -3,6 +3,7 @@ package reversej.tracer;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.CodeSignature;
 
@@ -13,13 +14,16 @@ public aspect Tracer {
 	
 	pointcut immune():if(running)
 		&&(!within(RepositoryRecorder+))
+		&&!call(* TracerImmunity+.*(..))
 		&&!execution(* TracerImmunity+.*(..))
+		&&!within(TracerImmunity+)
 		&&!call(java*..new(..))
 		&&!execution(java*..new(..))
 		&&!initialization(java*..new(..))
 		&&!preinitialization(java*..new(..))
 		&&!call(* java*..*(..))
 		&&!execution(* java*..*(..))
+		&&!within(java*..*)
 		&&(!call(* RepositoryRecorder+.*(..)))
 		&&(!call(RepositoryRecorder+.new(..)))
 		&&(!within(reversej.diagram.Information+))
@@ -70,6 +74,7 @@ public aspect Tracer {
 	}
 	
 	after() returning (Object r):constructorCall()||methodExecution(){
+		JoinPoint.StaticPart s = thisJoinPointStaticPart;
 		if(r != null){
 			if(isSubSuper(r.getClass()))
 				repositoryRecorder.addInformation("SubReturn",r.getClass().getCanonicalName());
