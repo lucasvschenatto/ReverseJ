@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="test"/>
+	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path="test">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="src" path="examples"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="con" path="org.eclipse.ajdt.core.ASPECTJRT_CONTAINER"/>
-	<classpathentry kind="lib" path="emf/org.eclipse.emf.common_2.10.1.v20150123-0348.jar"/>
-	<classpathentry kind="lib" path="emf/org.eclipse.emf.common.source_2.10.1.v20150123-0348.jar"/>
-	<classpathentry kind="lib" path="emf/org.eclipse.emf.ecore_2.10.2.v20150123-0348.jar"/>
-	<classpathentry kind="lib" path="emf/org.eclipse.emf.ecore.source_2.10.2.v20150123-0348.jar"/>
-	<classpathentry kind="lib" path="emf/org.eclipse.emf.ecore.xmi_2.10.2.v20150123-0348.jar"/>
-	<classpathentry kind="lib" path="emf/org.eclipse.emf.ecore.xmi.source_2.10.2.v20150123-0348.jar"/>
-	<classpathentry kind="lib" path="emf/org.eclipse.emf.mapping.ecore2xml_2.8.0.v20150123-0452.jar"/>
-	<classpathentry kind="lib" path="emf/org.eclipse.emf.mapping.ecore2xml.source_2.8.0.v20150123-0452.jar"/>
-	<classpathentry kind="lib" path="uml2/org.eclipse.uml2.common_2.0.1.v20150202-0947.jar"/>
-	<classpathentry kind="lib" path="uml2/org.eclipse.uml2.common.source_2.0.1.v20150202-0947.jar"/>
-	<classpathentry kind="lib" path="uml2/org.eclipse.uml2.types_2.0.0.v20150202-0947.jar"/>
-	<classpathentry kind="lib" path="uml2/org.eclipse.uml2.types.source_2.0.0.v20150202-0947.jar"/>
-	<classpathentry kind="lib" path="uml2/org.eclipse.uml2.uml_5.0.2.v20150202-0947.jar"/>
-	<classpathentry kind="lib" path="uml2/org.eclipse.uml2.uml.profile.standard_1.0.0.v20150202-0947.jar"/>
-	<classpathentry kind="lib" path="uml2/org.eclipse.uml2.uml.profile.standard.source_1.0.0.v20150202-0947.jar"/>
-	<classpathentry kind="lib" path="uml2/org.eclipse.uml2.uml.resources_5.0.2.v20150202-0947.jar"/>
-	<classpathentry kind="lib" path="uml2/org.eclipse.uml2.uml.resources.source_5.0.2.v20150202-0947.jar"/>
-	<classpathentry kind="lib" path="uml2/org.eclipse.uml2.uml.source_5.0.2.v20150202-0947.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>
