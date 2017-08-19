@@ -1,5 +1,7 @@
 package reversej.tracer;
 
+import static reversej.tracer.Context.*;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,11 +10,8 @@ import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.CodeSignature;
 
 public aspect Tracer {
-	private static List<SubSuper> subSupers;
-	private static RepositoryRecorder repositoryRecorder;
-	private static boolean running;
 	
-	pointcut immune():if(running)
+	pointcut immune():if(RUNNING)
 		&&(!within(RepositoryRecorder+))
 		&&!call(* TracerImmunity+.*(..))
 		&&!execution(* TracerImmunity+.*(..))
@@ -28,7 +27,10 @@ public aspect Tracer {
 		&&(!call(RepositoryRecorder+.new(..)))
 		&&(!within(reversej.diagram.Information+))
 		&&(!within(reversej.diagram.InformationFactory+))
-		&& !within(Tracer+);
+		&& !within(Tracer+)
+		&& !within(TracerController+)
+		&& !within(Context+)
+		;
 	
 	pointcut withinClass():within(*)&&immune();
 	
@@ -54,48 +56,48 @@ public aspect Tracer {
 		String modifiers = generateModifiers(s);
 		String methodName = s.getName();
 		String parameters = generateParameters(s);
-		repositoryRecorder.addInformation("Class",className);
-		repositoryRecorder.addInformation("Modifiers",modifiers);
-		repositoryRecorder.addInformation("Method",methodName);
-		repositoryRecorder.addInformation("Parameters",parameters);
+		REPOSITORY.addInformation("Class",className);
+		REPOSITORY.addInformation("Modifiers",modifiers);
+		REPOSITORY.addInformation("Method",methodName);
+		REPOSITORY.addInformation("Parameters",parameters);
 	}
 	
 	before():methodCall(){
 		Signature s = thisJoinPointStaticPart.getSignature();
 		String declaredTargetName = s.getDeclaringType().getCanonicalName();		
 		if(s.getDeclaringType().isInterface()){
-			repositoryRecorder.addInformation("Interface",declaredTargetName);
+			REPOSITORY.addInformation("Interface",declaredTargetName);
 		}	
 	}
 	before():exceptionHandle(){
 		Signature s = thisJoinPointStaticPart.getSignature();
 		String handlerName = s.getDeclaringType().getCanonicalName();
-		repositoryRecorder.addInformation("Handler",handlerName);
+		REPOSITORY.addInformation("Handler",handlerName);
 	}
 	
 	after() returning (Object r):constructorCall()||methodExecution(){
 		JoinPoint.StaticPart s = thisJoinPointStaticPart;
 		if(r != null){
 			if(isSubSuper(r.getClass()))
-				repositoryRecorder.addInformation("SubReturn",r.getClass().getCanonicalName());
+				REPOSITORY.addInformation("SubReturn",r.getClass().getCanonicalName());
 			else
-			repositoryRecorder.addInformation("Return",r.getClass().getCanonicalName());
+			REPOSITORY.addInformation("Return",r.getClass().getCanonicalName());
 		}	
 		else
-			repositoryRecorder.addInformation("Return","void");
+			REPOSITORY.addInformation("Return","void");
 	}
 	
 	after() throwing (Exception e):methodExecution(){
 		String exceptionName = e.getClass().getCanonicalName();
-		repositoryRecorder.addInformation("Throw",exceptionName);
+		REPOSITORY.addInformation("Throw",exceptionName);
 	}
 
 	after(Object currentObject):initialization_()&& this(currentObject){
 		Class<?> constructorClass = thisJoinPointStaticPart.getSignature().getDeclaringType();
 		Class<?> currentClass = currentObject.getClass();
 		if(!constructorClass.isInterface() && constructorClass != currentClass){
-			subSupers.add(new SubSuper(currentClass,constructorClass));
-			repositoryRecorder.addInformation("SuperReturn", constructorClass.getCanonicalName());
+			SUB_SUPERS.add(new SubSuper(currentClass,constructorClass));
+			REPOSITORY.addInformation("SuperReturn", constructorClass.getCanonicalName());
 		}		
 	}
 
@@ -140,36 +142,12 @@ public aspect Tracer {
 	}
 	private boolean isSubSuper(Class<?> sub) {
 		boolean result = false;
-		for(SubSuper s : subSupers)
+		for(SubSuper s : SUB_SUPERS)
 			if(s.sub == sub){
 				result = true;	
 			}
 		return result;
 	}
-	
-	public static void determineStorage(RepositoryRecorder newStorage){
-		repositoryRecorder = newStorage;
-	}
-	public static void start(RepositoryRecorder newStorage){
-		determineStorage(newStorage);
-		subSupers = new LinkedList<SubSuper>();
-		running = true;
-	}
-	public static void stop(){
-		running = false;
-	}
-	public static RepositoryRecorder getStorage(){
-		return repositoryRecorder;
-	}
-	public static boolean isRunning(){
-		return running;
-	}
-	private class SubSuper{
-		private Class<?> sub;
-		private Class<?> super_;
-		private SubSuper(Class<?> sub,Class<?> super_){
-			this.sub = sub;
-			this.super_ = super_;
-		}
-	}
+
+
 }

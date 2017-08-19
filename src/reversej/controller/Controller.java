@@ -14,7 +14,7 @@ import reversej.diagram.strategies.SequenceDiagram;
 import reversej.file.FileDiagram;
 import reversej.repository.RepositoryInMemory;
 import reversej.tracer.RepositoryRecorder;
-import reversej.tracer.Tracer;
+import reversej.tracer.TracerController;
 import reversej.tracer.TracerImmunity;
 
 import java.io.File;
@@ -48,10 +48,10 @@ public class Controller implements TracerImmunity {
 		this.state = state;
 	}
 	void startTracer(){
-		Tracer.start(recorder);
+		TracerController.start(recorder);
 	}
 	void stopTracer(){
-		Tracer.stop();
+		TracerController.stop();
 	}
 	void saveDiagram(File fileToSave){
 		Diagram diagram = makeDiagrams();

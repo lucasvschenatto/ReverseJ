@@ -5,18 +5,18 @@ import java.util.List;
 import acceptance.story.Story;
 import reversej.repository.RepositoryInMemory;
 import reversej.tracer.RepositoryRecorder;
-import reversej.tracer.Tracer;
+import reversej.tracer.TracerController;
 
 public class PrintStory {
 
 	public static void main(String[] args) {
 		RepositoryRecorder r = new RepositoryInMemory();
-		Tracer.start(r);
+		TracerController.start(r);
 		
 		Story s = new Story();		
 		s.tellStory();
 		
-		Tracer.stop();
+		TracerController.stop();
 		
 		List<String> informations = r.describeAll();
 		for (String information : informations)

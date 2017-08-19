@@ -12,7 +12,7 @@ import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.diagram.strategies.ClassDiagram;
 import reversej.diagram.strategies.SequenceDiagram;
 import reversej.repository.RepositoryInMemory;
-import reversej.tracer.Tracer;
+import reversej.tracer.TracerController;
 
 public class StoryClassAndSequenceDiagram {
 	public static void main(String[] args) {
@@ -24,12 +24,12 @@ public class StoryClassAndSequenceDiagram {
 		DiagramEngine engine = new MakerAndSaver(repository, factory, strategies);
 		String fileName = Thread.currentThread().getStackTrace()[1].getFileName();
 		((MakerAndSaver)engine).setFileName(fileName);
-		Tracer.start(repository);
+		TracerController.start(repository);
 		
 		Story s = new Story();
 		s.tellStory();
 		
-		Tracer.stop();
+		TracerController.stop();
 		engine.make();
 	}
 }

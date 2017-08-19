@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 import reversej.controller.Controller;
 import reversej.diagram.InformationFactory;
 import reversej.diagram.informationmodel.InformationFactoryImpl;
-import reversej.tracer.Tracer;
+import reversej.tracer.TracerController;
 import static reversej.controller.ControllerState.*;
 
 public class ControllerTest {
@@ -24,7 +24,7 @@ public class ControllerTest {
 	}
 	@After
 	public void tearDown(){
-		Tracer.stop();
+		TracerController.stop();
 	}
 	public static class FirstState extends ControllerTest{
 		@Test
@@ -38,7 +38,7 @@ public class ControllerTest {
 			successfull = c.start();
 			assertTrue(successfull);
 			assertEquals(TRACING, c.getState());
-			assertTrue(Tracer.isRunning());
+			assertTrue(TracerController.isRunning());
 		}
 		@Test
 		public void whenActionStop_DoNothing(){
@@ -76,7 +76,7 @@ public class ControllerTest {
 			successfull = c.stop();
 			assertTrue(successfull);
 			assertEquals(TRACED, c.getState());
-			assertFalse(Tracer.isRunning());
+			assertFalse(TracerController.isRunning());
 		}		
 		@Test
 		public void whenActionsave_DoNothing(){
@@ -89,7 +89,7 @@ public class ControllerTest {
 			successfull = c.reset();
 			assertTrue(successfull);
 			assertEquals(INITIAL, c.getState());
-			assertFalse(Tracer.isRunning());
+			assertFalse(TracerController.isRunning());
 			assertTrue(c.getRecorder().isEmpty());
 			assertTrue(c.getProvider().getAll(factory).isEmpty());
 		}
@@ -133,7 +133,7 @@ public class ControllerTest {
 			successfull = c.reset();
 			assertTrue(successfull);
 			assertEquals(INITIAL, c.getState());
-			assertFalse(Tracer.isRunning());
+			assertFalse(TracerController.isRunning());
 			assertTrue(c.getRecorder().isEmpty());
 			assertTrue(c.getProvider().getAll(factory).isEmpty());
 		}
@@ -186,7 +186,7 @@ public class ControllerTest {
 			successfull = c.reset();
 			assertTrue(successfull);
 			assertEquals(INITIAL, c.getState());
-			assertFalse(Tracer.isRunning());
+			assertFalse(TracerController.isRunning());
 			assertTrue(c.getRecorder().isEmpty());
 			assertTrue(c.getProvider().getAll(factory).isEmpty());
 			assertTrue(first.exists());
