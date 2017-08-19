@@ -11,7 +11,7 @@ import reversej.diagram.InformationFactory;
 import reversej.diagram.informationmodel.InformationFactoryImpl;
 import reversej.diagram.strategies.SequenceDiagram;
 import reversej.repository.RepositoryInMemory;
-import reversej.tracer.Tracer;
+import reversej.tracer.TracerController;
 
 public class StorySequenceDiagram {
 	public static void main(String[] args) {
@@ -22,12 +22,12 @@ public class StorySequenceDiagram {
 		DiagramEngine dM = new MakerAndSaver(repository, factory, strategies);
 		String fileName = Thread.currentThread().getStackTrace()[1].getFileName();
 		((MakerAndSaver)dM).setFileName(fileName);
-		Tracer.start(repository);
+		TracerController.start(repository);
 		
 		Story s = new Story();
 		s.tellStory();
 		
-		Tracer.stop();
+		TracerController.stop();
 		dM.make();
 	}
 }

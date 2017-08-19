@@ -13,25 +13,25 @@ import reversej.diagram.strategies.ClassDiagram;
 import reversej.diagram.strategies.SequenceDiagram;
 import reversej.file.FileDiagramInPackage;
 import reversej.repository.RepositoryInMemory;
-import reversej.tracer.Tracer;
+import reversej.tracer.TracerController;
 import reversej.tracer.TracerImmunity;
 
 public abstract class SimpleController implements TracerImmunity {
 	private static String fileName;
 	private static RepositoryProvider provider;
 	public static boolean start(String fileName){
-		if(!Tracer.isRunning()){
+		if(!TracerController.isRunning()){
 			SimpleController.fileName = fileName;
 			RepositoryInMemory i = new RepositoryInMemory();
 			provider = i;		
-			Tracer.start(i);
+			TracerController.start(i);
 			return true;
 		}
 		return false;
 	}
 	public static boolean stop(){
-		if(Tracer.isRunning()){
-			Tracer.stop();			
+		if(TracerController.isRunning()){
+			TracerController.stop();			
 			Diagram diagram = makeDiagrams();
 			saveDiagramInFile(diagram);
 			return true;
@@ -41,8 +41,8 @@ public abstract class SimpleController implements TracerImmunity {
 	public static boolean reset(){
 		fileName = null;
 		provider = null;
-		if(Tracer.isRunning())
-			Tracer.stop();
+		if(TracerController.isRunning())
+			TracerController.stop();
 		return true;
 	}
 	

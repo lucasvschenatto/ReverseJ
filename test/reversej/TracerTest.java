@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 
 import reversej.repository.RepositoryInMemory;
 import reversej.tracer.RepositoryRecorder;
-import reversej.tracer.Tracer;
+import reversej.tracer.TracerController;
 import reversej.tracer.TracerImmunity;
 
 @RunWith(Enclosed.class)
@@ -30,41 +30,41 @@ public class TracerTest {
 	public static class SetupTracer implements TracerImmunity{
 		@After
 		public void cleanUp(){
-			Tracer.stop();
+			TracerController.stop();
 		}
 		@Test
 		public void determineStorage() throws Exception{
 			RepositoryInMemory exp1 = new RepositoryInMemory();
 			RepositoryInMemory exp2 = new RepositoryInMemory();
-			Tracer.determineStorage(exp1);
-			RepositoryRecorder act1 = Tracer.getStorage();
-			Tracer.determineStorage(exp2);
-			RepositoryRecorder act2 = Tracer.getStorage();
+			TracerController.determineStorage(exp1);
+			RepositoryRecorder act1 = TracerController.getStorage();
+			TracerController.determineStorage(exp2);
+			RepositoryRecorder act2 = TracerController.getStorage();
 			assertEquals(exp1,act1);
 			assertEquals(exp2,act2);
 		}
 		@Test
 		public void start_SetsUpStorage() throws Exception{
 			RepositoryInMemory expected = new RepositoryInMemory();
-			Tracer.start(expected);
-			assertEquals(expected,Tracer.getStorage());
+			TracerController.start(expected);
+			assertEquals(expected,TracerController.getStorage());
 		}
 		@Test
 		public void isRunning() throws Exception{
-			Tracer.start(new RepositoryInMemory());
-			assertTrue(Tracer.isRunning());
+			TracerController.start(new RepositoryInMemory());
+			assertTrue(TracerController.isRunning());
 		}
 		@Test
 		public void isNotRunning() throws Exception{
-			assertFalse(Tracer.isRunning());
-			Tracer.start(new RepositoryInMemory());
-			Tracer.stop();
-			assertFalse(Tracer.isRunning());
+			assertFalse(TracerController.isRunning());
+			TracerController.start(new RepositoryInMemory());
+			TracerController.stop();
+			assertFalse(TracerController.isRunning());
 		}
 		@Test
 		public void afterStart_Records(){
 			RepositoryInMemory l = new RepositoryInMemory();
-			Tracer.start(l);
+			TracerController.start(l);
 			new Actor();
 			List<String> actual = l.describeAll();
 			assertFalse(actual.isEmpty());
@@ -72,7 +72,7 @@ public class TracerTest {
 		@Test
 		public void beforeStart_DoesntRecord() throws Exception{
 			RepositoryInMemory l = new RepositoryInMemory();
-			Tracer.determineStorage(l);
+			TracerController.determineStorage(l);
 			new Actor();
 			List<String> actual = l.describeAll();
 			assertTrue(actual.isEmpty());
@@ -80,8 +80,8 @@ public class TracerTest {
 		@Test
 		public void afterStop_DoesntRecord() throws Exception{
 			RepositoryInMemory l = new RepositoryInMemory();
-			Tracer.start(l);
-			Tracer.stop();
+			TracerController.start(l);
+			TracerController.stop();
 			new Actor();
 			List<String> actual = l.describeAll();
 			assertTrue(actual.isEmpty());
@@ -94,11 +94,11 @@ public class TracerTest {
 		public void setup(){
 			repository = new RepositoryInMemory();
 			actor = new Actor();			
-			Tracer.start(repository);	
+			TracerController.start(repository);	
 		}
 		@After
 		public void cleanUp(){
-			Tracer.stop();
+			TracerController.stop();
 		}
 		@Test
 		public void countLinesInstancePublicMethod(){
@@ -152,7 +152,7 @@ public class TracerTest {
 		public void countLinesInterface(){
 			RepositoryInMemory repository = new RepositoryInMemory();
 			InterfaceActor iActor = new Actor('a');
-			Tracer.start(repository);
+			TracerController.start(repository);
 			iActor.playInstancePublic();
 			int actualLines = repository.describeAll().size();
 			assertEquals(6, actualLines);
@@ -161,7 +161,7 @@ public class TracerTest {
 		public void countLinesExceptionThrowAndHandle() throws Exception{
 			RepositoryInMemory repository = new RepositoryInMemory();
 			Actor mActor = new Actor('a');
-			Tracer.start(repository);
+			TracerController.start(repository);
 			try {
 				mActor.playInstancePublicThrowException();
 			} catch (Exception e)
@@ -176,11 +176,11 @@ public class TracerTest {
 		@Before
 		public void setUp(){
 			repository = new RepositoryInMemory();
-			Tracer.start(repository);
+			TracerController.start(repository);
 		}
 		@After
 		public void cleanUp(){
-			Tracer.stop();
+			TracerController.stop();
 		}
 		
 		@Test
@@ -233,11 +233,11 @@ public class TracerTest {
 		public void setup(){
 			repository = new RepositoryInMemory();
 			expected = null;
-			Tracer.start(repository);
+			TracerController.start(repository);
 		}
 		@After
 		public void cleanUp(){
-			Tracer.stop();
+			TracerController.stop();
 		}
 		
 		@Test
@@ -276,11 +276,11 @@ public class TracerTest {
 		public void setup(){
 			repository = new RepositoryInMemory();
 			expected = null;
-			Tracer.start(repository);
+			TracerController.start(repository);
 		}
 		@After
 		public void cleanUp(){
-			Tracer.stop();
+			TracerController.stop();
 		}
 		@Test
 		public void returnSuperInSuperReturn(){
@@ -305,11 +305,11 @@ public class TracerTest {
 		public void setup(){
 			log = new RepositoryInMemory();
 			actor = new Actor();
-			Tracer.start(log);
+			TracerController.start(log);
 		}
 		@After
 		public void cleanUp(){
-			Tracer.stop();
+			TracerController.stop();
 		}
 		
 		@Test
@@ -363,11 +363,11 @@ public class TracerTest {
 		public void setup(){
 			log = new RepositoryInMemory();
 			actor = new Actor();
-			Tracer.start(log);
+			TracerController.start(log);
 		}
 		@After
 		public void cleanUp(){
-			Tracer.stop();
+			TracerController.stop();
 		}
 		
 		@Test
@@ -421,11 +421,11 @@ public class TracerTest {
 		public void setup(){
 			log = new RepositoryInMemory();
 			actor = new Actor();
-			Tracer.start(log);
+			TracerController.start(log);
 		}
 		@After
 		public void cleanUp(){
-			Tracer.stop();
+			TracerController.stop();
 		}
 		
 		@Test
@@ -479,11 +479,11 @@ public class TracerTest {
 		public void setup(){
 			actor = new Actor();
 			log = new RepositoryInMemory();
-			Tracer.start(log);
+			TracerController.start(log);
 		}
 		@After
 		public void cleanUp(){
-			Tracer.stop();
+			TracerController.stop();
 		}
 		
 		@Test
@@ -537,11 +537,11 @@ public class TracerTest {
 		public void setup(){
 			log = new RepositoryInMemory();
 			iActor = new Actor();
-			Tracer.start(log);
+			TracerController.start(log);
 		}
 		@After
 		public void cleanUp(){
-			Tracer.stop();
+			TracerController.stop();
 		}
 		
 		@Test
@@ -601,11 +601,11 @@ public class TracerTest {
 		@Before
 		public void setUp(){
 			log = new RepositoryInMemory();
-			Tracer.start(log);
+			TracerController.start(log);
 		}
 		@After
 		public void cleanUp(){
-			Tracer.stop();
+			TracerController.stop();
 		}
 		@Test
 		public void modifierConstructorDefault() throws Exception{
@@ -671,11 +671,11 @@ public class TracerTest {
 		@Before
 		public void setUp(){
 			log = new RepositoryInMemory();
-			Tracer.start(log);
+			TracerController.start(log);
 		}
 		@After
 		public void cleanUp(){
-			Tracer.stop();
+			TracerController.stop();
 		}
 		
 		@Test
@@ -707,11 +707,11 @@ public class TracerTest {
 		@Before
 		public void setUp(){
 			log = new RepositoryInMemory();
-			Tracer.start(log);
+			TracerController.start(log);
 		}
 		@After
 		public void cleanUp(){
-			Tracer.stop();
+			TracerController.stop();
 		}
 		@Test
 		public void throwException() throws Exception{
@@ -743,11 +743,11 @@ public class TracerTest {
 		public void setup(){
 			repository = new RepositoryInMemory();
 			expected = null;
-			Tracer.start(repository);
+			TracerController.start(repository);
 		}
 		@After
 		public void cleanUp(){
-			Tracer.stop();
+			TracerController.stop();
 		}
 		@Test
 		public void stringBuilderHasNoReturn(){
