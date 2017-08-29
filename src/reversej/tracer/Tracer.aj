@@ -5,7 +5,6 @@ import static reversej.tracer.Context.*;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.CodeSignature;
 
@@ -76,7 +75,6 @@ public aspect Tracer {
 	}
 	
 	after() returning (Object r):constructorCall()||methodExecution(){
-		JoinPoint.StaticPart s = thisJoinPointStaticPart;
 		if(r != null){
 			if(isSubSuper(r.getClass()))
 				REPOSITORY.addInformation("SubReturn",r.getClass().getCanonicalName());
